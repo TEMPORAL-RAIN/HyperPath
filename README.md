@@ -7,11 +7,11 @@
 
 HyperPath reads your browser history, YouTube data, and digital footprint to build a hyper-personalised roadmap — powered by real data and live Claude AI analysis.
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-hyper--oad.netlify.app-e85d0a?style=for-the-badge)](https://hyper-oad.netlify.app/)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-hyperpath.cognitive.workers.dev-e85d0a?style=for-the-badge)](https://hyperpath.cognitive.workers.dev/)
 [![HTML5](https://img.shields.io/badge/HTML5-Vanilla_JS-E34F26?style=for-the-badge&logo=html5&logoColor=white)](/)
 [![Claude API](https://img.shields.io/badge/Claude_API-Anthropic-8b5cf6?style=for-the-badge)](https://anthropic.com)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-2dd982?style=for-the-badge)](/)
-[![Netlify](https://img.shields.io/badge/Hosted_on-Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://netlify.com)
+[![Cloudflare Workers](https://img.shields.io/badge/Hosted_on-Cloudflare_Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://hyperpath.cognitive.workers.dev/)
 
 </div>
 
@@ -491,6 +491,18 @@ python -m http.server 8000
 npx serve .
 ```
 
+### Live Deployment — Cloudflare Workers
+
+The production build is hosted on **Cloudflare Workers** at:
+
+```
+https://hyperpath.cognitive.workers.dev/
+https://hyperpath.cognitive.workers.dev/gaurav.html
+https://hyperpath.cognitive.workers.dev/vaibhav.html
+```
+
+Cloudflare Workers serves the static HTML files from the edge — meaning the app loads from the nearest Cloudflare data centre to the user globally, with zero cold starts.
+
 ### Enabling the Claude AI Features
 
 The AI calls go directly from the browser to `https://api.anthropic.com/v1/messages`. To make them work locally, add your Anthropic API key to the request headers in both `callAI()` (gaurav.html) and `fetchAIProfile()` (vaibhav.html):
@@ -509,7 +521,7 @@ headers: {
 
 Get your key at [console.anthropic.com](https://console.anthropic.com/).
 
-> ⚠️ **Security note:** Never commit your API key to Git. For a shared/production deployment, proxy the API call through a Netlify Function, Vercel Edge Function, or Cloudflare Worker so the key stays server-side.
+> ⚠️ **Security note:** Never commit your API key to Git. For production, proxy the API call through a **Cloudflare Worker** so the key stays server-side and never reaches the browser. This is already set up at `hyperpath.cognitive.workers.dev`.
 
 ---
 
@@ -616,7 +628,7 @@ Be specific, reference real numbers. Never be generic.`;
 | AI | Anthropic Claude API (`POST /v1/messages`) — called directly from browser |
 | Model | `claude-sonnet-4-20250514` · `max_tokens: 1000` |
 | Fonts | Google Fonts (Syne · Bricolage Grotesque · DM Mono) |
-| Hosting | Netlify — static deploy, no server |
+| Hosting | Cloudflare Workers — edge-deployed, global CDN, no server |
 | State | In-memory JS variables — no localStorage, no cookies, no DB |
 | Routing | CSS `display` toggle — no SPA framework, no History API |
 
@@ -641,6 +653,6 @@ MIT — use freely. If you build your own profile on top of this engine, tag us.
 
 **HyperPath** — *Your Data. Your Edge.*
 
-[🚀 Live Demo](https://hyper-oad.netlify.app/) &nbsp;·&nbsp; [💻 Gaurav's Path](https://hyper-oad.netlify.app/gaurav.html) &nbsp;·&nbsp; [🔥 Vaibhav's Path](https://hyper-oad.netlify.app/vaibhav.html)
+[🚀 Live Demo](https://hyperpath.cognitive.workers.dev/) &nbsp;·&nbsp; [💻 Gaurav's Path](https://hyperpath.cognitive.workers.dev/gaurav.html) &nbsp;·&nbsp; [🔥 Vaibhav's Path](https://hyperpath.cognitive.workers.dev/vaibhav.html)
 
 </div>
