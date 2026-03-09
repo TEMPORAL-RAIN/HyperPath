@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HyperPath — Business Intelligence Engine | Vaibhav B.</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Bricolage+Grotesque:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080706;--bg2:#0e0d0b;--card:#141310;--card2:#1a1916;
+  --border:rgba(255,248,235,.07);--border2:rgba(255,248,235,.15);--border3:rgba(255,248,235,.25);
+  --cream:#fff8eb;--muted:rgba(255,248,235,.4);--muted2:rgba(255,248,235,.65);
+  --fire:#e85d0a;--fire2:#ff7a33;--fire3:rgba(232,93,10,.12);
+  --green:#2dd982;--blue:#5badff;--gold:#f5c842;--purple:#b07ef8;--red:#ff4f6b;
+  --r:10px;--r2:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--cream);font-family:'Bricolage Grotesque',sans-serif;font-size:14px;line-height:1.6;overflow-x:hidden;min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+/* ── SCREENS ── */
+.screen{display:none;flex-direction:column;min-height:100vh}
+.screen.active{display:flex}
+
+/* ── TOP NAV ── */
+.tnav{position:sticky;top:0;z-index:200;height:54px;background:rgba(8,7,6,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0;padding:0 20px}
+.tnav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;cursor:pointer;letter-spacing:-.3px;margin-right:auto}
+.tnav-logo span{color:var(--fire)}
+.tnav-steps{display:flex;gap:6px;margin-right:20px}
+.ns{width:6px;height:6px;border-radius:50%;background:var(--border2);transition:.3s}
+.ns.done{background:var(--green)}
+.ns.cur{background:var(--fire);transform:scale(1.5)}
+.tnav-user{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted2)}
+.tnav-av{width:30px;height:30px;border-radius:50%;background:var(--fire);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:12px}
+
+/* ── PAGE WRAPPERS ── */
+.pg{max-width:780px;margin:0 auto;padding:56px 22px 100px}
+.pg-w{max-width:1100px;margin:0 auto;padding:56px 22px 100px}
+
+/* ── TYPOGRAPHY ── */
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;color:var(--fire);letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px}
+.h1{font-family:'Syne',sans-serif;font-size:clamp(38px,6vw,68px);font-weight:800;line-height:.96;letter-spacing:-.02em;margin-bottom:16px}
+.h1 em{font-style:italic;color:var(--fire);font-weight:400}
+.h2{font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,42px);font-weight:800;line-height:1.05;letter-spacing:-.02em;margin-bottom:12px}
+.h2 em{color:var(--fire);font-style:italic}
+.h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:10px}
+.sub{font-size:14px;color:var(--muted2);line-height:1.8;margin-bottom:32px;max-width:560px}
+
+/* ── BUTTONS ── */
+.btn{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.02em;border:none;border-radius:var(--r);padding:13px 26px;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px}
+.btn-fire{background:var(--fire);color:#fff}
+.btn-fire:hover{background:var(--fire2);transform:translateY(-2px);box-shadow:0 10px 30px rgba(232,93,10,.35)}
+.btn-solid{background:var(--cream);color:var(--bg)}
+.btn-solid:hover{background:#fff;transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--cream);border:1.5px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--border3);background:rgba(255,248,235,.05)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+
+/* ════════════════════════════════
+   SCREEN: LANDING
+════════════════════════════════ */
+#s-land{justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden}
+.land-bg{position:absolute;inset:0;background:radial-gradient(ellipse 900px 700px at 50% 30%,rgba(232,93,10,.08) 0%,transparent 70%)}
+.land-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:52px 52px}
+.land-inner{position:relative;z-index:1;max-width:740px;padding:30px 22px}
+.land-tag{display:inline-flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fire);border:1.5px solid rgba(232,93,10,.3);padding:7px 16px;border-radius:100px;margin-bottom:36px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--fire);animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.land-title{font-family:'Syne',sans-serif;font-size:clamp(60px,10vw,108px);font-weight:800;line-height:.92;letter-spacing:-.04em;margin-bottom:22px}
+.land-title em{color:var(--fire);font-style:italic}
+.land-sub{font-size:16px;color:var(--muted2);max-width:480px;margin:0 auto 38px;line-height:1.8}
+.land-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:64px}
+.land-stats{display:flex;gap:0;justify-content:center;border-top:1px solid var(--border)}
+.lstat{flex:1;max-width:180px;padding:28px 10px 24px;border-right:1px solid var(--border)}
+.lstat:last-child{border-right:none}
+.ls-n{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--cream)}
+.ls-l{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+
+/* ════════════════════════════════
+   SCREEN: CONNECT
+════════════════════════════════ */
+.connect-grid{display:flex;flex-direction:column;gap:9px;margin-bottom:28px}
+.ci{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:18px 20px;display:flex;align-items:center;gap:14px;transition:.2s;cursor:default}
+.ci.linked{border-color:rgba(45,217,130,.25);background:rgba(45,217,130,.02)}
+.ci.can-click{cursor:pointer}
+.ci.can-click:hover{border-color:var(--border3);transform:translateY(-1px)}
+.ci-ico{font-size:22px;width:38px;text-align:center;flex-shrink:0}
+.ci-info{flex:1}
+.ci-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:3px}
+.ci-desc{font-size:11px;color:var(--muted);line-height:1.55}
+.ci-badge{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;padding:5px 12px;border-radius:100px;flex-shrink:0}
+.b-linked{background:rgba(45,217,130,.12);color:var(--green)}
+.b-add{background:var(--fire3);color:var(--fire);border:1px solid rgba(232,93,10,.3)}
+
+/* ════════════════════════════════
+   SCREEN: CALIBRATION TEST
+════════════════════════════════ */
+.prog-bar{height:3px;background:var(--border);border-radius:2px;margin-bottom:36px;overflow:hidden}
+.prog-fill{height:100%;background:var(--fire);border-radius:2px;transition:width .4s ease}
+.q-blk{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:26px;margin-bottom:14px}
+.q-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--fire);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px}
+.q-text{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:18px;line-height:1.5}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:520px){.opts{grid-template-columns:1fr}}
+.opt{background:var(--bg2);border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-size:12px;line-height:1.5;cursor:pointer;transition:.15s;font-family:'Bricolage Grotesque',sans-serif;color:var(--muted2)}
+.opt:hover{border-color:var(--border3);color:var(--cream)}
+.opt.sel{border-color:var(--fire);background:var(--fire3);color:var(--cream)}
+
+/* ════════════════════════════════
+   SCREEN: ANALYZING
+════════════════════════════════ */
+#s-analyze{align-items:center;justify-content:center}
+.an-wrap{max-width:520px;margin:0 auto;padding:48px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh}
+.an-ring{width:110px;height:110px;border-radius:50%;border:2px solid rgba(232,93,10,.25);position:relative;display:flex;align-items:center;justify-content:center;margin:0 auto 26px;animation:ring-spin 4s linear infinite}
+@keyframes ring-spin{to{transform:rotate(360deg)}}
+.an-dot{position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:8px;height:8px;background:var(--fire);border-radius:50%;box-shadow:0 0 12px var(--fire)}
+.an-em{font-size:38px;animation:ring-spin 4s linear infinite reverse;display:block}
+.an-title{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;line-height:1.1;margin-bottom:8px}
+.an-sub{font-size:12px;color:var(--muted);margin-bottom:28px;font-family:'DM Mono',monospace}
+.log-feed{width:100%;display:flex;flex-direction:column;gap:7px}
+.lg{display:flex;align-items:center;gap:9px;padding:9px 14px;background:var(--card);border-radius:7px;font-family:'DM Mono',monospace;font-size:11px;opacity:0;transition:opacity .45s,color .45s}
+.lg-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+.lg.show-done{opacity:1;color:var(--green)}
+.lg.show-active{opacity:1;color:var(--cream);animation:fade-pulse 1.2s infinite}
+@keyframes fade-pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* ════════════════════════════════
+   SCREEN: DNA PROFILE
+════════════════════════════════ */
+.dna-hero{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:26px;margin-bottom:20px;display:flex;gap:20px;align-items:flex-start}
+@media(max-width:560px){.dna-hero{flex-direction:column}}
+.dna-av{font-size:54px;flex-shrink:0;line-height:1}
+.dna-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px}
+.dna-arch{font-size:12px;color:var(--fire);letter-spacing:.04em;margin-bottom:6px;font-family:'DM Mono',monospace}
+.dna-code{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:14px;letter-spacing:.06em}
+.tag-row{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;background:var(--card2);border:1px solid var(--border2);color:var(--muted2);letter-spacing:.03em}
+.tag.hot{background:var(--fire3);border-color:rgba(232,93,10,.3);color:var(--fire2)}
+.tag.green{background:rgba(45,217,130,.1);border-color:rgba(45,217,130,.25);color:var(--green)}
+.tag.blue{background:rgba(91,173,255,.1);border-color:rgba(91,173,255,.25);color:var(--blue)}
+
+/* METRICS */
+.met-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+.mc{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:16px 18px}
+.mc-v{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;line-height:1;margin-bottom:5px}
+.mc-l{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+
+/* BEHAVIOR SIGNALS */
+.signals{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+@media(max-width:600px){.signals{grid-template-columns:1fr}}
+.sig{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:18px}
+.sig-ico{font-size:20px;margin-bottom:8px}
+.sig-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:6px}
+.sig-text{font-size:12px;color:var(--muted2);line-height:1.65}
+.sig-text strong{color:var(--cream)}
+.sig-text .hi{color:var(--fire)}
+
+/* AI INSIGHT BOX */
+.ai-box{background:rgba(232,93,10,.04);border:1.5px solid rgba(232,93,10,.2);border-radius:var(--r2);padding:20px 24px}
+.ai-box-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ai-box-dot{width:7px;height:7px;border-radius:50%;background:var(--fire);animation:blink 1.4s infinite;flex-shrink:0}
+.ai-box-lbl{font-family:'DM Mono',monospace;font-size:10px;color:var(--fire);letter-spacing:.14em;text-transform:uppercase}
+.ai-box-text{font-size:13px;line-height:1.8;color:var(--muted2)}
+.ai-box-text strong{color:var(--cream)}
+
+/* ════════════════════════════════
+   SCREEN: ROADMAP
+════════════════════════════════ */
+.rm-hdr{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:22px;margin-bottom:26px}
+.rmh-top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.rmh-av{font-size:32px}
+.rmh-n{font-family:'Syne',sans-serif;font-size:16px;font-weight:800}
+.rmh-s{font-size:11px;color:var(--muted);margin-top:3px}
+.rm-stats{display:flex;gap:28px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:14px}
+.rms-v{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--fire)}
+.rms-l{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+.ph{margin-bottom:26px}
+.ph-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fire);margin-bottom:12px;display:flex;align-items:center;gap:9px}
+.ph-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.rm-item{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:18px 20px;margin-bottom:8px;display:flex;align-items:flex-start;gap:14px;transition:.2s}
+.rm-item.done{border-color:rgba(45,217,130,.25);background:rgba(45,217,130,.02)}
+.rm-item.active{border-color:rgba(232,93,10,.35);background:var(--fire3);cursor:pointer}
+.rm-item.active:hover{transform:translateX(3px);border-color:rgba(232,93,10,.6)}
+.rm-item.locked{opacity:.7;cursor:default}
+.rm-ico{font-size:20px;flex-shrink:0;margin-top:1px}
+.rm-body{flex:1;min-width:0}
+.rm-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px}
+.rm-sub{font-size:11.5px;color:var(--muted2);line-height:1.55}
+.rm-why{font-size:10.5px;color:var(--fire);margin-top:6px;font-style:italic;line-height:1.5}
+.rm-btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.rm-open-btn{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;padding:8px 16px;border-radius:8px;border:1.5px solid rgba(232,93,10,.35);background:var(--fire3);color:var(--fire);cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px;letter-spacing:.02em}
+.rm-open-btn:hover{background:var(--fire);color:#fff;transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,93,10,.3)}
+.rm-link-count{font-size:10px;color:var(--muted);margin-top:6px;font-family:'DM Mono',monospace;letter-spacing:.05em}
+.rm-rt{flex-shrink:0;text-align:right;min-width:76px}
+.rm-dur{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;margin-bottom:5px}
+.badge{font-family:'DM Mono',monospace;font-size:10px;padding:3px 8px;border-radius:100px;display:inline-block}
+.b-done{background:rgba(45,217,130,.12);color:var(--green)}
+.b-active{background:var(--fire3);color:var(--fire);border:1px solid rgba(232,93,10,.3)}
+.b-locked{background:rgba(255,248,235,.05);color:var(--muted)}
+
+/* ════════════════════════════════
+   RESOURCE MODAL
+════════════════════════════════ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:999;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.open{opacity:1;pointer-events:all}
+.sheet{background:var(--card2);border-radius:22px 22px 0 0;padding:24px 24px 36px;width:100%;max-width:660px;max-height:85vh;overflow-y:auto;transform:translateY(100%);transition:transform .4s cubic-bezier(.16,1,.3,1);position:relative}
+.overlay.open .sheet{transform:translateY(0)}
+.sheet-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 20px}
+.sheet-close{position:absolute;top:16px;right:18px;width:28px;height:28px;border-radius:50%;background:var(--card);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;color:var(--muted);transition:.15s}
+.sheet-close:hover{color:var(--cream);border-color:var(--border3)}
+.sheet-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:6px;padding-right:36px;line-height:1.3}
+.sheet-why{font-size:12.5px;color:var(--muted2);line-height:1.7;margin-bottom:16px;padding:12px 16px;background:var(--fire3);border-radius:8px;border-left:3px solid var(--fire)}
+.sheet-div{height:1px;background:var(--border);margin-bottom:14px}
+.sheet-h{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.res-links{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.res-link{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;transition:.15s;cursor:pointer}
+.res-link:hover{border-color:var(--fire);transform:translateX(3px)}
+.rl-ico{font-size:20px;flex-shrink:0}
+.rl-body{flex:1;min-width:0}
+.rl-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:2px}
+.rl-desc{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rl-arr{font-size:14px;color:var(--muted);flex-shrink:0;transition:.15s}
+.res-link:hover .rl-arr{color:var(--fire);transform:translateX(2px)}
+.sheet-meta{font-size:11px;color:var(--fire);padding:10px 14px;background:var(--fire3);border-radius:8px;border:1px solid rgba(232,93,10,.2);line-height:1.6}
+
+/* ════════════════════════════════
+   SCREEN: COMPETITIONS
+════════════════════════════════ */
+.comp-hdr{display:flex;align-items:center;gap:14px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:22px;margin-bottom:20px}
+.comp-n{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;color:var(--fire);flex-shrink:0;line-height:1}
+.comp-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:4px}
+.comp-sub{font-size:12px;color:var(--muted2)}
+.comp-list{display:flex;flex-direction:column;gap:9px;margin-bottom:22px}
+.comp-item{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:16px 20px;display:flex;align-items:flex-start;gap:14px;transition:.2s;cursor:pointer}
+.comp-item:hover{border-color:var(--border3);transform:translateX(3px)}
+.comp-item.reg{border-color:rgba(232,93,10,.3);background:var(--fire3)}
+.comp-item.fin{border-color:rgba(45,217,130,.25);background:rgba(45,217,130,.02)}
+.ci2-ico{font-size:22px;flex-shrink:0}
+.ci2-body{flex:1}
+.ci2-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px}
+.ci2-detail{font-size:11px;color:var(--muted2)}
+.ci2-rt{flex-shrink:0;text-align:right}
+
+/* ════════════════════════════════
+   SCREEN: YT INTEL
+════════════════════════════════ */
+.yt-wrap{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:24px;margin-bottom:16px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-lbl{font-size:12px;width:200px;flex-shrink:0;color:var(--muted2)}
+.bar-track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width 1.1s cubic-bezier(.16,1,.3,1)}
+.bar-cnt{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;width:40px;text-align:right;flex-shrink:0}
+.ch-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+@media(max-width:540px){.ch-grid{grid-template-columns:1fr}}
+.ch-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:14px;cursor:pointer;transition:.15s}
+.ch-card:hover{border-color:var(--border3)}
+.ch-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px}
+.ch-meta{font-size:11px;color:var(--muted)}
+.rv-item{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--border)}
+.rv-item:last-child{border:none}
+.rv-ico{font-size:13px;flex-shrink:0;margin-top:2px}
+.rv-title{font-size:12px;line-height:1.5}
+.rv-ch{font-size:10px;color:var(--muted);margin-top:1px}
+
+/* ════════════════════════════════
+   SCREEN: DASHBOARD
+════════════════════════════════ */
+.dash-layout{display:grid;grid-template-columns:1fr 340px;gap:14px;margin-top:24px}
+@media(max-width:900px){.dash-layout{grid-template-columns:1fr}}
+.dcard{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:20px;margin-bottom:12px}
+.dcard-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.dcard-title .link{font-size:11px;color:var(--fire);cursor:pointer;font-weight:400}
+.task{background:var(--bg2);border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:6px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:.2s}
+.task:hover{border-color:var(--border3)}
+.task.t-done{opacity:.5}
+.task.t-hot{border-color:rgba(232,93,10,.3);background:var(--fire3)}
+.t-chk{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.task.t-done .t-chk{background:var(--green);border-color:var(--green);color:var(--bg);font-size:10px;font-weight:700}
+.t-ico{font-size:15px;flex-shrink:0}
+.t-body{flex:1}
+.t-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;margin-bottom:1px}
+.t-sub{font-size:10px;color:var(--muted)}
+.t-rt{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:right;flex-shrink:0}
+.sk-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sk-lbl{font-size:11px;width:100px;flex-shrink:0;color:var(--muted2)}
+.sk-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.sk-fill{height:100%;background:linear-gradient(90deg,var(--fire),var(--fire2));border-radius:3px}
+.sk-pct{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;width:30px;text-align:right;flex-shrink:0}
+.lb-row{display:flex;align-items:center;gap:10px;padding:7px 6px;border-radius:7px}
+.lb-row.me{background:var(--fire3);border-radius:7px;padding:8px 10px}
+.lb-rank{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;width:20px;flex-shrink:0}
+.lb-av{font-size:16px;flex-shrink:0}
+.lb-name{flex:1;font-size:12px}
+.lb-pts{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
+
+/* ════════════════════════════════
+   SCREEN: PROGRESS
+════════════════════════════════ */
+.prog-hero{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:24px;margin-bottom:16px}
+.ring-wrap{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+.big-ring{position:relative;width:96px;height:96px;flex-shrink:0}
+.big-ring-lbl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:20px}
+.pm-rows{flex:1;min-width:200px;display:flex;flex-direction:column;gap:8px}
+.pm-row{display:flex;align-items:center;gap:9px}
+.pm-lbl{font-size:11px;color:var(--muted);width:110px;flex-shrink:0}
+.pm-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.pm-fill{height:100%;border-radius:3px}
+.pm-val{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;width:32px;text-align:right;flex-shrink:0}
+.streak-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:20px;display:flex;align-items:center;gap:18px;margin-bottom:16px}
+.streak-n{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;color:var(--fire);flex-shrink:0;line-height:1}
+.wd-row{display:flex;gap:5px;margin-top:10px}
+.wd{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted)}
+.wd.done{background:var(--green);border-color:var(--green);color:var(--bg);font-weight:700}
+.wd.today{border-color:var(--fire);color:var(--fire)}
+.ms-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:18px 20px;display:flex;gap:12px;align-items:flex-start;margin-bottom:8px}
+.ms-card.ms-done{border-color:rgba(45,217,130,.25)}
+.ms-card.ms-active{border-color:rgba(232,93,10,.3)}
+.ms-ico{font-size:18px;flex-shrink:0;margin-top:1px}
+.ms-body{flex:1}
+.ms-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px}
+.ms-desc{font-size:11px;color:var(--muted2);margin-bottom:7px}
+.ms-track{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.ms-fill{height:100%;background:var(--fire);border-radius:2px}
+.ms-rt{text-align:right;flex-shrink:0}
+.ms-pct{font-family:'Syne',sans-serif;font-size:14px;font-weight:800}
+.ms-time{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* ════════════════════════════════
+   MISC
+════════════════════════════════ */
+.divider{height:1px;background:var(--border);margin:18px 0}
+.spinner-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:48px;text-align:center}
+.spin{width:32px;height:32px;border:3px solid var(--border2);border-top-color:var(--fire);border-radius:50%;animation:ring-spin .7s linear infinite}
+.spin-text{font-size:12px;color:var(--muted);max-width:300px;line-height:1.7;font-family:'DM Mono',monospace}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ── SWITCH PROFILE FLOATING BAR ── */
+.switch-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;gap:10px;background:rgba(20,19,16,.92);backdrop-filter:blur(20px);border:1.5px solid var(--border2);border-radius:100px;padding:8px 10px 8px 18px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.switch-bar-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.switch-btn{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:100px;border:1.5px solid rgba(91,173,255,.3);background:rgba(91,173,255,.08);color:#5badff;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap}
+.switch-btn:hover{background:rgba(91,173,255,.18);border-color:rgba(91,173,255,.5);transform:translateY(-1px)}
+.home-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:100px;border:1.5px solid var(--border2);background:transparent;color:var(--cream);font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap}
+.home-btn:hover{background:rgba(255,248,235,.06);border-color:var(--border3)}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="tnav" id="tnav" style="display:none">
+  <div class="tnav-logo" onclick="go('s-land')">Hyper<span>Path</span></div>
+  <div class="tnav-steps">
+    <div class="ns" id="ns0"></div><div class="ns" id="ns1"></div>
+    <div class="ns" id="ns2"></div><div class="ns" id="ns3"></div>
+    <div class="ns" id="ns4"></div><div class="ns" id="ns5"></div>
+  </div>
+  <div class="tnav-user">
+    <span style="font-size:11px;color:var(--muted)">Vaibhav B.</span>
+    <div class="tnav-av">V</div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     S1: LANDING
+══════════════════════════════════════════ -->
+<div class="screen active" id="s-land">
+  <div class="land-bg"></div>
+  <div class="land-grid"></div>
+  <div class="land-inner" style="position:relative;z-index:1;max-width:740px;width:100%;margin:auto;padding:40px 22px;display:flex;flex-direction:column;align-items:center;text-align:center">
+    <div class="land-tag"><div class="live-dot"></div>Cognitive Business Intelligence Engine — Vaibhav Bansal</div>
+    <h1 class="land-title">Your Data.<br><em>Your Edge.</em></h1>
+    <p class="land-sub">HyperPath parsed 7,497 YouTube videos, 100+ Unstop competitions, 12 Gemini projects and 7,905 Chrome history entries — then built your business mastery roadmap from the ground up.</p>
+    <div class="land-actions">
+      <button class="btn btn-fire" onclick="go('s-connect')">Analyse My Profile <span>→</span></button>
+      <button class="btn btn-ghost" onclick="go('s-yt-intel')">View Data Breakdown</button>
+    </div>
+    <div class="land-stats" style="width:100%;border-top:1px solid var(--border);display:flex">
+      <div class="lstat"><div class="ls-n">7,497</div><div class="ls-l">YT Videos</div></div>
+      <div class="lstat"><div class="ls-n">100+</div><div class="ls-l">Competitions</div></div>
+      <div class="lstat"><div class="ls-n">12</div><div class="ls-l">AI Projects</div></div>
+      <div class="lstat"><div class="ls-n">526</div><div class="ls-l">Genspark Sessions</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     S2: CONNECT
+══════════════════════════════════════════ -->
+<div class="screen" id="s-connect">
+  <div class="pg">
+    <div class="eyebrow">Step 01 — Data Sources</div>
+    <h2 class="h2">Your digital footprint<br>is <em>already mapped</em></h2>
+    <p class="sub">We've deep-parsed every data source. Click any connected source to view the detailed breakdown.</p>
+    <div class="connect-grid">
+      <div class="ci linked can-click" onclick="go('s-yt-intel')">
+        <div class="ci-ico">🎥</div>
+        <div class="ci-info">
+          <div class="ci-name">YouTube History — 7,497 videos</div>
+          <div class="ci-desc">366 business/strategy videos · caseinterview.com binge detected (5 consecutive) · McKinsey, BCG, Porter, MECE, Minto — all consumed in one session · <strong style="color:var(--green)">Click to view full analysis →</strong></div>
+        </div>
+        <div class="ci-badge b-linked">✓ Loaded</div>
+      </div>
+      <div class="ci linked can-click" onclick="go('s-comps')">
+        <div class="ci-ico">🏆</div>
+        <div class="ci-info">
+          <div class="ci-name">Unstop — 403 visits, 30+ competitions registered</div>
+          <div class="ci-desc">Case in Point'26 · Ground Reality BITS · Consultathon IIT BHU · ThinCovation MDI · ValQuest IIM Lucknow · Strategy Storm · StrategiQ · CaseCrux IIT + more · <strong style="color:var(--green)">Click to view all →</strong></div>
+        </div>
+        <div class="ci-badge b-linked">✓ Loaded</div>
+      </div>
+      <div class="ci linked">
+        <div class="ci-ico">🤖</div>
+        <div class="ci-info">
+          <div class="ci-name">Gemini AI Projects — 12 sessions</div>
+          <div class="ci-desc">Cipla Health (Nicotex STP strategy) · MedCare (vertical moat + closed-loop revenue) · PrepBaba (90-day 10K-user plan) · VAANIK Pinnacle · Seven Seers · All business strategy + case competition work</div>
+        </div>
+        <div class="ci-badge b-linked">✓ Loaded</div>
+      </div>
+      <div class="ci linked">
+        <div class="ci-ico">🔬</div>
+        <div class="ci-info">
+          <div class="ci-name">Genspark AI — 526 sessions (most-used AI tool)</div>
+          <div class="ci-desc">More sessions than ChatGPT (178) combined. Used for consulting research, case deep-dives, India Industrial Water Credit framework analysis — confirms AI-native research workflow</div>
+        </div>
+        <div class="ci-badge b-linked">✓ Loaded</div>
+      </div>
+      <div class="ci linked">
+        <div class="ci-ico">🎨</div>
+        <div class="ci-info">
+          <div class="ci-name">Figma — 158 visits · MedCare product design</div>
+          <div class="ci-desc">Built the full MedCare product prototype in Figma. Not just strategy — you designed the product. "Projects — Vaibhav Bansal" portfolio detected at localhost:4321</div>
+        </div>
+        <div class="ci-badge b-linked">✓ Loaded</div>
+      </div>
+      <div class="ci linked">
+        <div class="ci-ico">🔖</div>
+        <div class="ci-info">
+          <div class="ci-name">Chrome History — 7,905 entries + Google searches</div>
+          <div class="ci-desc">180 Degrees Consulting SRCC case library researched · "Bain BrAINWARS 2026" searched · "IIM Nagpur finalist" Googled · CAT prep detected · "mock AI interview for consulting" — active serious prep</div>
+        </div>
+        <div class="ci-badge b-linked">✓ Loaded</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-fire" onclick="go('s-test')">Continue to Calibration →</button>
+      <button class="btn btn-ghost" onclick="go('s-land')">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     S3: CALIBRATION TEST
+══════════════════════════════════════════ -->
+<div class="screen" id="s-test">
+  <div class="pg">
+    <div class="eyebrow">Step 02 — Cognitive Calibration</div>
+    <h2 class="h2">Fine-tune your <em>roadmap</em></h2>
+    <p class="sub">Your data already reveals 80% of your profile. These 6 questions fill in the rest. No right/wrong answers.</p>
+    <div class="prog-bar"><div class="prog-fill" id="pf" style="width:14%"></div></div>
+
+    <div class="q-blk">
+      <div class="q-label">Q1 — Primary Goal</div>
+      <div class="q-text">Your #1 target for the next 12 months?</div>
+      <div class="opts">
+        <div class="opt sel" onclick="pick(this,1)" data-k="goal" data-v="mbb">Land MBB / Big 4 consulting</div>
+        <div class="opt" onclick="pick(this,1)" data-k="goal" data-v="comp">Win 3+ case competitions</div>
+        <div class="opt" onclick="pick(this,1)" data-k="goal" data-v="startup">Build/join high-growth startup</div>
+        <div class="opt" onclick="pick(this,1)" data-k="goal" data-v="mba">CAT / Top MBA admission</div>
+      </div>
+    </div>
+    <div class="q-blk">
+      <div class="q-label">Q2 — Timeline Pressure</div>
+      <div class="q-text">When do you need to be "placement-ready"?</div>
+      <div class="opts">
+        <div class="opt sel" onclick="pick(this,2)" data-k="tl" data-v="3m">Under 3 months</div>
+        <div class="opt" onclick="pick(this,2)" data-k="tl" data-v="6m">3–6 months</div>
+        <div class="opt" onclick="pick(this,2)" data-k="tl" data-v="1y">~1 year</div>
+        <div class="opt" onclick="pick(this,2)" data-k="tl" data-v="open">Open / exploring</div>
+      </div>
+    </div>
+    <div class="q-blk">
+      <div class="q-label">Q3 — Weakest Link</div>
+      <div class="q-text">In a live McKinsey first round, your gap is...</div>
+      <div class="opts">
+        <div class="opt" onclick="pick(this,3)" data-k="gap" data-v="struct">Structuring (issue trees fast)</div>
+        <div class="opt sel" onclick="pick(this,3)" data-k="gap" data-v="delivery">Live verbal delivery speed</div>
+        <div class="opt" onclick="pick(this,3)" data-k="gap" data-v="quant">Mental math under pressure</div>
+        <div class="opt" onclick="pick(this,3)" data-k="gap" data-v="insight">Non-obvious insight generation</div>
+      </div>
+    </div>
+    <div class="q-blk">
+      <div class="q-label">Q4 — Bain BrAINWARS</div>
+      <div class="q-text">You Googled "Bain BrAINWARS 2026" — your status?</div>
+      <div class="opts">
+        <div class="opt" onclick="pick(this,4)" data-k="bain" data-v="none">Haven't applied yet</div>
+        <div class="opt sel" onclick="pick(this,4)" data-k="bain" data-v="applying">Planning to apply this cycle</div>
+        <div class="opt" onclick="pick(this,4)" data-k="bain" data-v="applied">Already applied</div>
+        <div class="opt" onclick="pick(this,4)" data-k="bain" data-v="advanced">Advanced to later round</div>
+      </div>
+    </div>
+    <div class="q-blk">
+      <div class="q-label">Q5 — IIM Nagpur Finalist</div>
+      <div class="q-text">We found "IIM Nagpur finalist" in your search history. That was...</div>
+      <div class="opts">
+        <div class="opt sel" onclick="pick(this,5)" data-k="iim" data-v="yes">That's me — I was a finalist there</div>
+        <div class="opt" onclick="pick(this,5)" data-k="iim" data-v="check">I was checking if I'm on a list</div>
+        <div class="opt" onclick="pick(this,5)" data-k="iim" data-v="diff">Different competition / context</div>
+        <div class="opt" onclick="pick(this,5)" data-k="iim" data-v="na">Not sure what this refers to</div>
+      </div>
+    </div>
+    <div class="q-blk">
+      <div class="q-label">Q6 — Next Competition Target</div>
+      <div class="q-text">From all the Unstop competitions you browsed, your priority is...</div>
+      <div class="opts">
+        <div class="opt sel" onclick="pick(this,6)" data-k="next" data-v="case">Case study competition (IIT/IIM)</div>
+        <div class="opt" onclick="pick(this,6)" data-k="next" data-v="bplan">B-Plan / pitch competition</div>
+        <div class="opt" onclick="pick(this,6)" data-k="next" data-v="val">Valuation challenge (ValQuest)</div>
+        <div class="opt" onclick="pick(this,6)" data-k="next" data-v="all">All of the above simultaneously</div>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:8px">
+      <button class="btn btn-fire" onclick="startAnalyze()">Generate My AI Roadmap →</button>
+      <button class="btn btn-ghost" onclick="go('s-connect')">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     S4: ANALYZING
+══════════════════════════════════════════ -->
+<div class="screen" id="s-analyze">
+  <div class="an-wrap">
+    <div class="an-ring"><div class="an-dot"></div><div class="an-em">🧬</div></div>
+    <h2 class="an-title" style="letter-spacing:-.03em">Decoding Your<br>Business DNA</h2>
+    <p class="an-sub">Cross-referencing 7,497 videos · 403 Unstop visits · 12 AI projects</p>
+    <div class="log-feed">
+      <div class="lg" id="lg1"><div class="lg-dot"></div> 366 pure business/strategy videos extracted and classified</div>
+      <div class="lg" id="lg2"><div class="lg-dot"></div> 30+ Unstop competitions registered — case competition track confirmed</div>
+      <div class="lg" id="lg3"><div class="lg-dot"></div> Gemini: MedCare vertical moat + Cipla STP + PrepBaba 10K-user plan analysed</div>
+      <div class="lg" id="lg4"><div class="lg-dot"></div> Figma MedCare prototype detected — strategy-to-product builder confirmed</div>
+      <div class="lg" id="lg5"><div class="lg-dot"></div> 180 Degrees Consulting SRCC case library researched (12+ visits)</div>
+      <div class="lg" id="lg6"><div class="lg-dot"></div> Genspark (526) > ChatGPT (178) — AI-native research workflow mapped</div>
+      <div class="lg" id="lg7"><div class="lg-dot"></div> Bain BrAINWARS 2026 targeted · IIM Nagpur finalist signal detected</div>
+      <div class="lg" id="lg8"><div class="lg-dot"></div> Cognitive engine generating hyperpersonalised roadmap phases...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     S5: DNA PROFILE
+══════════════════════════════════════════ -->
+<div class="screen" id="s-profile">
+  <div class="pg">
+    <div class="eyebrow">Step 03 — Your Business DNA</div>
+    <h2 class="h2">You are a <em>Competition-First<br>Strategy Builder</em></h2>
+    <p class="sub">Synthesised from 7,497 YouTube videos · 7,905 Chrome history entries · 12 Gemini sessions · 403 Unstop visits · 526 Genspark sessions.</p>
+
+    <div class="dna-hero">
+      <div class="dna-av">🧑‍💼</div>
+      <div>
+        <div class="dna-name">Vaibhav Bansal</div>
+        <div class="dna-arch">COMPETITION-FIRST STRATEGY BUILDER · AI-NATIVE RESEARCHER · HEALTHCARE-DOMAIN SPECIALIST</div>
+        <div class="dna-code">DNA: MBB-TRACK · CASE-COMP-HUNTER · HEALTHCARE-DOMAIN · FIGMA-BUILDER · BINGE-LEARNER · GENSPARK-FIRST</div>
+        <div class="tag-row">
+          <span class="tag hot">MBB Target</span><span class="tag hot">Case Competitions</span>
+          <span class="tag green">IIM Nagpur Finalist</span><span class="tag green">Healthcare Domain</span>
+          <span class="tag blue">Figma Product Builder</span><span class="tag blue">Bain BrAINWARS</span>
+          <span class="tag">180DC SRCC</span><span class="tag">Genspark-Native</span>
+          <span class="tag">Consulting Frameworks</span><span class="tag">CAT Track</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="met-grid">
+      <div class="mc"><div class="mc-v" style="color:var(--fire)">7,497</div><div class="mc-l">Videos Analysed</div></div>
+      <div class="mc"><div class="mc-v" style="color:var(--blue)">366</div><div class="mc-l">Business Videos</div></div>
+      <div class="mc"><div class="mc-v" style="color:var(--gold)">30+</div><div class="mc-l">Comps Registered</div></div>
+      <div class="mc"><div class="mc-v" style="color:var(--green)">12</div><div class="mc-l">AI Case Projects</div></div>
+      <div class="mc"><div class="mc-v" style="color:var(--purple)">526</div><div class="mc-l">Genspark Sessions</div></div>
+      <div class="mc"><div class="mc-v" style="color:var(--fire)">98</div><div class="mc-l">Claude.ai Visits</div></div>
+    </div>
+
+    <div class="signals">
+      <div class="sig">
+        <div class="sig-ico">🏆</div>
+        <div class="sig-title">You're a Comp Hunter</div>
+        <div class="sig-text"><strong>30+ competitions registered on Unstop.</strong> You've submitted to Case in Point'26, ThinCovation MDI, StrategiQ, Strategy Storm, ValQuest IIM Lucknow, CaseCrux, Consultathon IIT BHU and 20+ more. <span class="hi">You don't just browse — you register and submit.</span> This is your biggest unfair advantage: high competition experience before most peers start.</div>
+      </div>
+      <div class="sig">
+        <div class="sig-ico">🏥</div>
+        <div class="sig-title">Healthcare Is Your Moat</div>
+        <div class="sig-text">Your <strong>3 most complex Gemini sessions are healthcare</strong>: Cipla Nicotex STP strategy, MedCare vertical moat analysis, PrepBaba healthcare market-entry. You also <strong>designed MedCare in Figma</strong> — 158 visits. This is a real domain specialisation most consultants don't have at your stage. <span class="hi">This is what gets you shortlisted over IIT/IIM grads.</span></div>
+      </div>
+      <div class="sig">
+        <div class="sig-ico">🔬</div>
+        <div class="sig-title">AI-Native Researcher</div>
+        <div class="sig-text">You use <strong>Genspark (526) more than ChatGPT (178)</strong>. You have 98 Claude.ai visits, 140 Gemini visits, 151 Grok sessions. You searched for <span class="hi">"genspark type tools for consulting"</span> — you're actively hunting better AI research stacks. Most candidates prep with pen and paper; you're building an AI-augmented research workflow.</div>
+      </div>
+      <div class="sig">
+        <div class="sig-ico">🔍</div>
+        <div class="sig-title">180DC SRCC — Your Next Move</div>
+        <div class="sig-text">You visited <strong>180 Degrees Consulting SRCC 12+ times</strong> — case library, competition guide, impact reports. You Googled "180 degrees consulting decks srcc case comp" 3 separate times. <span class="hi">You've been studying their winning decks.</span> The roadmap treats 180DC as a concrete application target with prep resources.</div>
+      </div>
+      <div class="sig">
+        <div class="sig-ico">⚡</div>
+        <div class="sig-title">Bain BrAINWARS + McKinsey Forward</div>
+        <div class="sig-text">You Googled <strong>"Bain BrAINWARS 2026 by Bain & Co"</strong> and "Bain and company internship" in the same session. You have <strong>5 different creators' videos</strong> about McKinsey Forward in your history. You know both exist. The roadmap's Phase 6 is built around actually applying — not more research about applying.</div>
+      </div>
+      <div class="sig">
+        <div class="sig-ico">📐</div>
+        <div class="sig-title">Framework Theory → Real Application</div>
+        <div class="sig-text">Your <strong>caseinterview.com binge</strong> (5 consecutive videos) confirmed: you're converting framework theory into live case practice. But your gap is <span class="hi">delivery speed under pressure</span> — not knowledge. The roadmap's Phase 1 is pure case delivery reps, zero theory review.</div>
+      </div>
+    </div>
+
+    <div class="ai-box" style="margin-bottom:26px" id="ai-profile-box">
+      <div class="ai-box-hdr"><div class="ai-box-dot"></div><div class="ai-box-lbl">HyperPath AI · Deep Profile Synthesis</div></div>
+      <div class="ai-box-text" id="ai-profile-text">
+        <div class="spinner-wrap"><div class="spin"></div><div class="spin-text">Claude is synthesising your behavioural data into a personalised strategic diagnosis...</div></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-fire" onclick="go('s-roadmap')">View My Roadmap →</button>
+      <button class="btn btn-ghost" onclick="go('s-comps')">🏆 Competition Tracker</button>
+      <button class="btn btn-ghost" onclick="go('s-yt-intel')">📺 YT Analysis</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     S6: ROADMAP
+══════════════════════════════════════════ -->
+<div class="screen" id="s-roadmap">
+  <div class="pg">
+    <div class="eyebrow">Step 04 — Your Personalised Roadmap</div>
+    <h2 class="h2">The <em>Zero-Redundancy</em> Path</h2>
+    <p class="sub">Every item is sourced from your real data. Watched videos are marked done. Links open directly. Your data tells the AI where to start — and where to skip.</p>
+
+    <div class="rm-hdr">
+      <div class="rmh-top">
+        <div class="rmh-av">🗺️</div>
+        <div>
+          <div class="rmh-n">Business Strategy & MBB Consulting Path</div>
+          <div class="rmh-s">Skipping 9 framework resources already consumed · Starting at live delivery practice</div>
+        </div>
+      </div>
+      <div class="rm-stats">
+        <div><div class="rms-v">16 wks</div><div class="rms-l">Total Path</div></div>
+        <div><div class="rms-v">24</div><div class="rms-l">Milestones</div></div>
+        <div><div class="rms-v">9</div><div class="rms-l">Skipped (done)</div></div>
+        <div><div class="rms-v">6</div><div class="rms-l">Platforms</div></div>
+      </div>
+    </div>
+
+    <div id="rm-container"></div>
+
+    <div class="ai-box" style="margin-top:6px">
+      <div class="ai-box-hdr"><div class="ai-box-dot"></div><div class="ai-box-lbl">HyperPath AI · Roadmap Rationale</div></div>
+      <div class="ai-box-text">
+        <strong>Why this exact sequence:</strong> Your data reveals a rare combination — you have framework theory (9 framework videos in one session) AND real case application experience (30+ competition submissions). Most guides start at theory. Yours starts at <strong>delivery speed</strong> because that's your documented gap ("mock AI interview for consulting" Google search). The healthcare domain phase (Phase 3) converts your existing Gemini work into portfolio-ready decks. Phase 5 targets the exact competitions you've already registered for on Unstop but haven't won yet. Phase 6 is the MBB application sprint using McKinsey Forward + Bain BrAINWARS — both of which you've been researching for months.
+      </div>
+    </div>
+
+    <div class="btn-row" style="margin-top:26px">
+      <button class="btn btn-solid" onclick="go('s-progress')">Start Learning →</button>
+      <button class="btn btn-ghost" onclick="go('s-comps')">🏆 Competition Tracker</button>
+      <button class="btn btn-ghost" onclick="go('s-profile')">← DNA Profile</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     S7: COMPETITION TRACKER
+══════════════════════════════════════════ -->
+<div class="screen" id="s-comps">
+  <div class="pg">
+    <div class="eyebrow">Competition Intelligence — From Your Unstop History</div>
+    <h2 class="h2">Your <em>Competition</em> Circuit</h2>
+    <p class="sub">Every competition below was found in your actual browser history. 403 Unstop visits parsed. Registrations confirmed from URL pattern analysis.</p>
+
+    <div class="comp-hdr">
+      <div class="comp-n">30+</div>
+      <div>
+        <div class="comp-title">Competitions Browsed, Registered, or Submitted</div>
+        <div class="comp-sub">IIT/IIM case comps · B-Plan pitches · Corporate challenges · Valuation cases · Policy hackathons</div>
+      </div>
+    </div>
+
+    <div id="comp-list-el"></div>
+
+    <div class="ai-box" style="margin-bottom:24px">
+      <div class="ai-box-hdr"><div class="ai-box-dot"></div><div class="ai-box-lbl">HyperPath AI · Competition Strategy</div></div>
+      <div class="ai-box-text">
+        <strong>Your browsing pattern reveals a strategy shift:</strong> Early sessions show broad browsing (all categories, all domains). Later sessions show focus on consulting/strategy/case competitions specifically. You registered for both Consultathon and CaseX (IIT BHU) in the same session — <strong>you're targeting the IIT E-Summit circuit.</strong> The roadmap channels this into a structured "3 wins in 1 semester" goal with a submission template, not random applications.
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-fire" onclick="go('s-roadmap')">View My Roadmap →</button>
+      <button class="btn btn-ghost" onclick="openLink('https://unstop.com/competitions?oppstatus=open&category=consulting-strategy&usertype=students')">Browse Live Competitions ↗</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     S8: YT INTEL
+══════════════════════════════════════════ -->
+<div class="screen" id="s-yt-intel">
+  <div class="pg-w">
+    <div class="eyebrow">YouTube Intelligence — 7,497 Videos Parsed</div>
+    <h2 class="h2">What your <em>watch history</em><br>actually reveals</h2>
+    <p class="sub">Not what you think you've been watching — what the data shows. 366 business-focused videos extracted and classified.</p>
+
+    <div class="yt-wrap">
+      <div class="h3" style="margin-bottom:18px">📊 Business Content Distribution</div>
+      <div id="yt-bars"></div>
+    </div>
+
+    <div class="h3" style="margin-bottom:12px">🎯 Top Business Channels</div>
+    <div class="ch-grid" id="yt-channels"></div>
+
+    <div style="background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:22px;margin-bottom:16px">
+      <div class="h3" style="margin-bottom:14px">🕐 Most Recent Business Videos (in order)</div>
+      <div id="yt-recent"></div>
+    </div>
+
+    <div style="background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:22px;margin-bottom:20px">
+      <div class="h3" style="margin-bottom:14px">🔍 Your Business-Related Google Searches</div>
+      <div id="yt-searches"></div>
+    </div>
+
+    <div class="ai-box" style="margin-bottom:24px">
+      <div class="ai-box-hdr"><div class="ai-box-dot"></div><div class="ai-box-lbl">HyperPath AI · Watch Pattern Analysis</div></div>
+      <div class="ai-box-text">
+        <strong>The binge pattern is your superpower:</strong> You binged caseinterview.com 5 consecutive videos in one session — exactly how a pre-competition sprint looks. You binged Analyst Academy's McKinsey slide series back-to-back. This isn't casual watching; <strong>it's structured, topic-complete absorption.</strong> Your gap: you binge <em>watching</em> but the next phase needs to be binge <em>practising</em>. The roadmap converts this habit into practice reps, not more content consumption.
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-fire" onclick="go('s-profile')">View DNA Profile →</button>
+      <button class="btn btn-ghost" onclick="go('s-roadmap')">View Roadmap</button>
+      <button class="btn btn-ghost" onclick="go('s-land')">← Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     S9: PROGRESS
+══════════════════════════════════════════ -->
+<div class="screen" id="s-progress">
+  <div class="pg">
+    <div class="eyebrow">Progress Tracker</div>
+    <h2 class="h2">Your <em>Journey</em></h2>
+    <p class="sub">Every milestone tracked. You're building proof of mastery — not just consuming content.</p>
+
+    <div class="prog-hero">
+      <div class="h3" style="margin-bottom:3px">Business Strategy & MBB Path</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:18px">Started 6 days ago · Last active: Today</div>
+      <div class="ring-wrap">
+        <div class="big-ring">
+          <svg width="96" height="96" viewBox="0 0 96 96" style="transform:rotate(-90deg)">
+            <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(255,248,235,.08)" stroke-width="7"/>
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#e85d0a" stroke-width="7"
+              stroke-dasharray="251" stroke-dashoffset="188" stroke-linecap="round"/>
+          </svg>
+          <div class="big-ring-lbl">25%</div>
+        </div>
+        <div class="pm-rows">
+          <div class="pm-row"><div class="pm-lbl">Framework mastery</div><div class="pm-track"><div class="pm-fill" style="width:92%;background:var(--fire)"></div></div><div class="pm-val">92%</div></div>
+          <div class="pm-row"><div class="pm-lbl">Case delivery</div><div class="pm-track"><div class="pm-fill" style="width:35%;background:var(--blue)"></div></div><div class="pm-val">35%</div></div>
+          <div class="pm-row"><div class="pm-lbl">Domain depth</div><div class="pm-track"><div class="pm-fill" style="width:68%;background:var(--green)"></div></div><div class="pm-val">68%</div></div>
+          <div class="pm-row"><div class="pm-lbl">Finance layer</div><div class="pm-track"><div class="pm-fill" style="width:22%;background:var(--gold)"></div></div><div class="pm-val">22%</div></div>
+          <div class="pm-row"><div class="pm-lbl">Comp wins</div><div class="pm-track"><div class="pm-fill" style="width:10%;background:var(--purple)"></div></div><div class="pm-val">10%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="streak-card">
+      <div class="streak-n">6</div>
+      <div>
+        <div class="h3" style="margin-bottom:3px">Day Streak 🔥</div>
+        <div style="font-size:12px;color:var(--muted2);margin-bottom:10px">Active every day this week. Don't break the chain.</div>
+        <div class="wd-row">
+          <div class="wd done">M</div><div class="wd done">T</div><div class="wd done">W</div>
+          <div class="wd done">T</div><div class="wd done">F</div><div class="wd done">S</div>
+          <div class="wd today">S</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="h3" style="margin-bottom:12px">Milestones</div>
+    <div id="prog-milestones"></div>
+
+    <div class="btn-row" style="margin-top:20px">
+      <button class="btn btn-solid" onclick="go('s-dashboard')">Go to Dashboard →</button>
+      <button class="btn btn-ghost" onclick="go('s-roadmap')">← Full Roadmap</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     S10: DASHBOARD
+══════════════════════════════════════════ -->
+<div class="screen" id="s-dashboard">
+  <div class="pg-w">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:14px">
+      <div>
+        <div class="eyebrow">Command Centre</div>
+        <h2 class="h2" style="font-size:clamp(22px,3.5vw,36px)">Good evening, <em>Vaibhav.</em></h2>
+        <p style="font-size:13px;color:var(--muted2);margin-top:6px">30+ competitions tracked · Business path active · Bain BrAINWARS prep live 🔥</p>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" style="padding:10px 16px;font-size:12px" onclick="go('s-progress')">Progress</button>
+        <button class="btn btn-fire" style="padding:10px 16px;font-size:12px" onclick="go('s-roadmap')">Roadmap →</button>
+      </div>
+    </div>
+
+    <div class="dash-layout">
+      <div>
+        <div class="dcard">
+          <div class="dcard-title">Today's Plan <span class="link" onclick="go('s-roadmap')">Full Roadmap →</span></div>
+          <div class="task t-done"><div class="t-chk">✓</div><div class="t-ico">✅</div><div class="t-body"><div class="t-name">Framework review (McKinsey/BCG/Porter/MECE/Minto)</div><div class="t-sub">9 videos in your history · All marked complete</div></div><div class="t-rt">Done</div></div>
+          <div class="task t-hot" onclick="openRM(0)"><div class="t-chk"></div><div class="t-ico">🎤</div><div class="t-body"><div class="t-name">caseinterview.com — Parts 4–8 (continue binge)</div><div class="t-sub">You started Part 7 · Complete the full series today</div></div><div class="t-rt">~2h<br>🔥 Active</div></div>
+          <div class="task" onclick="openRM(1)"><div class="t-chk"></div><div class="t-ico">📊</div><div class="t-body"><div class="t-name">Analyst Academy — Build your first McKinsey deck</div><div class="t-sub">Watched all 3 videos · Now reproduce it yourself</div></div><div class="t-rt">2h<br>🔒</div></div>
+          <div class="task" onclick="openRM(2)"><div class="t-chk"></div><div class="t-ico">🏥</div><div class="t-body"><div class="t-name">Convert Cipla Gemini session → competition deck</div><div class="t-sub">Add IBEF data + Analyst Academy slide format</div></div><div class="t-rt">2h<br>🔒</div></div>
+        </div>
+        <div class="ai-box">
+          <div class="ai-box-hdr"><div class="ai-box-dot"></div><div class="ai-box-lbl">HyperPath AI · Today's Insight</div></div>
+          <div class="ai-box-text"><strong>You searched "mock AI interview for consulting"</strong> — this tells HyperPath you're ready to move from passive learning to active pressure practice. <strong>Today's task is your first real test:</strong> open caseinterview.com Part 4, pause it, and attempt the case yourself before watching the solution. Your caseinterview.com binge of 5 consecutive videos is Phase 1 in action — continue that momentum today.</div>
+        </div>
+      </div>
+      <div>
+        <div class="dcard">
+          <div class="dcard-title">Path Progress</div>
+          <div style="display:flex;justify-content:center;margin:10px 0 14px">
+            <div style="position:relative;width:80px;height:80px">
+              <svg width="80" height="80" viewBox="0 0 80 80" style="transform:rotate(-90deg)">
+                <circle cx="40" cy="40" r="33" fill="none" stroke="rgba(255,248,235,.08)" stroke-width="6"/>
+                <circle cx="40" cy="40" r="33" fill="none" stroke="var(--fire)" stroke-width="6"
+                  stroke-dasharray="207" stroke-dashoffset="155" stroke-linecap="round"/>
+              </svg>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:17px">25%</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);text-align:center;margin-bottom:14px;font-family:'DM Mono',monospace">6 of 24 milestones complete</div>
+          <div id="dash-progress-items"></div>
+        </div>
+        <div class="dcard">
+          <div class="dcard-title">Skills Forming</div>
+          <div class="sk-row"><div class="sk-lbl">Frameworks</div><div class="sk-track"><div class="sk-fill" style="width:92%"></div></div><div class="sk-pct">92%</div></div>
+          <div class="sk-row"><div class="sk-lbl">Case delivery</div><div class="sk-track"><div class="sk-fill" style="width:35%"></div></div><div class="sk-pct">35%</div></div>
+          <div class="sk-row"><div class="sk-lbl">Slide decks</div><div class="sk-track"><div class="sk-fill" style="width:48%"></div></div><div class="sk-pct">48%</div></div>
+          <div class="sk-row"><div class="sk-lbl">Healthcare</div><div class="sk-track"><div class="sk-fill" style="width:68%"></div></div><div class="sk-pct">68%</div></div>
+          <div class="sk-row"><div class="sk-lbl">Finance</div><div class="sk-track"><div class="sk-fill" style="width:22%"></div></div><div class="sk-pct">22%</div></div>
+          <div class="sk-row"><div class="sk-lbl">Comps won</div><div class="sk-track"><div class="sk-fill" style="width:10%"></div></div><div class="sk-pct">10%</div></div>
+        </div>
+        <div class="dcard">
+          <div class="dcard-title">Strategy Leaderboard</div>
+          <div class="lb-row"><div class="lb-rank" style="color:var(--gold)">1</div><div class="lb-av">👩‍💼</div><div class="lb-name">Shreya M.</div><div class="lb-pts">940 pts</div></div>
+          <div class="lb-row me"><div class="lb-rank" style="color:var(--fire)">2</div><div class="lb-av">🧑‍💼</div><div class="lb-name">You (Vaibhav)</div><div class="lb-pts" style="color:var(--fire)">810 pts</div></div>
+          <div class="lb-row"><div class="lb-rank">3</div><div class="lb-av">🧑‍🎓</div><div class="lb-name">Arjun K.</div><div class="lb-pts">780 pts</div></div>
+          <div class="lb-row"><div class="lb-rank">4</div><div class="lb-av">👨‍💼</div><div class="lb-name">Priya S.</div><div class="lb-pts">720 pts</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row" style="margin-top:20px">
+      <button class="btn btn-ghost" onclick="go('s-comps')">🏆 Competitions</button>
+      <button class="btn btn-ghost" onclick="go('s-progress')">📊 Progress</button>
+      <button class="btn btn-ghost" onclick="go('s-profile')">🧬 DNA Profile</button>
+      <button class="btn btn-ghost" onclick="go('s-yt-intel')">📺 YT Analysis</button>
+      <button class="btn btn-ghost" onclick="go('s-land')">← Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     RESOURCE MODAL
+══════════════════════════════════════════ -->
+<div class="overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="sheet" id="modal-sheet">
+    <div class="sheet-close" onclick="closeModalDirect()">✕</div>
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" id="m-title"></div>
+    <div class="sheet-why" id="m-why"></div>
+    <div class="sheet-div"></div>
+    <div class="sheet-h" id="m-resources-label">Resources — click to open</div>
+    <div class="res-links" id="m-links"></div>
+    <div class="sheet-meta" id="m-meta"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  HYPERPATH v3 — FULL COGNITIVE ENGINE
+//  All data extracted from Vaibhav Bansal's real datasets
+// ═══════════════════════════════════════════════════════════
+
+// ── ANSWERS STATE ──
+const ANS = { goal:'mbb', tl:'3m', gap:'delivery', bain:'applying', iim:'yes', next:'case' };
+
+// ── SCREEN MAP ──
+const SMAP = { 's-land':0,'s-connect':1,'s-test':2,'s-analyze':3,'s-profile':4,'s-roadmap':5,'s-comps':5,'s-yt-intel':5,'s-progress':6,'s-dashboard':7 };
+
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => { s.style.display='none'; s.classList.remove('active'); });
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display='flex'; el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  const step = SMAP[id]||0;
+  const nav = document.getElementById('tnav');
+  nav.style.display = step>0 ? 'flex' : 'none';
+  document.querySelectorAll('.ns').forEach((n,i) => {
+    n.className='ns';
+    if(i<step-1) n.classList.add('done');
+    else if(i===step-1) n.classList.add('cur');
+  });
+  // Lazy renders
+  if(id==='s-roadmap') renderRoadmap();
+  if(id==='s-yt-intel') renderYTIntel();
+  if(id==='s-comps') renderComps();
+  if(id==='s-progress') renderProgress();
+  if(id==='s-dashboard') renderDash();
+  if(id==='s-profile') fetchAIProfile();
+}
+
+function openLink(url) { window.open(url,'_blank','noopener,noreferrer'); }
+
+// ── TEST LOGIC ──
+function pick(el, q) {
+  el.closest('.q-blk').querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  if(el.dataset.k) ANS[el.dataset.k] = el.dataset.v;
+  document.getElementById('pf').style.width = Math.min(100,(q/6*100))+'%';
+}
+
+// ── ANALYZING ──
+function startAnalyze() {
+  go('s-analyze');
+  const logs = [1,2,3,4,5,6,7,8];
+  logs.forEach((n,i) => {
+    const el = document.getElementById('lg'+n);
+    if(!el) return;
+    setTimeout(() => {
+      document.querySelectorAll('.lg.show-active').forEach(l=>l.classList.replace('show-active','show-done'));
+      el.classList.add('show-active');
+    }, i*700);
+  });
+  setTimeout(()=>go('s-profile'), logs.length*700+800);
+}
+
+// ── CLAUDE API — AI PROFILE SYNTHESIS ──
+async function fetchAIProfile() {
+  const box = document.getElementById('ai-profile-text');
+  if (!box || box.dataset.loaded) return;
+  box.dataset.loaded = 'true';
+  const profile = {
+    ytVideos: 7497, bizVideos: 366, caseinterviewBinge: '5 consecutive',
+    geminiProjects: ['Cipla Nicotex STP', 'MedCare vertical moat', 'PrepBaba 90-day plan', 'VAANIK', 'Seven Seers'],
+    unstopVisits: 403, compsRegistered: 30, gensparkSessions: 526,
+    claudeVisits: 98, figmaVisits: 158, figmaProject: 'MedCare',
+    googleSearches: ['Bain BrAINWARS 2026', 'McKinsey case studies PDF', '180 degrees consulting SRCC', 'mock AI interview for consulting', 'roadmap management consulting', 'IIM Nagpur finalist'],
+    keySources: ['caseinterview.com', 'EPM', 'Analyst Academy', 'Hrithik Mehlawat', 'Firm Learning'],
+    calibration: ANS
+  };
+  const prompt = `You are the AI core of HyperPath, a business learning intelligence engine. You are generating a deep, hyperpersonalised profile synthesis for a user.
+
+USER DATA:
+- 7,497 YouTube videos parsed, 366 business/strategy identified
+- caseinterview.com binged: 5 consecutive videos in one session
+- Gemini AI projects: Cipla Health (Nicotex app STP strategy), MedCare (vertical moat + closed-loop revenue analysis), PrepBaba (90-day 10K-user plan with CAC metrics), VAANIK Startup, Seven Seers
+- Unstop: 403 visits, 30+ competitions registered including Case in Point'26, ThinCovation MDI, StrategiQ, Strategy Storm, ValQuest IIM Lucknow, Consultathon IIT BHU, CaseCrux IIT, Pitchers IIM Rohtak
+- Genspark: 526 sessions (more than ChatGPT 178)
+- Figma: 158 visits, MedCare product prototype built
+- Chrome searches: "Bain BrAINWARS 2026", "McKinsey case studies PDF", "180 degrees consulting SRCC case comp", "mock AI interview for consulting", "roadmap management consulting", "vaibhav bansal linkedin iim nagpur finalist"
+- 180 Degrees Consulting SRCC: 12+ visits to case library and competition guide
+- Claude.ai: 98 visits
+- Calibration answers: Goal=${ANS.goal}, Timeline=${ANS.tl}, Gap=${ANS.gap}, Bain=${ANS.bain}, IIM_Nagpur=${ANS.iim}
+
+Write a 3–4 sentence strategic diagnosis that is:
+1. HYPER-SPECIFIC — reference actual data points, actual project names, actual searches
+2. INSIGHTFUL — tell them something they might not have articulated themselves
+3. ACTIONABLE — end with one razor-sharp next move
+
+Do NOT use bullet points. Do NOT be generic. Write in flowing prose. Bold 2–3 key phrases using **text**.`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await resp.json();
+    let text = data.content?.[0]?.text || '';
+    // Convert **bold** to <strong>
+    text = text.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+    box.innerHTML = text;
+  } catch(e) {
+    box.innerHTML = `<strong>Your data tells a clear story:</strong> You've assembled the theory (9 framework binge), the AI workflow (Genspark-first, 526 sessions), the domain depth (Cipla STP + MedCare vertical moat in Figma), and the competition hunger (30+ Unstop registrations including Bain BrAINWARS 2026). The gap isn't knowledge — it's <strong>converting registered competitions into actual wins.</strong> Your razor-sharp next move: pick the single upcoming competition in your Unstop history closest to deadline, apply the Analyst Academy slide format to your Cipla Gemini work, and submit it as your first competition deck.`;
+  }
+}
+
+// ══════════════════════════════════════════
+//  ROADMAP DATA (all real URLs from dataset)
+// ══════════════════════════════════════════
+const ROADMAP = [
+  {
+    phase:'Phase 0 — Foundation (All Done ✓)',
+    items:[
+      { icon:'✅', status:'done', title:'Framework Theory — McKinsey, BCG, Porter, MECE, Minto',
+        sub:'9 consecutive framework videos watched in one session. Theory base is complete.',
+        why:'Your caseinterview.com binge confirms conversion from theory to application is in progress. No review needed.',
+        dur:'Done',
+        links:[
+          { icon:'🎥', name:'Top 4 McKinsey Frameworks — Communication Coach', url:'https://www.youtube.com/watch?v=Qe00Ldpq8wA', desc:'✓ Already watched — Foundation complete' },
+          { icon:'🎥', name:"Talk Like a Strategy Consultant — StrategyU", url:'https://www.youtube.com/watch?v=VtUpRjAqdKM', desc:'✓ Already watched' },
+          { icon:'🎥', name:'Minto Pyramid Principle — EPM', url:'https://www.youtube.com/watch?v=j4Y3TdVVBCA', desc:'✓ Already watched' },
+          { icon:'🎥', name:"Porter's 5 Forces — HBR", url:'https://www.youtube.com/watch?v=mYF2_FBCvXw', desc:'✓ Already watched' },
+          { icon:'🎥', name:'MECE Framework — My Consulting Offer', url:'https://www.youtube.com/watch?v=bhOhCpBYpDk', desc:'✓ Already watched' },
+        ]
+      },
+    ]
+  },
+  {
+    phase:'Phase 1 — Live Case Delivery (Your Documented Gap)',
+    items:[
+      { icon:'🎤', status:'active', title:'caseinterview.com — Full 12-Part Series (Parts 4–12 remaining)',
+        sub:'You binged Parts 1, 7, 4, 2, 3 already. Complete the full workshop. No shortcuts.',
+        why:"Your Chrome history shows 'mock AI interview for consulting' search — you know you need delivery practice. caseinterview.com is the gold standard. You already started. Finish it.",
+        dur:'~5h total',
+        links:[
+          { icon:'🎥', name:'Case Interview Workshop Intro (Part 1)', url:'https://www.youtube.com/watch?v=fBwUxnTpTBo', desc:'In your history · The foundation' },
+          { icon:'🎥', name:'Business Situation Framework (Part 7)', url:'https://www.youtube.com/watch?v=lhQvl0wo6Fs', desc:'In your history · Most important framework' },
+          { icon:'🎥', name:'Profit Framework for Case Analysis (Part 4)', url:'https://www.youtube.com/watch?v=jtvyRnmkDqo', desc:'In your history · Profitability cases' },
+          { icon:'🎥', name:'How to Structure Thoughts Like a Consultant (MECE)', url:'https://www.youtube.com/watch?v=GBBUmRGJk0g', desc:'In your history · Start here for delivery structure' },
+          { icon:'🎥', name:'How to Practice Case Interviews', url:'https://www.youtube.com/watch?v=huqJ4wZ-asY', desc:'In your history · Practice methodology' },
+          { icon:'🌐', name:'caseinterview.com — Full Resource Library', url:'https://www.caseinterview.com/', desc:'Free · Complete 12-part series available here' },
+        ]
+      },
+      { icon:'📊', status:'active', title:'Management Consulted — Profitability + BCG Live Walkthroughs',
+        sub:'Profitability = 40% of first-round cases. Watch how it\'s actually delivered.',
+        why:"You've watched the profitability theory (EPM Profitability Index). Management Consulted bridges theory to live delivery — you see a real case being solved in real time.",
+        dur:'1.5h',
+        links:[
+          { icon:'🎥', name:'The Profitability Framework — Management Consulted', url:'https://www.youtube.com/watch?v=fN1IEfPd60c', desc:'In your history · Live delivery walkthrough' },
+          { icon:'🎥', name:'BCG Case Interview Example — CookieCo', url:'https://www.youtube.com/watch?v=M0-c7rXzhwk', desc:'In your history · BCG-style case solved live' },
+          { icon:'🎥', name:'Accenture Case Study: Chewing Gum Market', url:'https://www.youtube.com/watch?v=CAo26IRZXj0', desc:'In your history · Alternative consulting format' },
+        ]
+      },
+      { icon:'🎙️', status:'locked', title:'PrepLounge + AI Mock Interviews — 5 Live Partner Sessions',
+        sub:'Solo watching ends here. Book 5 partner sessions. Attempt before watching solutions.',
+        why:"Your Google search 'mock AI interview for consulting' signals you're ready to switch from watching to doing. PrepLounge is free, matches you with peers globally, and gives you feedback data.",
+        dur:'5+ hours/week',
+        links:[
+          { icon:'🌐', name:'PrepLounge — Free Case Partner Platform', url:'https://www.preplounge.com/', desc:'Free · Global case partner network · Start here' },
+          { icon:'🌐', name:'RocketBlocks — Case Interview Drills', url:'https://www.rocketblocks.me/', desc:'Paid · Structured case drills with feedback' },
+          { icon:'🎥', name:'M&A Case: Airline Acquisition (Bain + McKinsey)', url:'https://www.youtube.com/watch?v=mlIuLzBww2o', desc:'Advanced case format · Watch before attempting M&A cases' },
+          { icon:'🎥', name:'Mock Case Interview at Bain (Official)', url:'https://www.youtube.com/watch?v=ZqouKTczJSc', desc:'Official Bain · See actual interview expectations' },
+        ]
+      },
+    ]
+  },
+  {
+    phase:'Phase 2 — Slide Craft (You Watch, Now Build)',
+    items:[
+      { icon:'📐', status:'locked', title:"Analyst Academy — Reproduce All 3 McKinsey Slide Videos Yourself",
+        sub:'Stop watching. Open Google Slides. Build the actual deck from memory.',
+        why:"You've watched all 3 Analyst Academy McKinsey slide videos. The next step isn't more watching — it's reproduction. Build the 5 consulting slide types from scratch without looking at the tutorial.",
+        dur:'2h watch + 3h build',
+        links:[
+          { icon:'🎥', name:'The 5 Most Popular Consulting Slides', url:'https://www.youtube.com/watch?v=RfEOrbbMwMU', desc:'In your history · Re-watch as a builder' },
+          { icon:'🎥', name:'How to Build Slides Like McKinsey', url:'https://www.youtube.com/watch?v=mSwYi4ew7BY', desc:'In your history · The template' },
+          { icon:'🎥', name:'Build Your Own McKinsey Presentation (Full Tutorial)', url:'https://www.youtube.com/watch?v=cAORw6XkjS4', desc:'In your history · Full build walkthrough' },
+          { icon:'🎥', name:'Why Consultants Are Obsessed with Aligning Things', url:'https://www.youtube.com/watch?v=RpCCzTQB9Eg', desc:'Design principle · Alignment explained' },
+          { icon:'🎥', name:'Same Data, Different Charts — Analyst Academy', url:'https://www.youtube.com/watch?v=NtWEdJe_yyg', desc:'Chart selection for consulting decks' },
+        ]
+      },
+      { icon:'🗣️', status:'locked', title:'Firm Learning — Storylines + SCQA + Presentation Narrative',
+        sub:'The trilogy: hypothesis → storyline → presentation. The intellectual thread that connects frameworks to slides.',
+        why:"Your Firm Learning hypothesis-solving video is in your history. Complete the trilogy: their presentation and storyline videos convert frameworks into the narrative structure that wins competitions.",
+        dur:'1.5h',
+        links:[
+          { icon:'🎥', name:'HOW TO SOLVE PROBLEMS — Consulting Hypothesis Method', url:'https://www.youtube.com/watch?v=TBvJzXxRuxs', desc:'In your history · Foundation' },
+          { icon:'🎥', name:'How Consulting Firms Create Presentations', url:'https://www.youtube.com/watch?v=PgOD1j2DhNg', desc:'The structure layer — follow with storylines' },
+          { icon:'🎥', name:'How to Create Storylines for Business Presentations', url:'https://www.youtube.com/watch?v=4gGkhZeDrzE', desc:'SCQA structure · Makes your deck memorable' },
+          { icon:'🎥', name:'Pyramid Principle in Consulting — firmsconsulting', url:'https://www.youtube.com/watch?v=NE3LTBQohRQ', desc:'In your history · Advanced structuring' },
+        ]
+      },
+      { icon:'🔍', status:'locked', title:'180 Degrees Consulting SRCC — Case Library Deep-Dive',
+        sub:'You researched their case library 12+ times. Now actually use it.',
+        why:"You Googled '180 degrees consulting decks srcc case comp' 3 separate times and visited their case library repeatedly. You've been studying winning decks without officially applying. The roadmap treats 180DC as both a learning resource AND a future application target.",
+        dur:'4h study',
+        links:[
+          { icon:'🌐', name:'180DC SRCC — Case Competition Guide 2.0', url:'https://180dcsrcc.in/case-competition-guide-2-0/', desc:'In your Chrome history · Your most-researched resource' },
+          { icon:'🌐', name:'180DC SRCC — Case Library & Resources', url:'https://180dcsrcc.in/case-library-resources/', desc:'In your history · Study winning decks here' },
+          { icon:'🌐', name:'180DC Global — Impact Reports', url:'https://180dc.org/impact-reports', desc:'In your history · See what winning social impact consulting looks like' },
+          { icon:'🌐', name:'180DC SRCC — Apply to Join', url:'https://180dcsrcc.in/', desc:'Application portal · Your researched target' },
+        ]
+      },
+    ]
+  },
+  {
+    phase:'Phase 3 — Healthcare Domain Specialisation (Your Moat)',
+    items:[
+      { icon:'🏥', status:'locked', title:"Convert Cipla + MedCare Gemini Work Into Competition Decks",
+        sub:'You have 3 real strategy analyses. Apply Analyst Academy format → instant portfolio.',
+        why:"Your Cipla Gemini session analysed Nicotex STP strategy. Your MedCare session built a vertical moat and closed-loop revenue analysis. You also designed MedCare in Figma (158 visits). This is a complete product strategy case. Convert it into a 10-slide consulting deck — your strongest competition submission.",
+        dur:'4h',
+        links:[
+          { icon:'📊', name:'IBEF Healthcare India Sector Report', url:'https://www.ibef.org/industry/healthcare-india', desc:'Free · Add real market data to Cipla/MedCare cases' },
+          { icon:'📊', name:'NITI Aayog Health Insurance Report', url:'https://niti.gov.in/sites/default/files/2021-10/HealthInsurance_report.pdf', desc:'Free · Government data for healthcare strategy' },
+          { icon:'🎥', name:'Take a Seat in the Harvard MBA Case Classroom', url:'https://www.youtube.com/watch?v=p7iwXvBnbIE', desc:'In your history · Case method in action' },
+          { icon:'🌐', name:'Cipla Annual Report 2024 (Actual Data)', url:'https://www.cipla.com/investor-relations/annual-reports', desc:'Official · Use real numbers in your Cipla case deck' },
+        ]
+      },
+      { icon:'📋', status:'locked', title:'HBR Healthcare Cases — 3 Core India Health Reads',
+        sub:'Narayana Health · Apollo · Cipla generics strategy · Your domain deepens here.',
+        why:"Your domain edge is healthcare. Reading 3 HBR India healthcare cases gives you data, frameworks, and vocabulary that no generalist at your level has. Your Cipla work connects directly to the Cipla generics HBR case.",
+        dur:'3h',
+        links:[
+          { icon:'📰', name:'HBR — Healthcare India Strategy Cases', url:'https://hbr.org/search?term=healthcare+india+strategy', desc:'Paid $8–15/case · Worth it for domain depth' },
+          { icon:'🌐', name:'Harvard Business School — India Healthcare Cases', url:'https://www.hbs.edu/faculty/Pages/search.aspx?term=india+healthcare', desc:'Academic · India-specific healthcare strategy' },
+          { icon:'🎥', name:'Wharton — Private Equity Due Diligence', url:'https://www.youtube.com/watch?v=thyxopgzG4k', desc:'In your history · PE lens for healthcare investment' },
+        ]
+      },
+    ]
+  },
+  {
+    phase:'Phase 4 — Finance Layer (Curiosity → Structured Knowledge)',
+    items:[
+      { icon:'💰', status:'locked', title:'CFI Financial Modelling + Wharton PE Series',
+        sub:'DCF · M&A · Due Diligence · Investment Banking — convert curiosity to structured knowledge.',
+        why:"You've watched Wharton PE (2 videos), Corporate Finance Institute, Investment Banking Explained, Hedge Funds/PE/VC — all in your history. You're clearly exploring this layer. ValQuest IIM Lucknow (valuation case competition you browsed) requires this. The roadmap formalises it now.",
+        dur:'6h',
+        links:[
+          { icon:'🎓', name:'CFI Free Financial Modelling Course', url:'https://corporatefinanceinstitute.com/resources/financial-modeling/', desc:'Free · Industry standard · Completion certificate' },
+          { icon:'🎥', name:'Growth Through Acquisitions — Wharton', url:'https://www.youtube.com/watch?v=p0Bx6UtherQ', desc:'In your history · M&A strategy' },
+          { icon:'🎥', name:'Private Equity Consolidation + Due Diligence — Wharton', url:'https://www.youtube.com/watch?v=thyxopgzG4k', desc:'In your history · PE structure' },
+          { icon:'🎥', name:'Corporate Finance & M&A — CFI', url:'https://www.youtube.com/watch?v=S29oX348J7o', desc:'In your history · Finance fundamentals' },
+          { icon:'🎥', name:'Hedge Funds, PE & VC Beginners Guide', url:'https://www.youtube.com/watch?v=gjcR43mp1_Q', desc:'In your history · Asset class overview' },
+          { icon:'🌐', name:'ValQuest IIM Lucknow — Valuation Case Competition', url:'https://unstop.com/competitions/valquest-valuation-case-competition-iim-lucknow-1611983', desc:'In your history · Apply here when ready' },
+        ]
+      },
+    ]
+  },
+  {
+    phase:'Phase 5 — Competition Wins (Convert Registrations to Results)',
+    items:[
+      { icon:'🏆', status:'locked', title:'Competition Win Blueprint — From Your Unstop History',
+        sub:'You have 5 winning-deck resources already watched. Now build a submission template.',
+        why:"You've registered for 30+ competitions but your search 'mock AI interview for consulting' and the roadmap research suggest you haven't won yet. The blueprint: Shlok Bhagwat methodology + IIM Calcutta format + Analyst Academy slides = your repeatable submission template.",
+        dur:'2h study + submit',
+        links:[
+          { icon:'🎥', name:'How to Win Case Study Competitions — Shlok Bhagwat', url:'https://www.youtube.com/watch?v=D2G4WZ7agAg', desc:'In your history · Best Indian competition guide' },
+          { icon:'🎥', name:'How Top MBA Students Win Case Competitions', url:'https://www.youtube.com/watch?v=sxTRraCP7s8', desc:'In your history · Advanced strategy' },
+          { icon:'🎥', name:'IIM Calcutta: How to Crack Case Competitions', url:'https://www.youtube.com/watch?v=xlII6mKnvdM', desc:'In your history · IIM format' },
+          { icon:'🎥', name:'HUL FinAce Season 8 — Winning Presentations', url:'https://www.youtube.com/watch?v=SKnm0IIRWuY', desc:'In your history · Study the actual winning deck' },
+          { icon:'🎥', name:'Win with BCG — Competition Event (CBS)', url:'https://www.youtube.com/watch?v=TDe6_xJF1TA', desc:'In your history · BCG judges expect this' },
+        ]
+      },
+      { icon:'🎯', status:'locked', title:"Your 3 Target Competitions From Unstop History",
+        sub:'Case in Point\'26 · ENS Sustainability IIM Bangalore · Consultathon IIT BHU',
+        why:"These 3 are already in your registered competition history. You've submitted or registered. The roadmap targets these with your healthcare domain deck (Phase 3 output) as the core submission asset.",
+        dur:'2 wks/comp',
+        links:[
+          { icon:'🌐', name:"Case in Point'26 — Management Consulting (Unstop)", url:'https://unstop.com/competitions/case-in-point26-management-consulting-case-study-competiti', desc:'In your Unstop history · Already registered' },
+          { icon:'🌐', name:'Consultathon — IIT BHU (Unstop)', url:'https://unstop.com/competitions/consultathon-iit-bhu-1630316', desc:'In your history · Case consulting format' },
+          { icon:'🌐', name:'ENS Sustainability Case Comp — IIM Bangalore', url:'https://unstop.com/competitions/ens-sustainability-case-competition-2026-iim-bangalore-164', desc:'In your history · Healthcare/sustainability angle for your MedCare case' },
+          { icon:'🌐', name:'Dare2Compete — All Active India Competitions', url:'https://dare2compete.com/', desc:'Free · Full calendar of upcoming competitions' },
+        ]
+      },
+    ]
+  },
+  {
+    phase:'Phase 6 — MBB Application Sprint',
+    items:[
+      { icon:'🏢', status:'locked', title:"McKinsey Forward Programme + Bain BrAINWARS 2026",
+        sub:'You searched both. You watched 5 McKinsey Forward videos. Apply now — not later.',
+        why:"5 different creators in your YouTube history covered McKinsey Forward. You Googled 'Bain BrAINWARS 2026 by Bain & Co' and 'Bain and company internship' in the same session. You've been researching both for months. The only remaining step is submitting the applications.",
+        dur:'Apply now',
+        links:[
+          { icon:'🌐', name:'McKinsey Forward Programme — Official Apply', url:'https://www.mckinsey.com/forward/overview', desc:'Free 10-week programme · Leads to interview pathway' },
+          { icon:'🌐', name:'Bain BrAINWARS 2026 — Official Competition', url:'https://www.bain.com/careers/brainwars/', desc:'You Googled this · Apply here directly' },
+          { icon:'🎥', name:'McKinsey Forward — How to Apply (Arsh Goyal)', url:'https://www.youtube.com/watch?v=dpHv4kUhB0s', desc:'Best application guide in your history' },
+          { icon:'🎥', name:'Step by Step Guide to Join Consulting (Ex Bain)', url:'https://www.youtube.com/watch?v=3qjUL6yagRw', desc:'Hrithik Mehlawat · In your history · India-specific path' },
+          { icon:'🎥', name:'McKinsey Case Solved Live — CraftingCases', url:'https://www.youtube.com/watch?v=orsNS3YG_KE', desc:'Ex-McKinsey consultant · Final prep before interviews' },
+        ]
+      },
+      { icon:'🤝', status:'locked', title:'LinkedIn + 180DC + Network Sprint',
+        sub:'You Googled your own LinkedIn 4 times. It\'s time to build the profile that matches your data.',
+        why:"You Googled 'vaibhav bansal linkedin iim nagpur finalist' — you have competition credentials to showcase. The roadmap builds a LinkedIn profile that connects your Gemini case work, Figma MedCare design, and competition track record into a clear narrative.",
+        dur:'Ongoing',
+        links:[
+          { icon:'🎥', name:"You DON'T Need IIT/IIM for Consulting — Shatakshi", url:'https://www.youtube.com/watch?v=yjhCZM7cHB4', desc:'In your history · Mindset + path for non-IIT profiles' },
+          { icon:'🎥', name:'LinkedIn Masterclass for Beginners', url:'https://www.youtube.com/watch?v=pA3KodCLP2o', desc:'In your history · Profile optimisation' },
+          { icon:'🎥', name:'How to Become a Business Analyst — Consulting India', url:'https://www.youtube.com/watch?v=vqappI4EQAM', desc:'Hrithik Mehlawat · In your history · India roadmap' },
+          { icon:'🌐', name:'180DC SRCC — Open Applications', url:'https://180dcsrcc.in/', desc:'You researched this 12+ times · Apply to join' },
+        ]
+      },
+    ]
+  },
+];
+
+// ── COMPETITION DATA (from Unstop history) ──
+const COMPS = [
+  { name:"Case in Point'26 — Management Consulting Case Study", org:'IIT', status:'registered', icon:'📋', url:'https://unstop.com/competitions/case-in-point26-management-consulting-case-study-competiti', detail:'Management Consulting · You browsed and registered this' },
+  { name:'ThinCovation 2025 — Case Competition', org:'MDI Gurgaon', status:'submitted', icon:'🎯', url:'https://unstop.com/competitions/thincovation-2025-mdi-1591074', detail:'Results page visited · You submitted here' },
+  { name:'Ground Reality — Business Plan Competition', org:'BITS Launchpad', status:'registered', icon:'💡', url:'https://unstop.com/competitions/ground-reality-business-plan-competition-launchpad-26-bits', detail:'B-Plan · Multiple visit + edit sessions detected' },
+  { name:'Consultathon 2026', org:'IIT BHU', status:'registered', icon:'🏛️', url:'https://unstop.com/competitions/consultathon-iit-bhu-1630316', detail:'Consulting case format · IIT BHU E-Summit circuit' },
+  { name:'Green Ideathon — Innovate for Impact', org:'IIT BHU', status:'submitted', icon:'🌱', url:'https://unstop.com/competitions/green-ideathon-innovate-for-impact-iit-bhu-1633822', detail:'Submission URL detected in browser history' },
+  { name:'StrategiQ — The Ultimate Business Challenge', org:'Open', status:'registered', icon:'⚔️', url:'https://unstop.com/competitions/strategiqthe-ultimate-business-challenge--1608490', detail:'Register + edit session detected' },
+  { name:"Strategy Storm's Case Competition 2026", org:'Open', status:'registered', icon:'🌪️', url:'https://unstop.com/competitions/strategy-storms-case-competition-2026-strategy-storm-2026-', detail:'Register + edit sessions both detected' },
+  { name:'CaseCrux — Case Study Challenge', org:'IIT', status:'registered', icon:'🧩', url:'https://unstop.com/competitions/casecrux-the-case-study-challenge-indian-institute-of-tech', detail:'Registration session detected' },
+  { name:'Pitchers 4.0 — B-Plan', org:'IIT Jammu Udyamitsav', status:'browsed', icon:'🎤', url:'https://unstop.com/competitions/pitchers-40-udyamitsav26-iit-jammu-1611519', detail:'Browsed + registration page visited' },
+  { name:'ValQuest — Valuation Case Competition', org:'IIM Lucknow', status:'browsed', icon:'💰', url:'https://unstop.com/competitions/valquest-valuation-case-competition-iim-lucknow-1611983', detail:'Finance comp · Matches your Wharton PE interest' },
+  { name:'ENS Sustainability Case Competition', org:'IIM Bangalore', status:'browsed', icon:'🌏', url:'https://unstop.com/competitions/ens-sustainability-case-competition-2026-iim-bangalore-164', detail:'Your MedCare case fits this perfectly' },
+  { name:'Industrial AI Summit — Case Competition', org:'IIM Mumbai', status:'browsed', icon:'🤖', url:'https://unstop.com/competitions/industrial-ai-summit-2026-student-case-competition-iim-mum', detail:'AI + business intersection — your AI workflow advantage applies' },
+  { name:'H&S Brand Champion Challenge', org:'Procter & Gamble', status:'browsed', icon:'🧴', url:'https://unstop.com/competitions/crp-hs-brand-champion-challenge-procter-gamble-1641157', desc:'Corporate challenge · P&G' },
+  { name:'Grow Beyond Better 2026', org:'Tata Consumer Products', status:'browsed', icon:'☕', url:'https://unstop.com/competitions/crp-grow-beyond-better-2026-tata-consumer-products-1635704', detail:'TATA corporate challenge · India consumer strategy' },
+  { name:'Pitchers — National Level BPlan', org:'IIM Rohtak', status:'browsed', icon:'🚀', url:'https://unstop.com/competitions/pitchers-national-level-bplan-competition-iim-rohtak-15905', detail:'Results page also visited — tracked actively' },
+  { name:'Brew the Strategy — Business Challenge', org:'IIM Lucknow', status:'browsed', icon:'☕', url:'https://unstop.com/competitions/brew-the-strategy-business-strategy-challenge-by-iim-luckn', detail:'IIM Lucknow · Strategy comp' },
+];
+
+function renderComps() {
+  const el = document.getElementById('comp-list-el');
+  if(!el||el.dataset.r) return;
+  el.dataset.r='1';
+  const statusOrder = ['submitted','registered','browsed'];
+  const sorted = [...COMPS].sort((a,b)=>statusOrder.indexOf(a.status)-statusOrder.indexOf(b.status));
+  el.innerHTML = sorted.map(c => {
+    const cls = c.status==='submitted'?'fin':c.status==='registered'?'reg':'';
+    const badge = c.status==='submitted'?`<span class="badge b-done">Submitted ✓</span>`:
+                  c.status==='registered'?`<span class="badge b-active">Registered</span>`:
+                  `<span class="badge b-locked">Browsed</span>`;
+    return `<div class="comp-item ${cls}" onclick="openLink('${c.url}')">
+      <div class="ci2-ico">${c.icon}</div>
+      <div class="ci2-body">
+        <div class="ci2-name">${c.name}</div>
+        <div class="ci2-detail">${c.org} · ${c.detail||'In your Unstop history'}</div>
+      </div>
+      <div class="ci2-rt">${badge}</div>
+    </div>`;
+  }).join('');
+  el.innerHTML += `<div class="comp-item" onclick="openLink('https://unstop.com/competitions?oppstatus=open&category=consulting-strategy&usertype=students')" style="border-style:dashed">
+    <div class="ci2-ico">➕</div>
+    <div class="ci2-body"><div class="ci2-name">Browse More Open Competitions</div><div class="ci2-detail">Open Unstop · Filter: Consulting & Strategy · Students</div></div>
+    <div class="ci2-rt"><span class="badge b-active">Open ↗</span></div>
+  </div>`;
+}
+
+// ── YT INTEL DATA ──
+const YT_TOPICS = [
+  { lbl:'Consulting / Case Interviews', n:79, color:'#e85d0a' },
+  { lbl:'Career / Placement Strategy', n:169, color:'#ff7a33' },
+  { lbl:'Slide Decks / Presentations', n:50, color:'#5badff' },
+  { lbl:'Strategy Frameworks', n:21, color:'#f5c842' },
+  { lbl:'Case Competitions', n:27, color:'#2dd982' },
+  { lbl:'Corporate Finance / PE / VC', n:24, color:'#b07ef8' },
+  { lbl:'Startup / Entrepreneurship', n:24, color:'#ff4f6b' },
+  { lbl:'Product Management', n:22, color:'#64d8cb' },
+  { lbl:'Operations Research (OR/Maths)', n:46, color:'#a8a29e' },
+  { lbl:'Communication / Networking', n:21, color:'#94a3b8' },
+];
+
+const YT_CHANNELS = [
+  { name:'caseinterview.com', n:15, cat:'Case Prep', url:'https://www.youtube.com/c/caseinterview' },
+  { name:'EPM', n:18, cat:'Business Frameworks', url:'https://www.youtube.com/@EPM' },
+  { name:'Analyst Academy', n:9, cat:'McKinsey Slides', url:'https://www.youtube.com/c/AnalystAcademy' },
+  { name:'Hrithik Mehlawat', n:12, cat:'Consulting Career India', url:'https://www.youtube.com/@HrithikMehlawat' },
+  { name:'Firm Learning', n:3, cat:'Consulting Execution', url:'https://www.youtube.com/@FirmLearning' },
+  { name:'Management Consulted', n:3, cat:'Case Walkthroughs', url:'https://www.youtube.com/@ManagementConsulted' },
+  { name:'Harvard Business Review', n:3, cat:'Strategy Theory', url:'https://www.youtube.com/HarvardBusinessReview' },
+  { name:'Wharton School', n:2, cat:'Finance / M&A', url:'https://www.youtube.com/user/WhartonSchool' },
+];
+
+const YT_RECENT = [
+  { t:'Top 4 McKinsey Consulting Frameworks Explained (mini-class)', c:'Communication Coach Alexander Lyon', url:'https://www.youtube.com/watch?v=Qe00Ldpq8wA', ico:'📊' },
+  { t:"Talk Like a Strategy Consultant (McKinsey's Culture)", c:'StrategyU', url:'https://www.youtube.com/watch?v=VtUpRjAqdKM', ico:'📊' },
+  { t:'The Minto Pyramid Principle Explained with Examples', c:'EPM', url:'https://www.youtube.com/watch?v=j4Y3TdVVBCA', ico:'📊' },
+  { t:'BCG Matrix (With Real World Examples)', c:'Business School 101', url:'https://www.youtube.com/watch?v=yulWLHRdNVQ', ico:'📊' },
+  { t:'How to Structure Thoughts Like a Consultant (MECE Principles)', c:'caseinterview', url:'https://www.youtube.com/watch?v=GBBUmRGJk0g', ico:'🎤' },
+  { t:"Porter's 5 Forces EXPLAINED", c:'Business To You', url:'https://www.youtube.com/watch?v=Dfp23xSqpdk', ico:'📊' },
+  { t:'HOW TO SOLVE PROBLEMS — consulting hypothesis-based problem solving', c:'Firm Learning', url:'https://www.youtube.com/watch?v=TBvJzXxRuxs', ico:'🔍' },
+  { t:'What Is MECE Framework?', c:'My Consulting Offer', url:'https://www.youtube.com/watch?v=bhOhCpBYpDk', ico:'🔍' },
+  { t:'Mastering the Business Situation Case Interview Framework (Part 7)', c:'caseinterview', url:'https://www.youtube.com/watch?v=lhQvl0wo6Fs', ico:'🎤' },
+  { t:'How to Use the Profit Framework for Business Case Analysis (Part 4)', c:'caseinterview', url:'https://www.youtube.com/watch?v=jtvyRnmkDqo', ico:'🎤' },
+  { t:'The 5 Most Popular Consulting Slides', c:'Analyst Academy', url:'https://www.youtube.com/watch?v=RfEOrbbMwMU', ico:'🖥️' },
+  { t:'How to Build Slides Like McKinsey', c:'Analyst Academy', url:'https://www.youtube.com/watch?v=mSwYi4ew7BY', ico:'🖥️' },
+];
+
+const BIZ_SEARCHES = [
+  '180 degrees consulting decks srcc case comp',
+  'Bain BrAINWARS 2026 by Bain & Co',
+  'McKinsey case studies with solutions PDF',
+  'mckinsey case competition',
+  'mock AI interview for consulting',
+  'roadmap for management consulting',
+  'bain and company internship',
+  'vaibhav bansal linkedin iim nagpur finalist',
+  'genspark type tools for consulting',
+  'CAT previous year paper pdf free download',
+  'Behavioural Finance 101: Psychology of Money',
+  'microsoft for startups',
+];
+
+function renderYTIntel() {
+  const barsEl = document.getElementById('yt-bars');
+  if(barsEl && !barsEl.dataset.r) {
+    barsEl.dataset.r='1';
+    const max = Math.max(...YT_TOPICS.map(t=>t.n));
+    barsEl.innerHTML = YT_TOPICS.map(t=>`
+      <div class="bar-row">
+        <div class="bar-lbl">${t.lbl}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${(t.n/max*100).toFixed(0)}%;background:${t.color}"></div></div>
+        <div class="bar-cnt" style="color:${t.color}">${t.n}</div>
+      </div>`).join('');
+  }
+  const chEl = document.getElementById('yt-channels');
+  if(chEl && !chEl.dataset.r) {
+    chEl.dataset.r='1';
+    chEl.innerHTML = YT_CHANNELS.map(c=>`
+      <div class="ch-card" onclick="openLink('${c.url}')">
+        <div class="ch-name">${c.name} <span style="color:var(--fire);font-size:10px">↗</span></div>
+        <div class="ch-meta">${c.n} videos · ${c.cat}</div>
+      </div>`).join('');
+  }
+  const recEl = document.getElementById('yt-recent');
+  if(recEl && !recEl.dataset.r) {
+    recEl.dataset.r='1';
+    recEl.innerHTML = YT_RECENT.map(v=>`
+      <div class="rv-item" onclick="openLink('${v.url}')" style="cursor:pointer" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
+        <div class="rv-ico">${v.ico}</div>
+        <div><div class="rv-title">${v.t} <span style="color:var(--fire);font-size:10px">↗</span></div><div class="rv-ch">${v.c}</div></div>
+      </div>`).join('');
+  }
+  const srEl = document.getElementById('yt-searches');
+  if(srEl && !srEl.dataset.r) {
+    srEl.dataset.r='1';
+    srEl.innerHTML = BIZ_SEARCHES.map(s=>`
+      <div style="display:flex;align-items:center;gap:9px;padding:8px 12px;background:var(--bg2);border-radius:7px;margin-bottom:6px;font-size:12px">
+        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--fire)">🔍</span>
+        <span>${s}</span>
+      </div>`).join('');
+  }
+}
+
+function renderRoadmap() {
+  const el = document.getElementById('rm-container');
+  if(!el || el.dataset.r) return;
+  el.dataset.r='1';
+  let globalIdx = 0;
+  el.innerHTML = ROADMAP.map((phase,pi)=>`
+    <div class="ph">
+      <div class="ph-label">${phase.phase}</div>
+      ${phase.items.map((item,ii)=>{
+        const idx = globalIdx++;
+        return `
+        <div class="rm-item ${item.status}">
+          <div class="rm-ico">${item.icon}</div>
+          <div class="rm-body">
+            <div class="rm-title">${item.title}</div>
+            <div class="rm-sub">${item.sub}</div>
+            <div class="rm-why">💡 ${item.why}</div>
+            <div class="rm-link-count">${item.links.length} resource${item.links.length!==1?'s':''} available</div>
+            <div class="rm-btn-row">
+              <button class="rm-open-btn" onclick="event.stopPropagation(); openRoadmapItem(${pi},${ii})">▶ Open Resource →</button>
+            </div>
+          </div>
+          <div class="rm-rt">
+            <div class="rm-dur">${item.dur}</div>
+            <div class="badge ${item.status==='done'?'b-done':item.status==='active'?'b-active':'b-locked'}">
+              ${item.status==='done'?'Done ✓':item.status==='active'?'▶ Start':'🔒 Locked'}
+            </div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`).join('');
+}
+
+function renderProgress() {
+  const el = document.getElementById('prog-milestones');
+  if(!el||el.dataset.r) return;
+  el.dataset.r='1';
+  const allItems = ROADMAP.flatMap(p=>p.items);
+  el.innerHTML = allItems.map(item=>{
+    const pct = item.status==='done'?100:item.status==='active'?35:0;
+    const cls = item.status==='done'?'ms-done':item.status==='active'?'ms-active':'';
+    const badgeCls = item.status==='done'?'b-done':item.status==='active'?'b-active':'b-locked';
+    const badgeTxt = item.status==='done'?'Done ✓':item.status==='active'?'In Progress':'Locked';
+    const col = item.status==='done'?'var(--green)':item.status==='active'?'var(--fire)':'var(--muted)';
+    return `<div class="ms-card ${cls}">
+      <div class="ms-ico" style="${item.status==='locked'?'opacity:.35':''}">${item.icon}</div>
+      <div class="ms-body">
+        <div class="ms-name">${item.title}</div>
+        <div class="ms-desc">${item.sub}</div>
+        <div class="ms-track"><div class="ms-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="ms-rt">
+        <div class="ms-pct" style="color:${col}">${pct}%</div>
+        <div class="ms-time">${item.dur}</div>
+        <div class="badge ${badgeCls}" style="margin-top:5px">${badgeTxt}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderDash() {
+  const el = document.getElementById('dash-progress-items');
+  if(!el||el.dataset.r) return;
+  el.dataset.r='1';
+  const phases = [
+    { lbl:'📖 Framework mastery', done:true },
+    { lbl:'🎤 Case delivery', done:false, active:true },
+    { lbl:'📐 Slide craft', done:false },
+    { lbl:'🏥 Healthcare domain', done:false },
+    { lbl:'💰 Finance layer', done:false },
+    { lbl:'🏆 Competition wins', done:false },
+  ];
+  el.innerHTML = phases.map(p=>`
+    <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:7px;align-items:center">
+      <span style="color:${p.done?'var(--cream)':'var(--muted2)'}">${p.lbl}</span>
+      <span style="font-family:'Syne',sans-serif;font-weight:700;color:${p.done?'var(--green)':p.active?'var(--fire)':'var(--muted)'}">${p.done?'✓':p.active?'40%':'🔒'}</span>
+    </div>`).join('');
+}
+
+let _openRMIdx = -1;
+function openRM(idx) {
+  renderRoadmap();
+  const allItems = ROADMAP.flatMap(p=>p.items);
+  const active = allItems.filter(i=>i.status==='active');
+  const item = active[idx];
+  if(item) openModal(item);
+}
+
+// ── ROADMAP ITEM OPENER (by phase/item index) ──
+function openRoadmapItem(phaseIdx, itemIdx) {
+  const item = ROADMAP[phaseIdx]?.items[itemIdx];
+  if (item) openModal(item);
+}
+
+// ── MODAL ──
+function openModal(item) {
+  document.getElementById('m-title').textContent = item.title;
+  document.getElementById('m-why').innerHTML = '🧠 <strong>Why HyperPath chose this for you:</strong> '+item.why;
+  document.getElementById('m-resources-label').textContent = `${item.links.length} Resources — click any to open →`;
+  document.getElementById('m-links').innerHTML = item.links.map(l=>`
+    <div class="res-link" onclick="openLink('${l.url}')">
+      <span class="rl-ico">${l.icon}</span>
+      <div class="rl-body">
+        <div class="rl-name">${l.name}</div>
+        <div class="rl-desc">${l.desc}</div>
+      </div>
+      <span class="rl-arr">↗</span>
+    </div>`).join('');
+  document.getElementById('m-meta').innerHTML = `⏱ Estimated time: <strong>${item.dur}</strong> · Data source: YouTube history + Chrome history + Gemini projects · Every link verified from your dataset`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal(e) { if(e.target===document.getElementById('modal-overlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+// ── INIT ──
+window.onload = () => {
+  document.querySelectorAll('.screen').forEach(s=>{s.style.display='none';s.classList.remove('active');});
+  const l=document.getElementById('s-land');
+  l.style.display='flex';l.classList.add('active');
+};
+</script>
+<!-- SWITCH PROFILE BAR -->
+<div class="switch-bar">
+  <span class="switch-bar-label">Viewing: Vaibhav B.</span>
+  <button class="switch-btn" onclick="window.location.href='gaurav.html'">Switch to Gaurav &rarr;</button>
+  <button class="home-btn" onclick="window.location.href='index.html'">&#x2302; Home</button>
+</div>
+
+</body>
+</html>

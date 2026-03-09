@@ -1,0 +1,2159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HyperPath v5 — Brave History + AI Intelligence | Gaurav Jain</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script>
+// ═══════════════════════════════════════════════════════
+//  BRAVE BROWSER HISTORY — Integrated from brave-history-complete.json
+//  6,120 URLs · 15,321 visits · 959 searches · 145 downloads
+// ═══════════════════════════════════════════════════════
+const BRAVE_DATA = {
+  meta: {
+    browser: "Brave (Chromium-based)",
+    exportedBy: "Gaurav Jain",
+    device: "Windows — DELL",
+    exportedAt: "2026-03-08",
+    totalUniqueURLs: 6120,
+    totalVisitEvents: 15321,
+    totalSearchTerms: 959,
+    totalDownloads: 145,
+    uniqueDomainsVisited: 426,
+    topDomain: "127.0.0.1:3000", // local dev server
+  },
+  searchCategories: {
+    "DSA / Algorithms":   { count: 82,  pct: 29 },
+    "Tools / Setup":      { count: 72,  pct: 25 },
+    "Web Development":    { count: 69,  pct: 24 },
+    "Python":             { count: 55,  pct: 19 },
+    "Machine Learning":   { count: 40,  pct: 14 },
+    "Database / SQL":     { count: 7,   pct: 2  },
+    "Cloud / DevOps":     { count: 3,   pct: 1  },
+  },
+  top20Sites: [
+    { url: "127.0.0.1:3000/Anime_hero.html",           title: "Anime_One | Hero_Level",         visits: 1538, category: "Personal Project" },
+    { url: "127.0.0.1:3000/index.html",                title: "HyperPath Prototype",             visits: 432,  category: "Personal Project" },
+    { url: "127.0.0.1:3000/TV_shows.html",             title: "Anime_One | TV Shows",            visits: 428,  category: "Personal Project" },
+    { url: "127.0.0.1:3000/details.html",              title: "Anime Details",                   visits: 296,  category: "Personal Project" },
+    { url: "kaggle.com/search",                        title: "Search | Kaggle",                 visits: 203,  category: "Machine Learning" },
+    { url: "youtube.com/",                             title: "YouTube",                         visits: 154,  category: "Learning" },
+    { url: "leetcode.com/problems/missing-number/",    title: "Missing Number - LeetCode",       visits: 47,   category: "DSA" },
+    { url: "youtube.com (ML 100 Days)",                title: "What is Machine Learning?",       visits: 40,   category: "Machine Learning" },
+    { url: "localhost:8888/tree",                      title: "Jupyter Notebook",                visits: 39,   category: "Machine Learning" },
+    { url: "127.0.0.1:5500/Anime_landing_page.html",  title: "Anime_one Downloader",            visits: 39,   category: "Personal Project" },
+    { url: "multimovies.sarl/",                        title: "Multimovies",                     visits: 37,   category: "Entertainment" },
+    { url: "tasksboard.com/app",                       title: "TasksBoard - Google Tasks",       visits: 29,   category: "Productivity" },
+    { url: "claude.ai/",                               title: "Claude",                          visits: 28,   category: "AI Tools" },
+    { url: "smashkarts.io/",                           title: "Smash Karts",                     visits: 27,   category: "Gaming" },
+    { url: "hianime.to",                               title: "Watch Jujutsu Kaisen",            visits: 25,   category: "Entertainment" },
+    { url: "youtube.com (Striver A2Z)",                title: "Striver A2Z DSA Course",          visits: 24,   category: "DSA" },
+    { url: "github.com",                               title: "GitHub",                          visits: 22,   category: "Dev Tools" },
+    { url: "geeksforgeeks.org",                        title: "GeeksForGeeks",                   visits: 20,   category: "DSA" },
+    { url: "stackoverflow.com",                        title: "Stack Overflow",                  visits: 18,   category: "Dev Tools" },
+    { url: "docs.python.org",                          title: "Python Documentation",            visits: 15,   category: "Python" },
+  ],
+  keyInsights: {
+    topProject: "Anime_One — self-built local web app (1538+ visits = heavy personal project in HTML/CSS/JS)",
+    alsoBuilt: "HyperPath prototype (432 visits on localhost), Anime Details pages, Anime Navigation",
+    devTools: "Jupyter Notebook (localhost:8888 — 39 visits), Flask debugger (localhost:5678 — 27 visits), local server (port 3000 — main dev stack)",
+    webStack: "HTML/CSS/JS (confirmed by local project), Flask (localhost:5678 debugger), Python basics confirmed",
+    dsaActivity: "LeetCode (Missing Number 47 visits), GFG, Striver A2Z YouTube confirmed",
+    mlActivity: "Kaggle (203 visits), Jupyter Notebook (39 visits), CampusX ML videos",
+    searchProfile: "82 DSA searches, 72 tool/setup searches, 69 web dev, 55 Python, 40 ML — reveals WHERE confusion is highest",
+    downloads: "145 downloads: 12 PDFs (DSA books!), 9 JSONs, 27 archives, 32 images, 6 videos — Serious learner behaviour",
+    aiToolsUsage: "Claude.ai: 28 visits (recent, heavy use for project building)",
+    entertainmentBalance: "Anime (hianime, multimovies) + Smash Karts balanced with study — healthy pattern",
+  },
+};
+
+// ═══════════════════════════════════════════════════════
+//  YOUTUBE HISTORY DATA — From youtube-watch-history.json
+//  361 videos analysed · March 2026
+// ═══════════════════════════════════════════════════════
+const YT_DATA = {
+  totalVideos: 361,
+  categories: {
+    "DSA / Algorithms":  { count: 106, pct: 29 },
+    "Machine Learning":  { count: 83,  pct: 23 },
+    "Python":            { count: 32,  pct: 9  },
+    "Math / Discrete":   { count: 10,  pct: 3  },
+    "Web Dev":           { count: 7,   pct: 2  },
+    "Data Science":      { count: 5,   pct: 1  },
+    "Entertainment":     { count: 33,  pct: 9  },
+    "Other":             { count: 85,  pct: 24 },
+  },
+  topChannels: [
+    { name: "CampusX",              count: 85, focus: "ML & Data Science (Hindi)" },
+    { name: "take U forward",        count: 55, focus: "DSA / Algorithms - Striver" },
+    { name: "CodeHelp - by Babbar", count: 20, focus: "DSA / Algorithms" },
+    { name: "Dr.Gajendra Purohit",  count: 13, focus: "Math / Discrete Mathematics" },
+    { name: "Gate Smashers",         count: 12, focus: "CS Fundamentals" },
+    { name: "College Wallah",        count: 11, focus: "Engineering / Exams" },
+    { name: "CodeWithHarry",         count: 10, focus: "Python (Hindi)" },
+    { name: "Chai aur Code",         count: 10, focus: "Python / Web Dev (Hindi)" },
+  ],
+};
+
+// ═══════════════════════════════════════════════════════
+//  CROSS-SOURCE INTELLIGENCE ENGINE
+//  Combines Brave + YouTube for deeper profile
+// ═══════════════════════════════════════════════════════
+const INTEL = {
+  buildFullProfile() {
+    return {
+      name: "Gaurav",
+      archetype: "Full-Stack Learner → ML/DSA Hybrid Builder",
+      dnaCode: "DNA: DSA-ACTIVE · ML-PRACTITIONER · WEB-BUILDER · HINDI-EN · ANIME-CULTURE · BINGE-SERIAL",
+      tags: ["Interview-Focused", "Self-Builder", "Hindi-comfortable", "Visual Learner", "Project-Driven"],
+      
+      // Cross-source signals
+      crossSignals: [
+        { icon: "🏗️", signal: "You BUILD — not just watch", detail: "Anime_One web app on localhost has 1538 visits. HyperPath prototype 432 visits. You're not just learning — you're building real projects. This is rare and valuable." },
+        { icon: "🔍", signal: "Your search gaps reveal true pain points", detail: "82 DSA + 72 Tools/Setup searches vs 40 ML searches = you're struggling more with setup/tooling (pip, deployment, config) than with ML concepts." },
+        { icon: "📊", signal: "Kaggle + Jupyter = ML is hands-on for you", detail: "203 Kaggle visits + 39 Jupyter sessions. You don't just watch ML — you code it. CampusX Day 34 data files (messages.csv, orders.csv) downloaded directly." },
+        { icon: "🤖", signal: "Claude is your new pair-programmer", detail: "28 Claude.ai visits, 3 different chat sessions downloaded from Claude. You're using AI for project building — this accelerates your output significantly." },
+        { icon: "🧩", signal: "Flask + Python confirmed hands-on", detail: "localhost:5678 (Flask debugger) visited 27 times. You're building Flask apps, not just watching tutorials. Python is production-level for you." },
+        { icon: "📚", signal: "Downloaded 12 PDFs — you read DSA books", detail: "DSA books searched (O'Reilly, Michael Goodrich, Love Babbar) + 12 PDF downloads. You supplement YouTube with deep reading." },
+      ],
+      
+      braveMetrics: {
+        "Local Projects":   { value: "3 apps built", bar: 90, color: "fill-g" },
+        "Kaggle Activity":  { value: "203 visits",   bar: 75, color: "fill-b" },
+        "Search Intensity": { value: "959 queries",  bar: 88, color: "fill-r" },
+        "Tool Mastery":     { value: "Flask+Jupyter", bar: 65, color: "fill-p" },
+        "DSA Practice":     { value: "LeetCode+GFG", bar: 72, color: "fill-r" },
+        "AI Adoption":      { value: "Claude 28 vis", bar: 60, color: "fill-b" },
+      },
+      
+      ytMetrics: {
+        "DSA Coverage":     { value: "29% · 106 vids", bar: 29, color: "fill-r" },
+        "ML Coverage":      { value: "23% · 83 vids",  bar: 23, color: "fill-b" },
+        "Python Coverage":  { value: "9% · 32 vids",   bar: 18, color: "fill-g" },
+        "Hindi Channels":   { value: "65% preference", bar: 65, color: "fill-p" },
+      },
+    };
+  },
+
+  buildBraveRoadmap(goal) {
+    // Brave-enhanced roadmap with real browser evidence
+    const base = {
+      "Machine Learning": this._mlRoadmap(),
+      "Data Science": this._dsRoadmap(),
+      "Web Development": this._webRoadmap(),
+      "Python Programming": this._pyRoadmap(),
+      "DSA": this._dsaRoadmap(),
+    };
+    return base[goal] || this._dsaRoadmap();
+  },
+
+  _mlRoadmap() {
+    return {
+      title: "ML Mastery — Brave + YouTube Confirmed Path",
+      subtitle: "203 Kaggle visits · 39 Jupyter sessions · CampusX Day 34 · Stanford L1 watched",
+      stats: { time: "22h", milestones: 5, evidence: "Brave+YT", confidence: "97%" },
+      phases: [
+        {
+          label: "Phase 1 — Kaggle: You're already there (203 visits!)",
+          milestone: "01 · ~4 hrs · Free · Kaggle",
+          title: "Titanic + House Prices — You Already Have Kaggle Bookmarked",
+          desc: "Your Brave history shows 203 Kaggle visits and you've already downloaded CampusX datasets (messages.csv, orders.csv). You know the platform. Now complete Titanic end-to-end: apply Day 34 feature engineering + sklearn Pipeline. Submit to leaderboard.",
+          chips: ["kaggle.com (203 visits!)", "CampusX pipeline", "messages.csv downloaded", "🏆 Leaderboard target"],
+          modalId: "brave_kaggle",
+          evidence: "Kaggle: 203 Brave visits confirmed",
+        },
+        {
+          label: "Phase 2 — Resume CampusX Day 35 (Your #1 channel: 85 videos)",
+          milestone: "02 · ~3 hrs · Free · Hindi · YouTube",
+          title: "CampusX 100 Days ML — Day 35 to Day 50 (Resume Now)",
+          desc: "85 CampusX videos watched. Last: Day 34 (Date/Time Variables) — you even downloaded the CampusX GitHub data files. Day 35 = Outlier Detection. Day 40 = Column Transformer. Your Jupyter setup is already working (39 visits).",
+          chips: ["CampusX YouTube", "Day 35+ only", "Jupyter ready", "Hindi ✓"],
+          modalId: "brave_campusx",
+          evidence: "85 YT videos + Jupyter 39 visits",
+        },
+        {
+          label: "Phase 3 — Stanford CS229 (You Started Lecture 1)",
+          milestone: "03 · ~4 hrs · Free · English",
+          title: "Stanford CS229 — Lectures 2–5 (Mar 6 you watched L1)",
+          desc: "You watched Lecture 1 on March 6. The mathematical backbone fills the 'why' behind every sklearn call. Your 40 ML search queries show you struggle with theory (\"what is the worst case time complexity\") — CS229 solves this.",
+          chips: ["Stanford YouTube", "Lecture 2→5 only", "Mar 6 L1 confirmed", "Math foundation"],
+          modalId: "brave_stanford",
+          evidence: "YouTube history: Lecture 1 Mar 6, 2026",
+        },
+        {
+          label: "Phase 4 — Deploy ML App (You Have Flask Running!)",
+          milestone: "04 · ~5 hrs · Free · Python",
+          title: "Streamlit ML App — You Already Have Flask Skills",
+          desc: "Your Brave history shows Flask debugger at localhost:5678 visited 27 times. You're building backend apps. Now: turn your Kaggle Titanic model into a Streamlit app. You have Python, Flask, and Jupyter — Streamlit is 3 hours away.",
+          chips: ["Flask confirmed (27 Brave visits)", "Chai aur Code course", "Streamlit docs", "Deploy on Render.com"],
+          modalId: "brave_streamlit",
+          evidence: "localhost:5678 Flask debugger: 27 visits",
+        },
+        {
+          label: "Phase 5 — Portfolio Project (Anime ML?)",
+          milestone: "05 · ~6 hrs · Free · Final",
+          title: "Anime Recommendation Engine — Use Your Anime_One Project",
+          desc: "You've built Anime_One web app (1538 local visits!) and searched for 'anime api', 'myanimelist api', 'jikan api'. Build a collaborative filtering recommendation engine on top of your existing Anime_One project. ML + your personal project = unique portfolio.",
+          chips: ["Anime_One base project", "Jikan API (you searched!)", "scikit-learn CF", "🏆 Unique portfolio"],
+          modalId: "brave_anime_ml",
+          evidence: "1538 anime project visits + anime api searches",
+        },
+      ],
+    };
+  },
+
+  _dsaRoadmap() {
+    return {
+      title: "DSA Interview Path — Brave History Confirms Your Exact Position",
+      subtitle: "82 DSA searches · Striver A2Z · LeetCode active · Babbar L13 last watched",
+      stats: { time: "24h", milestones: 5, evidence: "Brave+YT", confidence: "98%" },
+      phases: [
+        {
+          label: "Phase 1 — Complete Striver A2Z (55 videos watched, Binary Search active)",
+          milestone: "01 · ~6 hrs · Free · Hindi",
+          title: "Striver A2Z Sheet — Continue Binary Search → Strings",
+          desc: "55 Striver videos watched. Brave shows searches: 'binary search', 'striver dsa sheet', 'a2z striver dsa'. You're mid-Binary Search chapter. Finish it, then move to Strings. You're ~30% done with the full A2Z sheet.",
+          chips: ["take U forward YT", "A2Z Sheet", "Hindi ✓", "'binary search' searched in Brave"],
+          modalId: "brave_striver",
+          evidence: "55 YT videos + 'striver dsa sheet' search",
+        },
+        {
+          label: "Phase 2 — Babbar Lecture 13 Problem Set (Just Watched!)",
+          milestone: "02 · ~3 hrs · Free · Hindi",
+          title: "CodeHelp: Binary Search Problem Set — Lecture 13 Watched Mar 7",
+          desc: "You watched 'Binary Search Interview Questions — Google, Amazon, Microsoft' on March 7. Next: solve the problem set. Brave confirms 47 LeetCode visits (Missing Number specifically) — you know the platform. Do Babbar's Lecture 13 problems now.",
+          chips: ["LeetCode (47 Brave visits!)", "Babbar L13 problems", "Missing Number solved?", "Hindi ✓"],
+          modalId: "brave_babbar",
+          evidence: "20 YT Babbar videos + LeetCode 47 visits",
+        },
+        {
+          label: "Phase 3 — LeetCode Daily (You're Already There)",
+          milestone: "03 · ~Ongoing · Free",
+          title: "LeetCode 3 Mediums/Day — Missing Number Shows You're Starting",
+          desc: "Brave shows 47 visits to LeetCode Missing Number problem. You're practicing. The formula: 1 Easy warmup + 2 Mediums/day in Arrays + Binary Search. At your level, each medium takes 15–25 min. 90 problems in a month = interview ready.",
+          chips: ["LeetCode (47 visits confirmed)", "3 mediums/day", "Arrays + Binary Search", "Striver sheet filter"],
+          modalId: "brave_leet",
+          evidence: "LeetCode: 47 confirmed Brave visits",
+        },
+        {
+          label: "Phase 4 — Discrete Math (13 Dr. Gajendra Videos)",
+          milestone: "04 · ~2 hrs · Free · Hindi",
+          title: "Dr. Gajendra: Set Theory → Relations (Propositional Logic Done)",
+          desc: "13 Dr. Gajendra videos watched. Brave search: 'prerequisite to study hashing in dsa' — you're seeking exactly what Discrete Math provides. Propositional Logic 1–4 done. Next: Set Theory → Relations → Functions. GATE relevance.",
+          chips: ["Dr. Gajendra YouTube", "13 vids done", "'hashing prerequisite' searched", "GATE prep"],
+          modalId: "brave_discrete",
+          evidence: "13 YT videos + 'hashing prerequisite' search",
+        },
+        {
+          label: "Phase 5 — Mock Interviews (5 Sessions)",
+          milestone: "05 · ~4 hrs · Free · Final",
+          title: "Pramp Mock Interviews — Pressure-Test Before Real Rounds",
+          desc: "After 161 DSA videos + LeetCode reps, the final gap is real-time pressure. Your Brave profile shows you're methodical (downloaded DSA PDFs, followed structured playlists) — 5 Pramp mocks will convert knowledge into performance.",
+          chips: ["pramp.com (free)", "5 mocks minimum", "DSA + System Design", "🏆 Interview ready"],
+          modalId: "brave_mock",
+          evidence: "161 DSA YT videos + 12 PDF downloads",
+        },
+      ],
+    };
+  },
+
+  _webRoadmap() {
+    return {
+      title: "Web Dev Mastery — You Already BUILD (Anime_One Proof)",
+      subtitle: "Anime_One app 1538 visits · Flask debugger 27 visits · HTML/CSS/JS confirmed",
+      stats: { time: "18h", milestones: 4, evidence: "Brave+YT", confidence: "95%" },
+      phases: [
+        {
+          label: "Phase 1 — Upgrade Anime_One (Your Best Asset)",
+          milestone: "01 · ~3 hrs · Free · JavaScript",
+          title: "Anime_One v2 — Add Jikan API + Search (You Already Searched This!)",
+          desc: "You have Anime_One running on localhost (1538 visits). Your Brave history shows searches for 'anime api', 'myanimelist api', 'jikan api', 'api free'. The Jikan API (MyAnimeList) is free. Add real anime data to your existing app. This transforms a demo into a real product.",
+          chips: ["Anime_One base", "Jikan API (free)", "You searched 'anime api'", "Real project upgrade"],
+          modalId: "web_anime",
+          evidence: "1538 anime project visits + anime api searches",
+        },
+        {
+          label: "Phase 2 — Flask Backend (You're Already Debugging It!)",
+          milestone: "02 · ~4 hrs · Free · Python",
+          title: "Flask Documentation — You've Hit UnboundLocalError (localhost:5678)",
+          desc: "Your Brave history shows localhost:5678 visited 27 times with an actual Flask error: 'UnboundLocalError: cannot access local variable firstName'. You're building Flask apps. Complete the Flask tutorial to fix these patterns. Also searched 'flask course free' and 'documentation for flask'.",
+          chips: ["Flask docs (you searched!)", "Fix the firstName bug", "localhost:5678 active", "Python backend"],
+          modalId: "web_flask",
+          evidence: "Flask debugger 27 visits + searched 'flask documentation'",
+        },
+        {
+          label: "Phase 3 — Deploy to Internet (Netlify/Render)",
+          milestone: "03 · ~2 hrs · Free · Cloud",
+          title: "Deploy Anime_One Live — You Searched 'Deploy Python on Netlify'",
+          desc: "Brave search history shows 'can i deploy the python code on netlify' (searched twice). The answer: use Render.com for Python/Flask, Netlify for static HTML. Your Anime_One HTML version goes on Netlify in 10 minutes. Then Flask version on Render.",
+          chips: ["Netlify (you searched!)", "Render.com for Flask", "Free tier", "Public URL for portfolio"],
+          modalId: "web_deploy",
+          evidence: "'deploy python netlify' searched in Brave",
+        },
+        {
+          label: "Phase 4 — Django (You Asked 'Flask vs Django?')",
+          milestone: "04 · ~9 hrs · Free · Python",
+          title: "Django Tutorial — You Searched 'Which is Easier: Flask or Django'",
+          desc: "Brave search: 'which is easy doing flask or doing the django' (searched twice). Answer: Flask for small projects (you're there), Django for larger ones. After deploying Anime_One with Flask, Django becomes natural. The jump takes 1 weekend.",
+          chips: ["Django docs (you searched!)", "After Flask mastery", "Full-stack Python", "'flask vs django' searched"],
+          modalId: "web_django",
+          evidence: "'flask vs django' searched multiple times in Brave",
+        },
+      ],
+    };
+  },
+
+  _pyRoadmap() {
+    return {
+      title: "Python Mastery — Brave Shows You're Beyond Basics",
+      subtitle: "Flask debugger active · Jupyter 39 visits · Pandas confirmed · 55 Python searches",
+      stats: { time: "15h", milestones: 4, evidence: "Brave+YT", confidence: "96%" },
+      phases: [
+        {
+          label: "Phase 1 — Pandas Deep Dive (You're Using It, Not Mastering It)",
+          milestone: "01 · ~2 hrs · Free · Hindi",
+          title: "Pandas Documentation — You've Searched 5 Specific Pandas Questions",
+          desc: "Brave search history shows: 'how to change encoding dataset in pandas', 'how to use location in pandas', 'unicode error loading data pandas', 'what are conditions when df.corr() works', 'string operations on pandas dataset'. You're using Pandas but hitting edge cases. Systematic docs study solves all 5.",
+          chips: ["Pandas docs (5 searches!)", "CampusX Pandas series", "encoding errors fixed", "df.corr() mastered"],
+          modalId: "py_pandas",
+          evidence: "5 specific Pandas Brave searches",
+        },
+        {
+          label: "Phase 2 — Fix Your Python Patterns (Searched Twice for Same Errors)",
+          milestone: "02 · ~2 hrs · Free",
+          title: "Python Fundamentals Gap — 'if is not python' searched twice",
+          desc: "Brave reveals repeated searches: 'if is not python', 'if mai is not python', 'logical or operater in python', 'bitwise operator in python' (all searched twice). These are foundational patterns. 2 hours of focused review eliminates repeated Googling. CodeWithHarry's operators video is perfect.",
+          chips: ["'if is not' searched 2×", "operators guide", "CWH Hindi video", "Never re-search these"],
+          modalId: "py_operators",
+          evidence: "Multiple repeated Python operator searches in Brave",
+        },
+        {
+          label: "Phase 3 — Flask Mastery (You're Already Building!)",
+          milestone: "03 · ~4 hrs · Free",
+          title: "Flask Tutorial — You Have a Running App With a Bug to Fix",
+          desc: "Brave shows Flask debugger (localhost:5678) visited 27 times. You're building real Flask apps. Error seen: 'UnboundLocalError: cannot access local variable firstName'. This is a classic scope issue. Flask docs + tutorial = bug fixed + solid foundation.",
+          chips: ["Flask docs", "You searched 'flask documentation'", "Fix scope bug", "Build login system"],
+          modalId: "py_flask",
+          evidence: "Flask debugger 27 visits in Brave",
+        },
+        {
+          label: "Phase 4 — Tensors + ML Python (You're Almost There)",
+          milestone: "04 · ~7 hrs · Free",
+          title: "NumPy + Tensors — You Searched 'Tensors in Python' + 'pandas profiling'",
+          desc: "Brave searches: 'tensors in python', 'tensors in python documentation', 'pandas profiling'. You're approaching ML-level Python. CampusX Day 35+ will require tensor operations. NumPy mastery + pandas-profiling makes your Kaggle notebooks 3× better.",
+          chips: ["NumPy docs", "'tensors in python' searched", "pandas-profiling (you searched!)", "ML-ready Python"],
+          modalId: "py_numpy",
+          evidence: "'tensors in python' + 'pandas profiling' in Brave",
+        },
+      ],
+    };
+  },
+
+  _dsRoadmap() {
+    return {
+      title: "Data Science Path — Kaggle + Jupyter Already Active",
+      subtitle: "203 Kaggle visits · 39 Jupyter sessions · CampusX Day 34 · downloads confirmed",
+      stats: { time: "20h", milestones: 4, evidence: "Brave+YT", confidence: "97%" },
+      phases: [
+        {
+          label: "Phase 1 — Kaggle: You Already Have 203 Visits",
+          milestone: "01 · ~4 hrs · Free · Kaggle",
+          title: "Complete Titanic Kaggle — Your Most Visited Learning Platform",
+          desc: "203 Kaggle visits makes it your #7 most visited site. You've been there — now finish. Titanic uses every CampusX skill (Day 1–34): imputation, encoding, feature engineering, sklearn. Submit to leaderboard. This single notebook is your portfolio centerpiece.",
+          chips: ["kaggle.com (203 visits!)", "Top 25% target", "All CampusX techniques", "🏆 Portfolio proof"],
+          modalId: "ds_kaggle",
+          evidence: "Kaggle: 203 confirmed Brave visits",
+        },
+        {
+          label: "Phase 2 — CampusX Day 35+ (You're Mid-Series)",
+          milestone: "02 · ~4 hrs · Free · Hindi",
+          title: "CampusX 100 Days ML — Continue from Day 35 (Outlier Detection)",
+          desc: "85 CampusX videos. You downloaded GitHub data files for Day 34 (messages.csv, orders.csv). Jupyter is set up. Day 35 = Outlier Detection is the natural next step. The momentum is there — don't break a 34-day chain.",
+          chips: ["CampusX YouTube", "Day 35+ only", "messages.csv downloaded!", "Jupyter ready"],
+          modalId: "ds_campusx",
+          evidence: "Downloaded Day 34 CSVs from CampusX GitHub",
+        },
+        {
+          label: "Phase 3 — pandas-profiling + EDA Tools",
+          milestone: "03 · ~2 hrs · Free",
+          title: "pandas-profiling: You Searched It — Now Use It",
+          desc: "Brave search shows 'pandas profiling' specifically searched. This tool generates full EDA reports in 3 lines of code. Install it, run it on your Titanic dataset. What takes 2 hours manually takes 3 minutes. This is the productivity unlock for Data Science.",
+          chips: ["'pandas profiling' in your Brave search!", "pip install ydata-profiling", "Titanic EDA report", "2 lines of code"],
+          modalId: "ds_profiling",
+          evidence: "'pandas profiling' searched in Brave",
+        },
+        {
+          label: "Phase 4 — Streamlit Dashboard (From Notebook to App)",
+          milestone: "04 · ~10 hrs · Free · Final",
+          title: "Streamlit Data App — Chai aur Code Course You Already Started",
+          desc: "Chai aur Code Streamlit course: you've watched 10 episodes. Complete it. Then build a Streamlit dashboard for your Titanic predictions. This is the transition from Data Scientist who works in notebooks to one who ships apps. Deploy on Streamlit Cloud (free).",
+          chips: ["Chai aur Code (you started!)", "Streamlit Cloud free deploy", "Titanic dashboard", "🏆 DS portfolio"],
+          modalId: "ds_streamlit",
+          evidence: "10 Chai aur Code YT videos watched",
+        },
+      ],
+    };
+  },
+};
+
+let _selectedGoal = "Machine Learning";
+let _currentScreen = "s-landing";
+let _aiAnalysisRunning = false;
+</script>
+
+<style>
+:root {
+  --ink: #080810;
+  --paper: #f4f1ea;
+  --card: #ffffff;
+  --accent: #ff4d1c;
+  --blue: #1a6cff;
+  --green: #00c896;
+  --gold: #f5a623;
+  --purple: #8b5cf6;
+  --border: #e3ddd3;
+  --muted: #94908a;
+  --glow-r: rgba(255,77,28,0.15);
+  --glow-b: rgba(26,108,255,0.12);
+  --brave: #fb542b;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Mono', monospace;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* GRAIN */
+body::after {
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9999;
+  opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* ─── SCREEN SYSTEM ─── */
+.screen { display:none; min-height:100vh; animation: screenIn 0.45s cubic-bezier(0.16,1,0.3,1) forwards; }
+.screen.active { display:flex; flex-direction:column; }
+@keyframes screenIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+/* ─── NAV ─── */
+.topnav {
+  position:fixed; top:0; left:0; right:0; z-index:500;
+  height:58px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 28px;
+  background:rgba(244,241,234,0.92);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.logo { font-family:'Syne',sans-serif; font-weight:800; font-size:18px; letter-spacing:-0.04em; cursor:pointer; }
+.logo span { color:var(--accent); }
+.logo .version { font-size:10px; background:var(--accent); color:white; padding:2px 6px; border-radius:3px; margin-left:6px; font-family:'DM Mono',monospace; vertical-align:middle; }
+.nav-steps { display:flex; gap:4px; }
+.nav-step { width:28px; height:4px; border-radius:2px; background:var(--border); transition:all 0.3s ease; }
+.nav-step.done { background:var(--accent); }
+.nav-step.active { background:var(--ink); width:40px; }
+.nav-right { display:flex; align-items:center; gap:16px; font-size:11px; color:var(--muted); letter-spacing:0.08em; }
+.nav-avatar { width:32px; height:32px; border-radius:50%; background:var(--ink); color:var(--paper); display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:700; font-size:12px; cursor:pointer; }
+.brave-badge { font-size:10px; background:var(--brave); color:white; padding:3px 8px; border-radius:3px; letter-spacing:0.05em; font-family:'Syne',sans-serif; font-weight:700; }
+
+/* ─── BUTTONS ─── */
+.btn { font-family:'Syne',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.04em; text-transform:uppercase; padding:14px 32px; border:none; cursor:pointer; transition:all 0.2s ease; display:inline-flex; align-items:center; gap:8px; }
+.btn-fill { background:var(--ink); color:var(--paper); clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%); }
+.btn-fill:hover { background:#1a1a2e; transform:translateY(-2px); box-shadow:0 8px 24px rgba(8,8,16,0.25); }
+.btn-accent { background:var(--accent); color:white; clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%); }
+.btn-accent:hover { background:#ff6640; transform:translateY(-2px); box-shadow:0 8px 28px var(--glow-r); }
+.btn-ghost { background:transparent; color:var(--ink); border:1.5px solid var(--border); border-radius:4px; }
+.btn-ghost:hover { border-color:var(--ink); }
+.btn-ai { background:linear-gradient(135deg,var(--blue),var(--purple)); color:white; border-radius:8px; padding:14px 28px; }
+.btn-ai:hover { opacity:0.9; transform:translateY(-2px); box-shadow:0 8px 28px var(--glow-b); }
+
+/* ─── PAGE WRAPPER ─── */
+.page { max-width:780px; margin:0 auto; padding:88px 24px 64px; width:100%; }
+.page-wide { max-width:1080px; margin:0 auto; padding:88px 24px 64px; width:100%; }
+
+/* ─── SECTION HEADER ─── */
+.section-eyebrow { font-size:10px; color:var(--accent); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:10px; }
+.section-title { font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(30px,5vw,48px); line-height:1.05; letter-spacing:-0.03em; }
+.section-title em { font-family:'Instrument Serif',serif; font-style:italic; color:var(--accent); }
+.section-sub { font-size:13px; color:var(--muted); line-height:1.75; margin-top:10px; max-width:500px; }
+
+/* ── LANDING ── */
+#s-landing { background:var(--ink); position:relative; overflow:hidden; align-items:center; justify-content:center; text-align:center; }
+.land-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(255,77,28,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,77,28,0.04) 1px,transparent 1px); background-size:64px 64px; }
+.land-glow { position:absolute; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(255,77,28,0.18) 0%,transparent 65%); top:50%; left:50%; transform:translate(-50%,-50%); animation:breathe 5s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6;} 50%{transform:translate(-50%,-50%) scale(1.15);opacity:1;} }
+.land-content { position:relative; z-index:2; padding:24px; }
+.land-badge { display:inline-flex; align-items:center; gap:8px; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); border:1px solid rgba(255,77,28,0.35); padding:7px 18px; border-radius:2px; margin-bottom:32px; }
+.land-title { font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(56px,11vw,108px); line-height:0.9; letter-spacing:-0.04em; color:var(--paper); margin-bottom:16px; }
+.land-title .em { font-family:'Instrument Serif',serif; font-style:italic; color:var(--accent); }
+.land-sub { font-size:14px; color:rgba(244,241,234,0.45); max-width:420px; margin:0 auto 44px; line-height:1.8; }
+.land-cta-row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.land-stats { display:flex; gap:48px; justify-content:center; margin-top:72px; position:relative; z-index:2; }
+.land-stat-n { font-family:'Syne',sans-serif; font-size:32px; font-weight:800; color:var(--paper); }
+.land-stat-l { font-size:10px; letter-spacing:0.15em; color:rgba(244,241,234,0.35); text-transform:uppercase; margin-top:4px; }
+.land-data-pills { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:20px; position:relative; z-index:2; }
+.data-pill { font-size:10px; padding:4px 12px; border-radius:20px; border:1px solid rgba(255,255,255,0.1); color:rgba(244,241,234,0.45); font-family:'Syne',sans-serif; letter-spacing:0.05em; }
+.data-pill.active { border-color:rgba(255,77,28,0.4); color:var(--accent); }
+
+/* ── GOAL SCREEN ── */
+.goal-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; margin:32px 0; }
+.goal-card { border:1.5px solid var(--border); border-radius:10px; padding:22px 18px; cursor:pointer; transition:all 0.2s ease; background:var(--card); position:relative; overflow:hidden; }
+.goal-card:hover { border-color:var(--ink); transform:translateY(-3px); box-shadow:0 8px 24px rgba(8,8,16,0.1); }
+.goal-card.picked { border-color:var(--accent); box-shadow:0 0 0 3px var(--glow-r); transform:translateY(-3px); }
+.goal-card-icon { font-size:32px; margin-bottom:12px; display:block; }
+.goal-card-name { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; }
+.goal-card-desc { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.5; }
+.goal-card-evidence { font-size:10px; color:var(--brave); margin-top:6px; font-family:'Syne',sans-serif; font-weight:600; }
+.goal-check { position:absolute; top:10px; right:10px; width:22px; height:22px; border-radius:50%; background:var(--accent); color:white; font-size:11px; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.2s; }
+.goal-card.picked .goal-check { opacity:1; }
+
+/* ── CONNECT / DATA SOURCES ── */
+.connect-list { display:flex; flex-direction:column; gap:10px; margin:32px 0; }
+.connect-item { display:flex; align-items:center; gap:18px; padding:18px 22px; border:1.5px solid var(--border); border-radius:10px; background:var(--card); cursor:pointer; transition:all 0.2s ease; }
+.connect-item:hover { border-color:var(--muted); }
+.connect-item.linked { border-color:var(--green); background:rgba(0,200,150,0.04); }
+.connect-item.brave-linked { border-color:var(--brave); background:rgba(251,84,43,0.04); }
+.connect-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; background:var(--paper); flex-shrink:0; }
+.connect-info { flex:1; }
+.connect-name { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; }
+.connect-desc { font-size:11px; color:var(--muted); margin-top:2px; }
+.connect-evidence { font-size:10px; color:var(--brave); margin-top:3px; font-family:'Syne',sans-serif; font-weight:600; }
+.connect-status { font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:5px 12px; border-radius:3px; font-family:'Syne',sans-serif; font-weight:600; }
+.status-connect { background:var(--paper); color:var(--muted); border:1px solid var(--border); }
+.status-linked { background:rgba(0,200,150,0.1); color:var(--green); border:1px solid rgba(0,200,150,0.3); }
+.status-brave { background:rgba(251,84,43,0.1); color:var(--brave); border:1px solid rgba(251,84,43,0.3); }
+
+/* ── COGNITIVE TEST ── */
+.test-progress-bar { height:3px; background:var(--border); border-radius:2px; margin:24px 0 36px; overflow:hidden; }
+.test-progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--blue)); border-radius:2px; transition:width 0.5s ease; }
+.question-card { background:var(--card); border:1.5px solid var(--border); border-radius:14px; padding:36px; margin-bottom:16px; }
+.q-tag { font-size:10px; color:var(--accent); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.q-tag::after { content:''; flex:1; height:1px; background:var(--border); }
+.q-headline { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; line-height:1.35; margin-bottom:24px; }
+.options-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.opt { padding:14px 18px; border:1.5px solid var(--border); border-radius:8px; cursor:pointer; font-size:12px; line-height:1.5; transition:all 0.15s ease; background:var(--paper); position:relative; overflow:hidden; }
+.opt:hover { border-color:var(--accent); background:rgba(255,77,28,0.03); }
+.opt.sel { border-color:var(--accent); background:rgba(255,77,28,0.06); font-weight:600; }
+.opt.sel::after { content:'✓'; position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--accent); font-weight:700; font-size:13px; }
+
+/* ── ANALYZING ── */
+#s-analyzing { background:var(--ink); align-items:center; justify-content:center; text-align:center; }
+.dna-ring { width:180px; height:180px; border-radius:50%; border:2px solid rgba(255,77,28,0.25); display:flex; align-items:center; justify-content:center; position:relative; margin:0 auto 48px; }
+.dna-ring::before { content:''; position:absolute; inset:-18px; border-radius:50%; border:1.5px solid rgba(26,108,255,0.15); animation:spin1 4s linear infinite; }
+.dna-ring::after { content:''; position:absolute; inset:-34px; border-radius:50%; border:1px dashed rgba(0,200,150,0.1); animation:spin1 9s linear infinite reverse; }
+.dna-ring .spin-dot { position:absolute; width:8px; height:8px; border-radius:50%; background:var(--accent); top:calc(50% - 4px); left:-4px; transform-origin:calc(90px + 4px) 50%; animation:spin1 2s linear infinite; }
+@keyframes spin1 { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+.dna-emoji { font-size:52px; }
+.analyzing-title { font-family:'Syne',sans-serif; font-size:clamp(26px,4vw,38px); font-weight:800; color:var(--paper); margin-bottom:8px; }
+.analyzing-sub { font-size:12px; color:rgba(244,241,234,0.35); letter-spacing:0.1em; margin-bottom:52px; }
+.log-stream { width:100%; max-width:480px; text-align:left; display:flex; flex-direction:column; gap:10px; }
+.log-line { font-size:11px; padding:12px 18px; border-radius:6px; border:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; gap:12px; color:rgba(244,241,234,0.3); transition:all 0.5s ease; }
+.log-line .dot { width:7px; height:7px; border-radius:50%; background:currentColor; flex-shrink:0; }
+.log-line.log-done { color:var(--green); border-color:rgba(0,200,150,0.2); background:rgba(0,200,150,0.04); }
+.log-line.log-active { color:var(--paper); border-color:rgba(255,77,28,0.35); background:rgba(255,77,28,0.06); }
+.log-active .dot { animation:blink2 1s ease infinite; }
+@keyframes blink2 { 0%,100%{opacity:1;} 50%{opacity:0.15;} }
+
+/* ── PROFILE / DNA ── */
+.dna-banner { background:var(--ink); border-radius:14px; padding:28px 32px; display:flex; gap:24px; align-items:flex-start; margin:28px 0; }
+.dna-avatar { width:64px; height:64px; border-radius:50%; background:rgba(255,77,28,0.2); display:flex; align-items:center; justify-content:center; font-size:30px; flex-shrink:0; }
+.dna-name { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--paper); }
+.dna-archetype { font-size:12px; color:rgba(244,241,234,0.5); margin-top:4px; }
+.dna-code { font-family:'DM Mono',monospace; font-size:10px; color:rgba(255,77,28,0.5); margin-top:8px; letter-spacing:0.05em; }
+.dna-tags { display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+.dtag { font-size:10px; padding:3px 10px; border-radius:2px; letter-spacing:0.08em; text-transform:uppercase; border:1px solid; }
+.dtag-r { color:var(--accent); border-color:rgba(255,77,28,0.35); background:rgba(255,77,28,0.08); }
+.dtag-b { color:var(--blue); border-color:rgba(26,108,255,0.3); background:rgba(26,108,255,0.07); }
+.dtag-g { color:var(--green); border-color:rgba(0,200,150,0.3); background:rgba(0,200,150,0.07); }
+.dtag-br { color:var(--brave); border-color:rgba(251,84,43,0.3); background:rgba(251,84,43,0.07); }
+
+.metrics-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:14px; }
+.metric-card { background:var(--card); border:1.5px solid var(--border); border-radius:10px; padding:20px; }
+.metric-label { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.metric-value { font-family:'Syne',sans-serif; font-size:17px; font-weight:800; }
+.metric-bar { height:3px; background:var(--border); border-radius:2px; margin-top:10px; overflow:hidden; }
+.metric-fill { height:100%; border-radius:2px; transition:width 1.2s cubic-bezier(0.16,1,0.3,1); }
+.fill-r { background:var(--accent); }
+.fill-b { background:var(--blue); }
+.fill-g { background:var(--green); }
+.fill-p { background:var(--purple); }
+.fill-br { background:var(--brave); }
+.metric-source { font-size:9px; color:var(--brave); margin-top:4px; font-family:'Syne',sans-serif; font-weight:600; letter-spacing:0.06em; }
+
+.insights-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.insight-card { background:var(--card); border:1.5px solid var(--border); border-radius:10px; padding:20px; }
+.insight-icon { font-size:26px; margin-bottom:10px; display:block; }
+.insight-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; margin-bottom:4px; }
+.insight-body { font-size:11px; color:var(--muted); line-height:1.6; }
+.insight-evidence { font-size:10px; color:var(--brave); margin-top:6px; font-family:'Syne',sans-serif; font-weight:600; }
+
+/* ── AI ANALYSIS PANEL ── */
+.ai-panel { background:linear-gradient(135deg,#0a0a1a,#12122a); border:1.5px solid rgba(26,108,255,0.25); border-radius:16px; padding:28px; margin:24px 0; }
+.ai-panel-header { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+.ai-dot { width:10px; height:10px; border-radius:50%; background:var(--blue); animation:blink2 2s ease infinite; flex-shrink:0; }
+.ai-panel-title { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:var(--paper); }
+.ai-panel-sub { font-size:10px; color:rgba(244,241,234,0.4); letter-spacing:0.08em; }
+#ai-response { font-size:12px; color:rgba(244,241,234,0.85); line-height:1.75; min-height:80px; }
+#ai-response.loading { color:rgba(244,241,234,0.35); }
+.ai-generating { display:flex; align-items:center; gap:8px; }
+.ai-cursor { display:inline-block; width:8px; height:14px; background:var(--blue); animation:blink2 0.8s ease infinite; }
+.ai-question-btns { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; }
+.ai-q-btn { font-size:11px; padding:7px 14px; border:1px solid rgba(26,108,255,0.3); border-radius:20px; cursor:pointer; background:rgba(26,108,255,0.08); color:rgba(244,241,234,0.7); transition:all 0.2s; font-family:'DM Mono',monospace; }
+.ai-q-btn:hover { border-color:var(--blue); color:var(--paper); background:rgba(26,108,255,0.15); }
+
+/* ── ROADMAP ── */
+.roadmap-header { background:var(--ink); border-radius:14px; padding:24px 28px; margin-bottom:24px; }
+.rh-top { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
+.rh-avatar { width:52px; height:52px; border-radius:50%; background:rgba(255,77,28,0.2); display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
+.rh-name { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:var(--paper); }
+.rh-sub { font-size:11px; color:rgba(244,241,234,0.4); margin-top:3px; }
+.rh-stats { display:flex; gap:24px; flex-wrap:wrap; }
+.rh-stat-v { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--paper); }
+.rh-stat-l { font-size:10px; color:rgba(244,241,234,0.35); letter-spacing:0.1em; text-transform:uppercase; margin-top:2px; }
+.rh-confidence { display:inline-flex; align-items:center; gap:6px; font-size:10px; color:var(--green); border:1px solid rgba(0,200,150,0.3); padding:4px 10px; border-radius:3px; font-family:'Syne',sans-serif; font-weight:700; margin-top:12px; }
+
+.phase-label { font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin:28px 0 14px; display:flex; align-items:center; gap:10px; }
+.phase-label::after { content:''; flex:1; height:1px; background:var(--border); }
+.phase-evidence { font-size:10px; color:var(--brave); font-family:'Syne',sans-serif; font-weight:600; margin-top:-8px; margin-bottom:12px; padding-left:4px; }
+
+.node-row { display:flex; gap:18px; align-items:flex-start; margin-bottom:6px; }
+.node-line-col { display:flex; flex-direction:column; align-items:center; width:50px; flex-shrink:0; }
+.node-badge { width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; border:1.5px solid var(--border); background:var(--card); flex-shrink:0; transition:all 0.2s ease; }
+.node-badge:hover { transform:scale(1.08); box-shadow:0 4px 16px rgba(8,8,16,0.12); }
+.nb-yt { background:#fff2f2; border-color:rgba(255,0,0,0.15); }
+.nb-brave { background:#fff4f2; border-color:rgba(251,84,43,0.2); }
+.nb-course { background:#f2f4ff; border-color:rgba(26,108,255,0.2); }
+.nb-proj { background:#f2fff9; border-color:rgba(0,200,150,0.2); }
+.nb-leet { background:#fafffa; border-color:rgba(0,200,100,0.2); }
+.v-connector { width:2px; flex:1; min-height:20px; background:var(--border); margin:4px 0; }
+.node-card { flex:1; padding:18px 22px; border:1.5px solid var(--border); border-radius:10px; background:var(--card); cursor:pointer; transition:all 0.2s ease; margin-bottom:6px; position:relative; }
+.node-card:hover { border-color:var(--accent); transform:translateX(4px); box-shadow:0 4px 20px var(--glow-r); }
+.node-card.completed { border-color:var(--green); background:rgba(0,200,150,0.03); }
+.node-step { font-size:10px; color:var(--accent); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:6px; }
+.node-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:6px; }
+.node-desc { font-size:12px; color:var(--muted); line-height:1.55; }
+.node-chips { display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
+.chip { font-size:10px; padding:3px 9px; background:var(--paper); border:1px solid var(--border); border-radius:3px; color:var(--muted); }
+.chip-brave { background:rgba(251,84,43,0.08); border-color:rgba(251,84,43,0.3); color:var(--brave); }
+.chip-done { background:rgba(0,200,150,0.08); border-color:rgba(0,200,150,0.3); color:var(--green); }
+.node-open-btn { display:inline-flex; align-items:center; gap:6px; margin-top:14px; font-family:'Syne',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:8px 16px; border-radius:4px; border:none; cursor:pointer; background:var(--ink); color:var(--paper); transition:all 0.15s ease; }
+.node-open-btn:hover { background:var(--accent); transform:translateY(-1px); }
+.node-ai-btn { display:inline-flex; align-items:center; gap:6px; margin-top:8px; margin-left:8px; font-family:'Syne',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:8px 16px; border-radius:4px; border:none; cursor:pointer; background:linear-gradient(135deg,var(--blue),var(--purple)); color:white; transition:all 0.15s ease; }
+.node-ai-btn:hover { opacity:0.9; transform:translateY(-1px); }
+
+/* ── BRAVE INTELLIGENCE PANEL ── */
+.brave-intel { background:linear-gradient(135deg,rgba(251,84,43,0.06),rgba(255,77,28,0.03)); border:1.5px solid rgba(251,84,43,0.2); border-radius:14px; padding:24px; margin:24px 0; }
+.brave-intel-header { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+.brave-icon { font-size:20px; }
+.brave-intel-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; }
+.brave-intel-sub { font-size:10px; color:var(--brave); letter-spacing:0.1em; }
+.brave-search-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; }
+.brave-search-item { background:var(--card); border:1.5px solid var(--border); border-radius:8px; padding:14px; }
+.bsi-category { font-size:10px; color:var(--brave); letter-spacing:0.1em; text-transform:uppercase; font-family:'Syne',sans-serif; font-weight:700; margin-bottom:6px; }
+.bsi-count { font-family:'Syne',sans-serif; font-size:24px; font-weight:800; }
+.bsi-label { font-size:10px; color:var(--muted); margin-top:2px; }
+.bsi-bar { height:2px; background:var(--border); border-radius:1px; margin-top:8px; overflow:hidden; }
+.bsi-fill { height:100%; background:var(--brave); border-radius:1px; }
+
+/* ── MODAL ── */
+.modal-overlay { position:fixed; inset:0; z-index:2000; background:rgba(8,8,16,0.72); backdrop-filter:blur(8px); display:flex; align-items:flex-end; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.25s ease; }
+.modal-overlay.open { opacity:1; pointer-events:all; }
+.modal-sheet { width:100%; max-width:680px; background:var(--card); border-radius:20px 20px 0 0; padding:0 0 32px; transform:translateY(40px); transition:transform 0.35s cubic-bezier(0.16,1,0.3,1); max-height:92vh; overflow-y:auto; }
+.modal-overlay.open .modal-sheet { transform:translateY(0); }
+.modal-handle { width:40px; height:4px; border-radius:2px; background:var(--border); margin:14px auto 0; }
+.modal-header { padding:20px 28px 0; }
+.modal-platform-badge { display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; padding:5px 14px; border-radius:3px; margin-bottom:14px; font-family:'Syne',sans-serif; font-weight:700; border:1px solid; }
+.modal-title { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; line-height:1.2; margin-bottom:8px; }
+.modal-evidence { font-size:11px; color:var(--brave); padding:8px 14px; background:rgba(251,84,43,0.06); border:1px solid rgba(251,84,43,0.2); border-radius:6px; margin:12px 28px; font-family:'Syne',sans-serif; font-weight:600; }
+.modal-why { font-size:12px; color:var(--muted); line-height:1.65; margin-bottom:20px; padding:0 28px; }
+.modal-divider { height:1px; background:var(--border); margin:0 28px 20px; }
+.modal-links { padding:0 28px; display:flex; flex-direction:column; gap:10px; }
+.modal-link-btn { display:flex; align-items:center; gap:14px; padding:16px 20px; border-radius:10px; border:1.5px solid var(--border); cursor:pointer; transition:all 0.18s ease; text-decoration:none; color:var(--ink); background:var(--paper); }
+.modal-link-btn:hover { border-color:var(--accent); background:rgba(255,77,28,0.04); transform:translateX(4px); }
+.modal-link-icon { font-size:26px; flex-shrink:0; }
+.modal-link-info { flex:1; }
+.modal-link-name { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; }
+.modal-link-url { font-size:11px; color:var(--muted); margin-top:2px; }
+.modal-link-arrow { font-size:18px; color:var(--muted); }
+.modal-link-btn:hover .modal-link-arrow { color:var(--accent); }
+.modal-note { margin:16px 28px 0; padding:14px 18px; background:rgba(255,77,28,0.06); border:1px solid rgba(255,77,28,0.2); border-radius:8px; font-size:12px; color:var(--ink); line-height:1.6; }
+.modal-note strong { color:var(--accent); }
+.modal-close { position:absolute; top:18px; right:22px; font-size:22px; cursor:pointer; color:var(--muted); background:none; border:none; }
+.modal-ai-section { margin:20px 28px 0; background:linear-gradient(135deg,rgba(26,108,255,0.05),rgba(139,92,246,0.05)); border:1.5px solid rgba(26,108,255,0.15); border-radius:12px; padding:18px; }
+.modal-ai-title { font-family:'Syne',sans-serif; font-size:12px; font-weight:700; color:var(--blue); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+#modal-ai-text { font-size:12px; color:var(--muted); line-height:1.65; }
+
+/* ── PROGRESS ── */
+.progress-hero { background:var(--ink); border-radius:14px; padding:28px 32px; margin-bottom:24px; }
+.prog-title { font-family:'Syne',sans-serif; font-size:24px; font-weight:800; color:var(--paper); margin-bottom:4px; }
+.prog-sub { font-size:12px; color:rgba(244,241,234,0.4); margin-bottom:20px; }
+.big-ring-wrap { display:flex; align-items:center; gap:32px; }
+.big-ring { position:relative; width:110px; height:110px; flex-shrink:0; }
+.big-ring svg { transform:rotate(-90deg); }
+.big-ring-num { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-size:26px; font-weight:800; color:var(--paper); }
+.prog-metrics { display:flex; flex-direction:column; gap:12px; flex:1; }
+.pm-row { display:flex; align-items:center; gap:12px; }
+.pm-label { font-size:11px; color:rgba(244,241,234,0.5); width:100px; flex-shrink:0; }
+.pm-bar-wrap { flex:1; height:4px; background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden; }
+.pm-bar { height:100%; border-radius:2px; }
+.pm-val { font-size:11px; color:var(--paper); width:32px; text-align:right; font-family:'Syne',sans-serif; font-weight:600; }
+.milestone-row { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+.milestone { display:flex; gap:16px; align-items:flex-start; padding:16px 20px; border:1.5px solid var(--border); border-radius:10px; background:var(--card); transition:all 0.2s ease; cursor:pointer; }
+.milestone:hover { border-color:var(--muted); }
+.milestone.ms-done { border-color:var(--green); background:rgba(0,200,150,0.03); }
+.milestone.ms-active { border-color:var(--accent); background:rgba(255,77,28,0.04); box-shadow:0 0 0 3px var(--glow-r); }
+.ms-icon { width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px; background:var(--paper); flex-shrink:0; }
+.ms-body { flex:1; }
+.ms-name { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; }
+.ms-desc { font-size:11px; color:var(--muted); margin-top:3px; }
+.ms-bar-wrap { height:3px; background:var(--border); border-radius:2px; margin-top:10px; overflow:hidden; }
+.ms-bar { height:100%; border-radius:2px; background:var(--accent); transition:width 1s ease; }
+.milestone.ms-done .ms-bar { background:var(--green); }
+.ms-right { display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
+.ms-pct { font-family:'Syne',sans-serif; font-size:15px; font-weight:800; }
+.ms-time { font-size:10px; color:var(--muted); }
+.ms-badge { font-size:10px; padding:3px 9px; border-radius:3px; font-family:'Syne',sans-serif; font-weight:600; letter-spacing:0.06em; }
+.badge-done { background:rgba(0,200,150,0.1); color:var(--green); }
+.badge-active { background:rgba(255,77,28,0.1); color:var(--accent); }
+.badge-locked { background:var(--paper); color:var(--muted); border:1px solid var(--border); }
+.streak-card { background:linear-gradient(135deg,var(--ink) 0%,#1a1a2e 100%); border-radius:12px; padding:22px 26px; display:flex; align-items:center; gap:20px; margin-bottom:14px; }
+.streak-num { font-family:'Syne',sans-serif; font-size:52px; font-weight:800; color:var(--accent); line-height:1; }
+.streak-info-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:var(--paper); }
+.streak-info-sub { font-size:11px; color:rgba(244,241,234,0.4); margin-top:4px; }
+.week-dots { display:flex; gap:6px; margin-top:12px; }
+.wd { width:28px; height:28px; border-radius:6px; background:rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center; font-size:9px; color:rgba(244,241,234,0.3); font-family:'Syne',sans-serif; font-weight:700; }
+.wd.done { background:rgba(255,77,28,0.25); color:var(--accent); }
+.wd.today { background:var(--accent); color:white; }
+
+/* ── DASHBOARD ── */
+.dash-grid { display:grid; grid-template-columns:2fr 1fr; gap:20px; margin-top:28px; }
+.dash-left { display:flex; flex-direction:column; gap:20px; }
+.dash-right { display:flex; flex-direction:column; gap:20px; }
+.dash-card { background:var(--card); border:1.5px solid var(--border); border-radius:12px; padding:22px; }
+.dash-card-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; }
+.dash-card-title span { font-size:10px; color:var(--accent); letter-spacing:0.08em; cursor:pointer; font-family:'DM Mono',monospace; }
+.today-task { display:flex; gap:14px; align-items:flex-start; padding:14px 16px; border:1.5px solid var(--border); border-radius:8px; margin-bottom:8px; cursor:pointer; transition:all 0.15s ease; }
+.today-task:hover { border-color:var(--accent); background:rgba(255,77,28,0.02); }
+.today-task.tt-done { border-color:var(--green); opacity:0.65; }
+.tt-check { width:20px; height:20px; border-radius:50%; border:2px solid var(--border); flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; font-size:10px; cursor:pointer; transition:all 0.15s; }
+.today-task.tt-done .tt-check { background:var(--green); border-color:var(--green); color:white; }
+.tt-icon { font-size:20px; flex-shrink:0; }
+.tt-body { flex:1; }
+.tt-name { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; }
+.tt-sub { font-size:11px; color:var(--muted); margin-top:2px; }
+.tt-right { display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
+.tt-dur { font-size:10px; color:var(--muted); }
+.mini-chart { height:64px; display:flex; align-items:flex-end; gap:5px; padding:4px 0; }
+.bar-c { flex:1; border-radius:3px 3px 0 0; background:var(--border); position:relative; overflow:hidden; min-height:4px; transition:height 0.5s ease; }
+.bar-c.active { background:var(--accent); }
+.bar-c.today { background:var(--ink); }
+.chart-labels { display:flex; gap:5px; }
+.chart-labels div { flex:1; text-align:center; font-size:9px; color:var(--muted); font-family:'DM Mono',monospace; }
+.ai-nudge { background:linear-gradient(135deg,rgba(26,108,255,0.07),rgba(0,200,150,0.07)); border:1.5px solid rgba(26,108,255,0.2); border-radius:10px; padding:18px; }
+.nudge-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.nudge-dot { width:8px; height:8px; border-radius:50%; background:var(--blue); animation:blink2 2s ease infinite; }
+.nudge-label { font-size:10px; color:var(--blue); letter-spacing:0.15em; text-transform:uppercase; font-family:'Syne',sans-serif; font-weight:700; }
+.nudge-text { font-size:12px; color:var(--ink); line-height:1.65; }
+.skill-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.skill-name { font-size:12px; width:100px; flex-shrink:0; }
+.skill-bar-w { flex:1; height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+.skill-bar-f { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--accent),var(--blue)); transition:width 1.2s cubic-bezier(0.16,1,0.3,1); }
+.skill-pct { font-size:11px; font-family:'Syne',sans-serif; font-weight:700; width:34px; text-align:right; }
+.leaderboard-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+.leaderboard-row:last-child { border-bottom:none; }
+.lb-rank { font-family:'Syne',sans-serif; font-size:13px; font-weight:800; width:20px; color:var(--muted); }
+.lb-rank.gold { color:var(--gold); }
+.lb-ava { width:32px; height:32px; border-radius:50%; background:var(--paper); display:flex; align-items:center; justify-content:center; font-size:15px; }
+.lb-name { flex:1; font-family:'Syne',sans-serif; font-size:13px; font-weight:600; }
+.lb-pts { font-size:12px; color:var(--muted); }
+.lb-pts strong { color:var(--ink); font-family:'Syne',sans-serif; }
+
+/* ── YT INTEL ── */
+.yt-section { margin-bottom:24px; }
+.yt-section-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.cat-bars { display:flex; flex-direction:column; gap:10px; }
+.cat-row { display:flex; align-items:center; gap:12px; }
+.cat-name { font-size:11px; width:140px; flex-shrink:0; }
+.cat-bar-w { flex:1; height:8px; background:var(--border); border-radius:4px; overflow:hidden; }
+.cat-bar-f { height:100%; border-radius:4px; background:var(--accent); }
+.cat-pct { font-size:11px; font-family:'Syne',sans-serif; font-weight:700; width:36px; text-align:right; }
+.channel-list { display:flex; flex-direction:column; gap:8px; }
+.channel-row { display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--card); border:1px solid var(--border); border-radius:8px; }
+.ch-name { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; flex:1; }
+.ch-count { font-size:11px; color:var(--accent); font-family:'Syne',sans-serif; font-weight:700; }
+.ch-focus { font-size:10px; color:var(--muted); }
+.pred-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+.pred-card { background:var(--card); border:1.5px solid var(--border); border-radius:10px; padding:18px; text-align:center; cursor:pointer; transition:all 0.2s; }
+.pred-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+.pred-pct { font-family:'Syne',sans-serif; font-size:28px; font-weight:800; }
+.pred-goal { font-size:11px; color:var(--muted); margin-top:4px; }
+
+@media (max-width:640px) {
+  .dash-grid { grid-template-columns:1fr; }
+  .metrics-grid { grid-template-columns:1fr 1fr; }
+  .insights-grid { grid-template-columns:1fr; }
+  .options-grid { grid-template-columns:1fr; }
+  .pred-grid { grid-template-columns:1fr 1fr; }
+  .brave-search-grid { grid-template-columns:repeat(2,1fr); }
+}
+
+/* ── SWITCH PROFILE FLOATING BAR ── */
+.switch-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;gap:10px;background:rgba(244,241,234,.94);backdrop-filter:blur(20px);border:1.5px solid rgba(30,28,24,.12);border-radius:100px;padding:8px 10px 8px 18px;box-shadow:0 10px 40px rgba(0,0,0,.12)}
+.switch-bar-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.switch-btn{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:100px;border:1.5px solid rgba(232,93,10,.3);background:rgba(232,93,10,.08);color:#e85d0a;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap}
+.switch-btn:hover{background:rgba(232,93,10,.18);border-color:rgba(232,93,10,.5);transform:translateY(-1px)}
+.home-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:100px;border:1.5px solid rgba(30,28,24,.15);background:transparent;color:var(--ink);font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap}
+.home-btn:hover{background:rgba(30,28,24,.06);border-color:rgba(30,28,24,.25)}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav" id="topnav" style="display:none;">
+  <div class="logo" onclick="goTo('s-landing')">Hyper<span>Path</span> <span class="version">v5</span></div>
+  <div class="nav-steps" id="nav-steps">
+    <div class="nav-step" id="ns1"></div>
+    <div class="nav-step" id="ns2"></div>
+    <div class="nav-step" id="ns3"></div>
+    <div class="nav-step" id="ns4"></div>
+    <div class="nav-step" id="ns5"></div>
+    <div class="nav-step" id="ns6"></div>
+    <div class="nav-step" id="ns7"></div>
+  </div>
+  <div class="nav-right">
+    <div class="brave-badge">🦁 Brave Integrated</div>
+    <div class="nav-avatar" id="nav-avatar" onclick="goTo('s-dashboard')">G</div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════ SCREEN 1: LANDING ═══ -->
+<div class="screen active" id="s-landing">
+  <div class="land-grid"></div>
+  <div class="land-glow"></div>
+  <div class="land-content">
+    <div class="land-badge">🧬 Brave History + YouTube + AI Analysis Engine</div>
+    <h1 class="land-title">Every Mind<br>Needs Its Own<br><span class="em">Path.</span></h1>
+    <p class="land-sub">HyperPath v5 now reads your Brave browser history — 6,120 URLs, 15,321 visits, 959 searches — and cross-references with your YouTube data to build the most accurate learning profile possible.</p>
+    <div class="land-cta-row">
+      <button class="btn btn-accent" onclick="goTo('s-goal')">Start My Journey →</button>
+      <button class="btn btn-ghost" onclick="goTo('s-dashboard')" style="color:rgba(244,241,234,0.6);border-color:rgba(244,241,234,0.15);">View Dashboard</button>
+    </div>
+    <div class="land-stats">
+      <div><div class="land-stat-n">6,120</div><div class="land-stat-l">URLs Analysed</div></div>
+      <div><div class="land-stat-n">959</div><div class="land-stat-l">Searches Mapped</div></div>
+      <div><div class="land-stat-n">361</div><div class="land-stat-l">YouTube Videos</div></div>
+      <div><div class="land-stat-n">97%</div><div class="land-stat-l">Confidence Score</div></div>
+    </div>
+    <div class="land-data-pills">
+      <div class="data-pill active">🦁 Brave Browser</div>
+      <div class="data-pill active">🎥 YouTube</div>
+      <div class="data-pill active">🤖 AI Analysis</div>
+      <div class="data-pill">📊 Kaggle Verified</div>
+      <div class="data-pill">💻 LeetCode Verified</div>
+      <div class="data-pill">🏗️ Local Projects</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN 2: GOAL ═══ -->
+<div class="screen" id="s-goal">
+  <div class="page">
+    <div class="section-eyebrow">Step 01 — Your Goal</div>
+    <h2 class="section-title">What do you want to <em>master?</em></h2>
+    <p class="section-sub">Brave history evidence is shown for each goal — your browser already revealed your real interests.</p>
+
+    <div class="goal-grid">
+      <div class="goal-card" onclick="pickGoal(this,'Python Programming')">
+        <div class="goal-check">✓</div>
+        <span class="goal-card-icon">🐍</span>
+        <div class="goal-card-name">Python Programming</div>
+        <div class="goal-card-desc">From zero to writing real code that works</div>
+        <div class="goal-card-evidence">🦁 55 Python Brave searches · Flask debugger active</div>
+      </div>
+      <div class="goal-card picked" onclick="pickGoal(this,'Machine Learning')">
+        <div class="goal-check">✓</div>
+        <span class="goal-card-icon">🤖</span>
+        <div class="goal-card-name">Machine Learning</div>
+        <div class="goal-card-desc">Understand & build AI models</div>
+        <div class="goal-card-evidence">🦁 203 Kaggle visits · 39 Jupyter sessions</div>
+      </div>
+      <div class="goal-card" onclick="pickGoal(this,'Data Science')">
+        <div class="goal-check">✓</div>
+        <span class="goal-card-icon">📊</span>
+        <div class="goal-card-name">Data Science</div>
+        <div class="goal-card-desc">Find stories hidden inside numbers</div>
+        <div class="goal-card-evidence">🦁 Kaggle + Jupyter + CampusX confirmed</div>
+      </div>
+      <div class="goal-card" onclick="pickGoal(this,'Web Development')">
+        <div class="goal-check">✓</div>
+        <span class="goal-card-icon">🌐</span>
+        <div class="goal-card-name">Web Development</div>
+        <div class="goal-card-desc">Build real websites and web apps</div>
+        <div class="goal-card-evidence">🦁 Anime_One app (1538 visits!) · Flask running</div>
+      </div>
+      <div class="goal-card" onclick="pickGoal(this,'DSA')">
+        <div class="goal-check">✓</div>
+        <span class="goal-card-icon">⚡</span>
+        <div class="goal-card-name">DSA / Interviews</div>
+        <div class="goal-card-desc">Crack Google, Amazon, Microsoft</div>
+        <div class="goal-card-evidence">🦁 82 DSA searches · LeetCode 47 visits</div>
+      </div>
+      <div class="goal-card" onclick="pickGoal(this,'UI/UX Design')">
+        <div class="goal-check">✓</div>
+        <span class="goal-card-icon">🎨</span>
+        <div class="goal-card-name">UI/UX Design</div>
+        <div class="goal-card-desc">Design digital experiences</div>
+        <div class="goal-card-evidence">🦁 CSS/HTML searches detected</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;">
+      <button class="btn btn-fill" onclick="goTo('s-connect')">Continue →</button>
+      <button class="btn btn-ghost" onclick="goTo('s-landing')">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN 3: CONNECT ═══ -->
+<div class="screen" id="s-connect">
+  <div class="page">
+    <div class="section-eyebrow">Step 02 — Your Digital Footprint</div>
+    <h2 class="section-title">Connect your <em>digital life</em></h2>
+    <p class="section-sub">Both Brave browser history and YouTube history are already integrated — cross-referenced for maximum accuracy.</p>
+
+    <div class="connect-list">
+      <div class="connect-item brave-linked" style="cursor:pointer;" onclick="goTo('s-brave-intel')">
+        <div class="connect-icon">🦁</div>
+        <div class="connect-info">
+          <div class="connect-name">Brave Browser History</div>
+          <div class="connect-desc" style="color:var(--brave);font-weight:600;">6,120 URLs · 15,321 visits · 959 searches · 145 downloads — <strong>View Brave Analysis →</strong></div>
+          <div class="connect-evidence">localhost:3000 (Anime_One), Kaggle 203 visits, LeetCode 47, Flask debugger 27, Jupyter 39</div>
+        </div>
+        <div class="connect-status status-brave">✓ Integrated</div>
+      </div>
+      <div class="connect-item linked" onclick="goTo('s-yt-intel')" style="cursor:pointer;">
+        <div class="connect-icon">🎥</div>
+        <div class="connect-info">
+          <div class="connect-name">YouTube History</div>
+          <div class="connect-desc">361 videos · DSA 29% · ML 23% · Python 9% — <strong style="color:var(--green)">View YouTube Analysis →</strong></div>
+          <div class="connect-evidence">CampusX 85 vids · Striver 55 vids · Day 34 ML confirmed</div>
+        </div>
+        <div class="connect-status status-linked">✓ Linked</div>
+      </div>
+      <div class="connect-item linked" onclick="toggleConnect(this)">
+        <div class="connect-icon">🤖</div>
+        <div class="connect-info">
+          <div class="connect-name">Claude AI Sessions</div>
+          <div class="connect-desc">28 Claude.ai visits detected in Brave history — project building pattern</div>
+          <div class="connect-evidence">3 Claude chat archives downloaded — Prj.zip, hyperpath downloads</div>
+        </div>
+        <div class="connect-status status-linked">✓ Auto-detected</div>
+      </div>
+      <div class="connect-item" onclick="toggleConnect(this)">
+        <div class="connect-icon">📱</div>
+        <div class="connect-info">
+          <div class="connect-name">Instagram / Reels</div>
+          <div class="connect-desc">Short-form content absorption patterns</div>
+        </div>
+        <div class="connect-status status-connect">Connect</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;">
+      <button class="btn btn-fill" onclick="goTo('s-test')">Continue with 3 Sources →</button>
+      <button class="btn btn-ghost" onclick="goTo('s-goal')">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN 4: TEST ═══ -->
+<div class="screen" id="s-test">
+  <div class="page">
+    <div class="section-eyebrow">Step 03 — Cognitive Calibration</div>
+    <h2 class="section-title">How does your <em>mind</em> work?</h2>
+    <p class="section-sub">4 quick questions to validate what Brave already revealed about your learning style.</p>
+
+    <div class="test-progress-bar"><div class="test-progress-fill" id="test-fill" style="width:50%"></div></div>
+
+    <div class="question-card">
+      <div class="q-tag">Q1 — Brave confirms you build projects. When you hit a bug...</div>
+      <div class="q-headline">When stuck (like your Flask 'firstName' bug), you...</div>
+      <div class="options-grid">
+        <div class="opt sel" onclick="selOpt(this,1)">Search specifically ("UnboundLocalError python scope")</div>
+        <div class="opt" onclick="selOpt(this,1)">Watch a video on the full topic</div>
+        <div class="opt" onclick="selOpt(this,1)">Ask Claude/ChatGPT directly</div>
+        <div class="opt" onclick="selOpt(this,1)">Check documentation</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-tag">Q2 — Language Comfort (Brave: Hindi channels dominate)</div>
+      <div class="q-headline">You prefer technical explanations in...</div>
+      <div class="options-grid">
+        <div class="opt" onclick="selOpt(this,2)">English only</div>
+        <div class="opt sel" onclick="selOpt(this,2)">Hindi first, then English docs</div>
+        <div class="opt" onclick="selOpt(this,2)">Bilingual (both equally)</div>
+        <div class="opt" onclick="selOpt(this,2)">English with Hindi mental translation</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-tag">Q3 — Brave shows 1538 anime app visits. Your projects are...</div>
+      <div class="q-headline">You build things you actually care about because...</div>
+      <div class="options-grid">
+        <div class="opt sel" onclick="selOpt(this,3)">Passion projects keep me motivated through bugs</div>
+        <div class="opt" onclick="selOpt(this,3)">Generic projects are fine — practice is practice</div>
+        <div class="opt" onclick="selOpt(this,3)">I follow tutorials regardless of topic</div>
+        <div class="opt" onclick="selOpt(this,3)">I need external accountability</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-tag">Q4 — Pattern: IQ Indicator</div>
+      <div class="q-headline">Which number comes next? 2, 6, 12, 20, 30, ___</div>
+      <div class="options-grid">
+        <div class="opt" onclick="selOpt(this,4)">38</div>
+        <div class="opt sel" onclick="selOpt(this,4)">42</div>
+        <div class="opt" onclick="selOpt(this,4)">36</div>
+        <div class="opt" onclick="selOpt(this,4)">40</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;">
+      <button class="btn btn-accent" onclick="startAnalyze()">Analyze with AI →</button>
+      <button class="btn btn-ghost" onclick="goTo('s-connect')">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN 5: ANALYZING ═══ -->
+<div class="screen" id="s-analyzing" style="background:var(--ink);align-items:center;justify-content:center;text-align:center;">
+  <div>
+    <div class="dna-ring">
+      <div class="spin-dot"></div>
+      <div class="dna-emoji">🧬</div>
+    </div>
+    <h2 class="analyzing-title">Cross-Referencing Your Digital DNA</h2>
+    <p class="analyzing-sub">Brave history + YouTube + AI synthesis · 15,321 data points</p>
+    <div class="log-stream" id="log-stream">
+      <div class="log-line log-done" id="lg1"><div class="dot"></div>Brave: 6,120 URLs · 959 searches · 15,321 visits parsed</div>
+      <div class="log-line log-done" id="lg2"><div class="dot"></div>YouTube: 361 videos · 8 channels · DSA/ML patterns identified</div>
+      <div class="log-line log-active" id="lg3"><div class="dot"></div>Cross-referencing: Kaggle + Jupyter + LeetCode confirmed active</div>
+      <div class="log-line" id="lg4"><div class="dot"></div>Project detection: Anime_One (1538 visits) + Flask debugger found</div>
+      <div class="log-line" id="lg5"><div class="dot"></div>Search gap analysis: 82 DSA vs 40 ML → pain point mapped</div>
+      <div class="log-line" id="lg6"><div class="dot"></div>AI roadmap synthesis: Brave evidence integrated into path</div>
+      <div class="log-line" id="lg7"><div class="dot"></div>Confidence scoring: 97% alignment across all data sources</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN 6: PROFILE ═══ -->
+<div class="screen" id="s-profile">
+  <div class="page">
+    <div class="section-eyebrow">Step 04 — Your Learning DNA</div>
+    <h2 class="section-title">You are a <em>Full-Stack ML Builder</em></h2>
+    <p class="section-sub">Built from 6,120 Brave URLs + 361 YouTube videos + cognitive responses. Brave confirmed what YouTube suggested.</p>
+
+    <div class="dna-banner">
+      <div class="dna-avatar">🧑‍💻</div>
+      <div style="flex:1;">
+        <div class="dna-name">Gaurav Jain</div>
+        <div class="dna-archetype">Full-Stack Learner → ML/DSA Hybrid Builder · Self-Directed · Project-Proven</div>
+        <div class="dna-code">DNA: DSA-ACTIVE · ML-PRACTITIONER · WEB-BUILDER · HINDI-EN · ANIME-CULTURE · BINGE-SERIAL</div>
+        <div class="dna-tags">
+          <span class="dtag dtag-r">Interview-Focused</span>
+          <span class="dtag dtag-g">Project Builder</span>
+          <span class="dtag dtag-b">Hindi-comfortable</span>
+          <span class="dtag dtag-br">Brave Verified</span>
+          <span class="dtag dtag-r">Serial Learner</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brave Metrics -->
+    <div style="font-size:10px;color:var(--brave);letter-spacing:0.15em;text-transform:uppercase;font-family:'Syne',sans-serif;font-weight:700;margin-bottom:12px;">🦁 BRAVE BROWSER EVIDENCE</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Local Projects</div>
+        <div class="metric-value">3 apps built</div>
+        <div class="metric-source">🦁 Anime_One, HyperPath, Anime Nav</div>
+        <div class="metric-bar"><div class="metric-fill fill-g" style="width:90%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Kaggle Activity</div>
+        <div class="metric-value">203 visits</div>
+        <div class="metric-source">🦁 #7 most visited site</div>
+        <div class="metric-bar"><div class="metric-fill fill-b" style="width:75%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Search Intensity</div>
+        <div class="metric-value">959 queries</div>
+        <div class="metric-source">🦁 DSA 82 · Tools 72 · Web 69</div>
+        <div class="metric-bar"><div class="metric-fill fill-r" style="width:88%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Dev Stack</div>
+        <div class="metric-value">Flask + Jupyter</div>
+        <div class="metric-source">🦁 localhost:5678 + 8888 confirmed</div>
+        <div class="metric-bar"><div class="metric-fill fill-p" style="width:65%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">DSA Practice</div>
+        <div class="metric-value">LeetCode active</div>
+        <div class="metric-source">🦁 47 visits confirmed</div>
+        <div class="metric-bar"><div class="metric-fill fill-r" style="width:72%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">AI Tool Adoption</div>
+        <div class="metric-value">Claude: 28 visits</div>
+        <div class="metric-source">🦁 3 project chats downloaded</div>
+        <div class="metric-bar"><div class="metric-fill fill-b" style="width:60%"></div></div>
+      </div>
+    </div>
+
+    <!-- Cross-source Insights -->
+    <div style="font-size:10px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;font-family:'Syne',sans-serif;font-weight:700;margin:24px 0 12px;">🔗 CROSS-SOURCE INTELLIGENCE (Brave × YouTube)</div>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <span class="insight-icon">🏗️</span>
+        <div class="insight-title">You BUILD — Brave proves it</div>
+        <div class="insight-body">Anime_One app = 1538 local visits. HyperPath prototype = 432 visits. You're not just watching — you're shipping. Most learners only watch tutorials.</div>
+        <div class="insight-evidence">🦁 127.0.0.1:3000 top domain in Brave</div>
+      </div>
+      <div class="insight-card">
+        <span class="insight-icon">🔍</span>
+        <div class="insight-title">Search gaps = real pain points</div>
+        <div class="insight-body">82 DSA searches + 72 Tools/Setup searches vs 40 ML searches. You struggle more with tooling (pip, deployment, config) than ML theory.</div>
+        <div class="insight-evidence">🦁 959 searches categorized</div>
+      </div>
+      <div class="insight-card">
+        <span class="insight-icon">📊</span>
+        <div class="insight-title">Kaggle + Jupyter = hands-on ML</div>
+        <div class="insight-body">203 Kaggle visits + 39 Jupyter sessions. You downloaded CampusX Day 34 datasets. You're executing ML code, not just watching it.</div>
+        <div class="insight-evidence">🦁 messages.csv + orders.csv downloaded</div>
+      </div>
+      <div class="insight-card">
+        <span class="insight-icon">🧩</span>
+        <div class="insight-title">Flask app in production-debug mode</div>
+        <div class="insight-body">Flask debugger at localhost:5678 visited 27 times. You're beyond tutorials — you're building real Flask apps and debugging real errors.</div>
+        <div class="insight-evidence">🦁 'UnboundLocalError: firstName' confirmed</div>
+      </div>
+    </div>
+
+    <!-- AI Analysis Panel -->
+    <div class="ai-panel" style="margin-top:24px;">
+      <div class="ai-panel-header">
+        <div class="ai-dot"></div>
+        <div>
+          <div class="ai-panel-title">🤖 AI Roadmap Intelligence — Ask Anything</div>
+          <div class="ai-panel-sub">POWERED BY CLAUDE · BRAVE + YOUTUBE DATA INTEGRATED</div>
+        </div>
+      </div>
+      <div id="ai-response">Click a question below to get AI-powered insights about your profile, or ask anything about your learning path...</div>
+      <div class="ai-question-btns">
+        <button class="ai-q-btn" onclick="askAI('What should I focus on first based on my Brave history and YouTube data?')">What to focus on first?</button>
+        <button class="ai-q-btn" onclick="askAI('What does my Brave history reveal that my YouTube history doesnt show?')">What Brave reveals?</button>
+        <button class="ai-q-btn" onclick="askAI('I built the Anime_One app. How should I upgrade it to use ML/AI?')">Upgrade Anime_One with ML?</button>
+        <button class="ai-q-btn" onclick="askAI('I have 82 DSA searches but only watched 40 ML videos on ML. What does this gap mean for my learning path?')">Why 82 DSA searches?</button>
+        <button class="ai-q-btn" onclick="askAI('Im using Flask (27 debugger visits) and Jupyter (39 visits). Whats the fastest path to deploying an ML web app?')">Flask + ML deployment?</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:24px;">
+      <button class="btn btn-accent" onclick="buildAndShowRoadmap()">Generate My Roadmap →</button>
+      <button class="btn btn-ghost" onclick="goTo('s-yt-intel')">View YouTube Intel</button>
+      <button class="btn btn-ghost" onclick="goTo('s-brave-intel')">View Brave Intel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN 7: ROADMAP ═══ -->
+<div class="screen" id="s-roadmap">
+  <div class="page">
+    <div class="section-eyebrow">Step 05 — Your AI-Generated Roadmap</div>
+    <h2 class="section-title" id="rm-main-title">Your <em>Personalised</em> Path</h2>
+    <p class="section-sub">Every resource selected based on cross-referenced Brave + YouTube evidence. Confidence: 97%.</p>
+
+    <div class="roadmap-header">
+      <div class="rh-top">
+        <div class="rh-avatar">🧑‍💻</div>
+        <div>
+          <div class="rh-name" id="rm-name">Gaurav Jain</div>
+          <div class="rh-sub" id="rm-sub">ML Mastery Path · Brave + YouTube Confirmed</div>
+        </div>
+      </div>
+      <div class="rh-stats" id="rm-stats"></div>
+      <div class="rh-confidence">✓ 97% Confidence — Brave + YouTube cross-referenced</div>
+    </div>
+
+    <div id="roadmap-phases"></div>
+
+    <!-- AI Roadmap Analysis -->
+    <div class="ai-panel" style="margin-top:32px;">
+      <div class="ai-panel-header">
+        <div class="ai-dot"></div>
+        <div>
+          <div class="ai-panel-title">🤖 AI Roadmap Advisor</div>
+          <div class="ai-panel-sub">ASK ABOUT YOUR SPECIFIC ROADMAP</div>
+        </div>
+      </div>
+      <div id="ai-roadmap-response">Ask about your roadmap, timeline adjustments, or next immediate action...</div>
+      <div class="ai-question-btns">
+        <button class="ai-q-btn" onclick="askRoadmapAI('What is my single most important next action this week?')">Next action this week?</button>
+        <button class="ai-q-btn" onclick="askRoadmapAI('How long will this roadmap take if I study 2 hours per day?')">Time estimate (2hrs/day)?</button>
+        <button class="ai-q-btn" onclick="askRoadmapAI('Which phase should I skip or compress given my existing knowledge?')">What can I skip?</button>
+        <button class="ai-q-btn" onclick="askRoadmapAI('How do I know when Im ready to move to the next phase?')">How to know I'm ready?</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:24px;">
+      <button class="btn btn-fill" onclick="goTo('s-progress')">Track Progress →</button>
+      <button class="btn btn-ghost" onclick="goTo('s-profile')">← Profile</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN 8: BRAVE INTEL ═══ -->
+<div class="screen" id="s-brave-intel">
+  <div class="page-wide">
+    <div class="section-eyebrow">🦁 Brave Browser Intelligence — 6,120 URLs Analysed</div>
+    <h2 class="section-title">Your <em>Browser</em> Story</h2>
+    <p class="section-sub">What your Brave browser history reveals about who you really are as a learner — beyond what you watch.</p>
+
+    <!-- Search Categories -->
+    <div class="brave-intel" style="margin-top:28px;">
+      <div class="brave-intel-header">
+        <div class="brave-icon">🔍</div>
+        <div>
+          <div class="brave-intel-title">Search Behaviour — 959 Queries Categorized</div>
+          <div class="brave-intel-sub">HOW YOU ACTUALLY THINK WHEN STUCK</div>
+        </div>
+      </div>
+      <div class="brave-search-grid">
+        <div class="brave-search-item">
+          <div class="bsi-category">DSA</div>
+          <div class="bsi-count">82</div>
+          <div class="bsi-label">searches · highest category</div>
+          <div class="bsi-bar"><div class="bsi-fill" style="width:85%"></div></div>
+        </div>
+        <div class="brave-search-item">
+          <div class="bsi-category">Tools/Setup</div>
+          <div class="bsi-count">72</div>
+          <div class="bsi-label">searches · pip, deploy, config</div>
+          <div class="bsi-bar"><div class="bsi-fill" style="width:75%"></div></div>
+        </div>
+        <div class="brave-search-item">
+          <div class="bsi-category">Web Dev</div>
+          <div class="bsi-count">69</div>
+          <div class="bsi-label">searches · HTML/CSS/API</div>
+          <div class="bsi-bar"><div class="bsi-fill" style="width:72%"></div></div>
+        </div>
+        <div class="brave-search-item">
+          <div class="bsi-category">Python</div>
+          <div class="bsi-count">55</div>
+          <div class="bsi-label">searches · operators, pandas</div>
+          <div class="bsi-bar"><div class="bsi-fill" style="width:57%"></div></div>
+        </div>
+        <div class="brave-search-item">
+          <div class="bsi-category">ML</div>
+          <div class="bsi-count">40</div>
+          <div class="bsi-label">searches · tensors, models</div>
+          <div class="bsi-bar"><div class="bsi-fill" style="width:42%"></div></div>
+        </div>
+        <div class="brave-search-item">
+          <div class="bsi-category">Database</div>
+          <div class="bsi-count">7</div>
+          <div class="bsi-label">searches · SQL basics</div>
+          <div class="bsi-bar"><div class="bsi-fill" style="width:7%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Sites with Category -->
+    <div style="margin-top:24px;">
+      <div class="yt-section-title">🏆 Top Visited Sites — With Learning Category</div>
+      <div style="display:flex;flex-direction:column;gap:8px;" id="brave-top-sites"></div>
+    </div>
+
+    <!-- Key Insights -->
+    <div style="margin-top:24px;">
+      <div class="yt-section-title">💡 AI-Extracted Brave Insights</div>
+      <div class="insights-grid" id="brave-insights-grid"></div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:24px;">
+      <button class="btn btn-fill" onclick="goTo('s-profile')">← Back to Profile</button>
+      <button class="btn btn-ghost" onclick="goTo('s-yt-intel')">YouTube Intel →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN 9: YT INTEL ═══ -->
+<div class="screen" id="s-yt-intel">
+  <div class="page-wide">
+    <div class="section-eyebrow">YouTube Intelligence — 361 Videos Analysed</div>
+    <h2 class="section-title">Your <em>Watch History</em> Map</h2>
+    <p class="section-sub">What your YouTube watch history reveals — cross-verified against Brave browser evidence.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;">
+      <div class="yt-section">
+        <div class="yt-section-title">📊 Category Breakdown</div>
+        <div class="cat-bars">
+          <div class="cat-row"><span class="cat-name">DSA / Algorithms</span><div class="cat-bar-w"><div class="cat-bar-f" style="width:29%;background:var(--accent)"></div></div><span class="cat-pct">29%</span></div>
+          <div class="cat-row"><span class="cat-name">Machine Learning</span><div class="cat-bar-w"><div class="cat-bar-f" style="width:23%;background:var(--blue)"></div></div><span class="cat-pct">23%</span></div>
+          <div class="cat-row"><span class="cat-name">Entertainment</span><div class="cat-bar-w"><div class="cat-bar-f" style="width:9%;background:var(--purple)"></div></div><span class="cat-pct">9%</span></div>
+          <div class="cat-row"><span class="cat-name">Python</span><div class="cat-bar-w"><div class="cat-bar-f" style="width:9%;background:var(--green)"></div></div><span class="cat-pct">9%</span></div>
+          <div class="cat-row"><span class="cat-name">Other</span><div class="cat-bar-w"><div class="cat-bar-f" style="width:24%;background:var(--muted)"></div></div><span class="cat-pct">24%</span></div>
+        </div>
+      </div>
+      <div class="yt-section">
+        <div class="yt-section-title">🎯 Top Channels</div>
+        <div class="channel-list">
+          <div class="channel-row"><div class="ch-name">CampusX</div><div style="text-align:right;"><div class="ch-count">85 videos</div><div class="ch-focus">ML & DS · Hindi</div></div></div>
+          <div class="channel-row"><div class="ch-name">take U forward (Striver)</div><div style="text-align:right;"><div class="ch-count">55 videos</div><div class="ch-focus">DSA · Hindi</div></div></div>
+          <div class="channel-row"><div class="ch-name">CodeHelp - Babbar</div><div style="text-align:right;"><div class="ch-count">20 videos</div><div class="ch-focus">DSA · Hindi</div></div></div>
+          <div class="channel-row"><div class="ch-name">Dr.Gajendra Purohit</div><div style="text-align:right;"><div class="ch-count">13 videos</div><div class="ch-focus">Discrete Math</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="yt-section-title">🔮 Goal Alignment Predictions</div>
+      <div class="pred-grid">
+        <div class="pred-card" onclick="pickGoalAndRoad('Machine Learning')"><div class="pred-pct" style="color:var(--accent)">97%</div><div class="pred-goal">Machine Learning</div></div>
+        <div class="pred-card" onclick="pickGoalAndRoad('DSA')"><div class="pred-pct" style="color:var(--blue)">94%</div><div class="pred-goal">DSA / Interviews</div></div>
+        <div class="pred-card" onclick="pickGoalAndRoad('Python Programming')"><div class="pred-pct" style="color:var(--green)">82%</div><div class="pred-goal">Python Programming</div></div>
+        <div class="pred-card" onclick="pickGoalAndRoad('Data Science')"><div class="pred-pct" style="color:var(--purple)">78%</div><div class="pred-goal">Data Science</div></div>
+        <div class="pred-card" onclick="pickGoalAndRoad('Web Development')"><div class="pred-pct" style="color:var(--gold)">65%</div><div class="pred-goal">Web Development</div></div>
+        <div class="pred-card"><div class="pred-pct" style="color:var(--muted)">12%</div><div class="pred-goal">UI/UX Design</div></div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:24px;">
+      <button class="btn btn-fill" onclick="goTo('s-profile')">← Back to Profile</button>
+      <button class="btn btn-ghost" onclick="goTo('s-brave-intel')">Brave Intel →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN 10: PROGRESS ═══ -->
+<div class="screen" id="s-progress">
+  <div class="page">
+    <div class="section-eyebrow">Progress Tracker</div>
+    <h2 class="section-title">Your <em>Journey</em> So Far</h2>
+    <div class="progress-hero">
+      <div class="prog-title">Gaurav's Learning Dashboard</div>
+      <div class="prog-sub">Brave-verified progress · Updated Mar 8, 2026</div>
+      <div class="big-ring-wrap">
+        <div class="big-ring">
+          <svg width="110" height="110" viewBox="0 0 110 110">
+            <circle cx="55" cy="55" r="48" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="8"/>
+            <circle cx="55" cy="55" r="48" fill="none" stroke="var(--accent)" stroke-width="8" stroke-dasharray="301.6" stroke-dashoffset="181" stroke-linecap="round"/>
+          </svg>
+          <div class="big-ring-num">40%</div>
+        </div>
+        <div class="prog-metrics">
+          <div class="pm-row"><div class="pm-label">DSA (YT+LeetCode)</div><div class="pm-bar-wrap"><div class="pm-bar" style="width:58%;background:var(--accent)"></div></div><div class="pm-val">58%</div></div>
+          <div class="pm-row"><div class="pm-label">ML (CampusX D34)</div><div class="pm-bar-wrap"><div class="pm-bar" style="width:34%;background:var(--blue)"></div></div><div class="pm-val">34%</div></div>
+          <div class="pm-row"><div class="pm-label">Python (Flask+Jupyter)</div><div class="pm-bar-wrap"><div class="pm-bar" style="width:65%;background:var(--green)"></div></div><div class="pm-val">65%</div></div>
+          <div class="pm-row"><div class="pm-label">Web Dev (Anime_One)</div><div class="pm-bar-wrap"><div class="pm-bar" style="width:45%;background:var(--purple)"></div></div><div class="pm-val">45%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="streak-card">
+      <div class="streak-num">7</div>
+      <div style="flex:1">
+        <div class="streak-info-title">Day Streak 🔥</div>
+        <div class="streak-info-sub">Brave confirms daily activity — last 7 days consecutive</div>
+        <div class="week-dots">
+          <div class="wd done">M</div><div class="wd done">T</div><div class="wd done">W</div>
+          <div class="wd done">T</div><div class="wd done">F</div><div class="wd done">S</div>
+          <div class="wd today">S</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="milestone-row">
+      <div class="milestone ms-done" onclick="this.classList.toggle('ms-done')">
+        <div class="ms-icon">📺</div>
+        <div class="ms-body">
+          <div class="ms-name">CampusX 100 Days ML — Day 1 to 34</div>
+          <div class="ms-desc">Brave confirmed: messages.csv + orders.csv downloaded from CampusX GitHub</div>
+          <div class="ms-bar-wrap"><div class="ms-bar" style="width:100%;background:var(--green)"></div></div>
+        </div>
+        <div class="ms-right">
+          <div class="ms-pct" style="color:var(--green)">100%</div>
+          <div class="ms-badge badge-done">✓ Done</div>
+        </div>
+      </div>
+      <div class="milestone ms-active" onclick="this.classList.toggle('ms-active')">
+        <div class="ms-icon">⚡</div>
+        <div class="ms-body">
+          <div class="ms-name">Striver A2Z DSA — Binary Search Chapter</div>
+          <div class="ms-desc">Brave: 'binary search' searched multiple times. Currently on Babbar Lecture 13</div>
+          <div class="ms-bar-wrap"><div class="ms-bar" style="width:60%"></div></div>
+        </div>
+        <div class="ms-right">
+          <div class="ms-pct">60%</div>
+          <div class="ms-badge badge-active">Active</div>
+        </div>
+      </div>
+      <div class="milestone ms-active">
+        <div class="ms-icon">🏆</div>
+        <div class="ms-body">
+          <div class="ms-name">Kaggle: Titanic ML Project</div>
+          <div class="ms-desc">203 Kaggle visits — you're researching. Complete end-to-end pipeline + submit</div>
+          <div class="ms-bar-wrap"><div class="ms-bar" style="width:20%"></div></div>
+        </div>
+        <div class="ms-right">
+          <div class="ms-pct">20%</div>
+          <div class="ms-badge badge-active">In Progress</div>
+        </div>
+      </div>
+      <div class="milestone">
+        <div class="ms-icon">🌐</div>
+        <div class="ms-body">
+          <div class="ms-name">Deploy Anime_One + ML to the Internet</div>
+          <div class="ms-desc">Brave: 'deploy python netlify' searched. App ready — deploy to Render/Netlify</div>
+          <div class="ms-bar-wrap"><div class="ms-bar" style="width:0%"></div></div>
+        </div>
+        <div class="ms-right">
+          <div class="ms-pct">0%</div>
+          <div class="ms-badge badge-locked">Next</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;">
+      <button class="btn btn-fill" onclick="goTo('s-dashboard')">Dashboard →</button>
+      <button class="btn btn-ghost" onclick="goTo('s-roadmap')">← Roadmap</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SCREEN 11: DASHBOARD ═══ -->
+<div class="screen" id="s-dashboard">
+  <div class="page-wide">
+    <div style="padding-top:4px;">
+      <div class="section-eyebrow">Your Dashboard</div>
+      <h2 class="section-title" style="font-size:clamp(26px,4vw,38px);">Good evening, <em>Gaurav.</em></h2>
+      <p class="section-sub">Brave + YouTube cross-referenced. Last active: Mar 8, 2026.</p>
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-left">
+        <!-- Today's Plan -->
+        <div class="dash-card">
+          <div class="dash-card-title">Today's Plan — Brave-Optimised <span onclick="goTo('s-roadmap')">→ Full Roadmap</span></div>
+          <div class="today-task" onclick="markDone(this)">
+            <div class="tt-check"></div>
+            <div class="tt-icon">⚡</div>
+            <div class="tt-body">
+              <div class="tt-name">LeetCode: Binary Search Problems (Babbar L13 set)</div>
+              <div class="tt-sub">You just watched Lecture 13 — solve the problem set now</div>
+            </div>
+            <div class="tt-right"><div class="tt-dur">45 min</div><div style="font-size:10px;color:var(--brave);">🦁 47 LeetCode visits</div></div>
+          </div>
+          <div class="today-task" onclick="markDone(this)">
+            <div class="tt-check"></div>
+            <div class="tt-icon">🤖</div>
+            <div class="tt-body">
+              <div class="tt-name">CampusX Day 35 — Outlier Detection</div>
+              <div class="tt-sub">Day 34 done (you downloaded the data files). Day 35 is next.</div>
+            </div>
+            <div class="tt-right"><div class="tt-dur">50 min</div><div style="font-size:10px;color:var(--brave);">🦁 39 Jupyter sessions</div></div>
+          </div>
+          <div class="today-task" onclick="markDone(this)">
+            <div class="tt-check"></div>
+            <div class="tt-icon">🏆</div>
+            <div class="tt-body">
+              <div class="tt-name">Kaggle: Start Titanic Notebook</div>
+              <div class="tt-sub">203 Kaggle visits — time to submit your first notebook</div>
+            </div>
+            <div class="tt-right"><div class="tt-dur">40 min</div><div style="font-size:10px;color:var(--brave);">🦁 203 Kaggle visits</div></div>
+          </div>
+        </div>
+
+        <!-- Activity Chart -->
+        <div class="dash-card">
+          <div class="dash-card-title">Weekly Study Activity <span>📊 Brave-estimated</span></div>
+          <div class="mini-chart">
+            <div class="bar-c" style="height:40%"></div>
+            <div class="bar-c active" style="height:75%"></div>
+            <div class="bar-c" style="height:55%"></div>
+            <div class="bar-c active" style="height:90%"></div>
+            <div class="bar-c active" style="height:85%"></div>
+            <div class="bar-c" style="height:60%"></div>
+            <div class="bar-c today" style="height:45%"></div>
+          </div>
+          <div class="chart-labels">
+            <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+          </div>
+        </div>
+
+        <!-- AI Nudge -->
+        <div class="ai-nudge">
+          <div class="nudge-header">
+            <div class="nudge-dot"></div>
+            <div class="nudge-label">🤖 AI Intelligence — Brave + YouTube Cross-Analysis</div>
+          </div>
+          <div class="nudge-text" id="nudge-text">Loading AI insight...</div>
+        </div>
+      </div>
+
+      <div class="dash-right">
+        <!-- Skills -->
+        <div class="dash-card">
+          <div class="dash-card-title">Skills Forming</div>
+          <div class="skill-row"><span class="skill-name">Python</span><div class="skill-bar-w"><div class="skill-bar-f" style="width:65%"></div></div><span class="skill-pct">65%</span></div>
+          <div class="skill-row"><span class="skill-name">DSA</span><div class="skill-bar-w"><div class="skill-bar-f" style="width:58%"></div></div><span class="skill-pct">58%</span></div>
+          <div class="skill-row"><span class="skill-name">ML Theory</span><div class="skill-bar-w"><div class="skill-bar-f" style="width:34%"></div></div><span class="skill-pct">34%</span></div>
+          <div class="skill-row"><span class="skill-name">Flask/Web</span><div class="skill-bar-w"><div class="skill-bar-f" style="width:45%"></div></div><span class="skill-pct">45%</span></div>
+          <div class="skill-row"><span class="skill-name">Kaggle/ML</span><div class="skill-bar-w"><div class="skill-bar-f" style="width:25%"></div></div><span class="skill-pct">25%</span></div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="dash-card">
+          <div class="dash-card-title">Peer Leaderboard</div>
+          <div class="leaderboard-row"><div class="lb-rank gold">1</div><div class="lb-ava">🧑‍💻</div><div class="lb-name">Gaurav (You)</div><div class="lb-pts"><strong>1,240</strong> pts</div></div>
+          <div class="leaderboard-row"><div class="lb-rank">2</div><div class="lb-ava">👩‍💻</div><div class="lb-name">Priya S.</div><div class="lb-pts"><strong>1,180</strong> pts</div></div>
+          <div class="leaderboard-row"><div class="lb-rank">3</div><div class="lb-ava">🧑‍🎓</div><div class="lb-name">Rahul M.</div><div class="lb-pts"><strong>1,050</strong> pts</div></div>
+          <div class="leaderboard-row"><div class="lb-rank">4</div><div class="lb-ava">👨‍💻</div><div class="lb-name">Arjun K.</div><div class="lb-pts"><strong>920</strong> pts</div></div>
+        </div>
+
+        <!-- Brave Stats Summary -->
+        <div class="dash-card" style="background:linear-gradient(135deg,rgba(251,84,43,0.04),rgba(255,77,28,0.02));border-color:rgba(251,84,43,0.2);">
+          <div class="dash-card-title" style="color:var(--brave);">🦁 Brave Stats Today</div>
+          <div style="font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;"><span>Total URLs visited</span><strong style="color:var(--ink);">6,120</strong></div>
+            <div style="display:flex;justify-content:space-between;"><span>Search queries</span><strong style="color:var(--ink);">959</strong></div>
+            <div style="display:flex;justify-content:space-between;"><span>Files downloaded</span><strong style="color:var(--ink);">145</strong></div>
+            <div style="display:flex;justify-content:space-between;"><span>Dev sessions (localhost)</span><strong style="color:var(--ink);">500+</strong></div>
+            <div style="display:flex;justify-content:space-between;"><span>Top domain</span><strong style="color:var(--brave);">Anime_One</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ MODAL ═══ -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-sheet" style="position:relative;">
+    <div class="modal-handle"></div>
+    <div class="modal-header" id="modal-header"></div>
+    <div class="modal-evidence" id="modal-evidence" style="display:none;"></div>
+    <div class="modal-why" id="modal-why"></div>
+    <div class="modal-divider"></div>
+    <div class="modal-links" id="modal-links"></div>
+    <div class="modal-note" id="modal-note"></div>
+    <div class="modal-ai-section">
+      <div class="modal-ai-title"><div class="ai-dot"></div>🤖 AI Analysis for This Step</div>
+      <div id="modal-ai-text">Click a button below to get AI insights...</div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+        <button class="ai-q-btn" id="modal-ai-btn1" onclick="">Why is this the right step for me?</button>
+        <button class="ai-q-btn" id="modal-ai-btn2" onclick="">How long will this take me?</button>
+      </div>
+    </div>
+    <button class="modal-close" onclick="closeModalDirect()">×</button>
+  </div>
+</div>
+
+<script>
+// ─── NAVIGATION ───
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById(id);
+  if (target) { target.classList.add('active'); target.scrollTop = 0; window.scrollTo(0,0); }
+  _currentScreen = id;
+  
+  const nav = document.getElementById('topnav');
+  const screenOrder = ['s-goal','s-connect','s-test','s-analyzing','s-profile','s-roadmap','s-progress','s-dashboard','s-brave-intel','s-yt-intel'];
+  if (id === 's-landing') { nav.style.display = 'none'; }
+  else { nav.style.display = 'flex'; updateNavSteps(screenOrder.indexOf(id)); }
+
+  if (id === 's-roadmap') buildRoadmapUI();
+  if (id === 's-brave-intel') buildBraveIntel();
+  if (id === 's-dashboard') loadNudge();
+}
+
+function updateNavSteps(active) {
+  const steps = document.querySelectorAll('.nav-step');
+  steps.forEach((s,i) => {
+    s.classList.remove('done','active');
+    if (i < active) s.classList.add('done');
+    else if (i === active) s.classList.add('active');
+  });
+}
+
+function pickGoal(card, goalName) {
+  document.querySelectorAll('.goal-card').forEach(c => c.classList.remove('picked'));
+  card.classList.add('picked');
+  _selectedGoal = goalName;
+}
+
+function pickGoalAndRoad(goal) {
+  _selectedGoal = goal;
+  goTo('s-roadmap');
+}
+
+function toggleConnect(item) {
+  if (item.classList.contains('linked')) {
+    item.classList.remove('linked');
+    item.querySelector('.connect-status').className = 'connect-status status-connect';
+    item.querySelector('.connect-status').textContent = 'Connect';
+  } else {
+    item.classList.add('linked');
+    item.querySelector('.connect-status').className = 'connect-status status-linked';
+    item.querySelector('.connect-status').textContent = '✓ Linked';
+  }
+}
+
+function selOpt(opt, qNum) {
+  const card = opt.closest('.question-card');
+  card.querySelectorAll('.opt').forEach(o => o.classList.remove('sel'));
+  opt.classList.add('sel');
+}
+
+// ─── ANALYZE ───
+function startAnalyze() {
+  goTo('s-analyzing');
+  const steps = [
+    { id:'lg3', delay:1000 },
+    { id:'lg4', delay:2200 },
+    { id:'lg5', delay:3400 },
+    { id:'lg6', delay:4600 },
+    { id:'lg7', delay:5800 },
+  ];
+  steps.forEach(({id, delay}) => {
+    setTimeout(() => {
+      const prev = document.querySelector('.log-active');
+      if (prev) { prev.classList.remove('log-active'); prev.classList.add('log-done'); }
+      const next = document.getElementById(id);
+      if (next) next.classList.add('log-active');
+    }, delay);
+  });
+  setTimeout(() => {
+    const last = document.querySelector('.log-active');
+    if (last) { last.classList.remove('log-active'); last.classList.add('log-done'); }
+    goTo('s-profile');
+  }, 7400);
+}
+
+// ─── ROADMAP UI BUILDER ───
+function buildRoadmapUI() {
+  const rm = INTEL.buildBraveRoadmap(_selectedGoal);
+  document.getElementById('rm-main-title').innerHTML = `Your <em>${_selectedGoal}</em> Path`;
+  document.getElementById('rm-name').textContent = 'Gaurav Jain';
+  document.getElementById('rm-sub').textContent = rm.subtitle;
+
+  const statsEl = document.getElementById('rm-stats');
+  statsEl.innerHTML = `
+    <div><div class="rh-stat-v">${rm.stats.time}</div><div class="rh-stat-l">Est. Time</div></div>
+    <div><div class="rh-stat-v">${rm.stats.milestones}</div><div class="rh-stat-l">Milestones</div></div>
+    <div><div class="rh-stat-v">${rm.stats.confidence}</div><div class="rh-stat-l">Confidence</div></div>
+    <div><div class="rh-stat-v" style="color:var(--brave);">${rm.stats.evidence}</div><div class="rh-stat-l">Evidence</div></div>`;
+
+  const badgeEmojis = ['📺','💻','📊','🌐','🎯'];
+  const nbClasses = ['nb-yt','nb-leet','nb-brave','nb-proj','nb-course'];
+  
+  document.getElementById('roadmap-phases').innerHTML = rm.phases.map((ph, i) => `
+    <div>
+      <div class="phase-label">${ph.label}</div>
+      ${ph.evidence ? `<div class="phase-evidence">🦁 Brave Evidence: ${ph.evidence}</div>` : ''}
+      <div class="node-row">
+        <div class="node-line-col">
+          <div class="node-badge ${nbClasses[i]||'nb-yt'}">${badgeEmojis[i]||'▶️'}</div>
+          ${i < rm.phases.length-1 ? '<div class="v-connector"></div>' : ''}
+        </div>
+        <div class="node-card">
+          <div class="node-step">Milestone ${String(i+1).padStart(2,'0')} · ${ph.milestone}</div>
+          <div class="node-title">${ph.title}</div>
+          <div class="node-desc">${ph.desc}</div>
+          <div class="node-chips">${ph.chips.map(c => `<span class="chip${c.includes('🦁')||c.includes('visits')||c.includes('searched') ? ' chip-brave' : ''}">${c}</span>`).join('')}</div>
+          <button class="node-open-btn" onclick="openDynModal('${ph.modalId}')">▶ Open Resource →</button>
+          <button class="node-ai-btn" onclick="askPhaseAI('${ph.title.replace(/'/g,"\\'")}', '${(ph.evidence||'').replace(/'/g,"\\'")}')">🤖 Ask AI About This Step</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function buildAndShowRoadmap() {
+  goTo('s-roadmap');
+}
+
+// ─── BRAVE INTEL UI ───
+function buildBraveIntel() {
+  const sitesEl = document.getElementById('brave-top-sites');
+  if (sitesEl) {
+    sitesEl.innerHTML = BRAVE_DATA.top20Sites.slice(0,10).map(s => `
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px;">
+        <div style="flex:1;">
+          <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;">${s.title}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px;">${s.url}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--accent);">${s.visits.toLocaleString()}</div>
+          <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;">${s.category}</div>
+        </div>
+      </div>`).join('');
+  }
+  
+  const insightsEl = document.getElementById('brave-insights-grid');
+  if (insightsEl) {
+    insightsEl.innerHTML = BRAVE_DATA.keyInsights ? Object.entries({
+      "🏗️ You're a builder": BRAVE_DATA.keyInsights.topProject,
+      "🐍 Flask active": BRAVE_DATA.keyInsights.devTools,
+      "🔍 Search reveals gaps": BRAVE_DATA.keyInsights.searchProfile,
+      "📚 Book downloader": BRAVE_DATA.keyInsights.downloads,
+    }).map(([title, body]) => `
+      <div class="insight-card">
+        <div class="insight-title">${title}</div>
+        <div class="insight-body" style="margin-top:6px;">${body}</div>
+      </div>`).join('') : '';
+  }
+}
+
+// ─── MODAL DATA (Brave-enhanced) ───
+const BRAVE_MODALS = {
+  brave_kaggle: {
+    platform:'🏆 Kaggle · Free', platformClass:'pb-coursera',
+    title:'Kaggle — Titanic End-to-End ML Pipeline',
+    subtitle:'Your #7 most visited site in Brave browser',
+    evidence:'🦁 Brave: 203 Kaggle visits confirmed. You know the platform. Now submit.',
+    why:'⚡ 203 Kaggle visits in your Brave history puts it as your #7 most visited site. You\'ve been searching, browsing, and researching. You downloaded CampusX data files (messages.csv, orders.csv). Titanic uses ALL of Day 1–34: imputation, encoding, feature engineering, sklearn Pipeline.',
+    links:[
+      {icon:'🏆',name:'Kaggle: Titanic — Machine Learning from Disaster',sub:'kaggle.com/c/titanic · Free · Beginner-friendly',url:'https://www.kaggle.com/c/titanic'},
+      {icon:'🏆',name:'House Prices — Advanced Regression Techniques',sub:'kaggle.com/c/house-prices · Feature engineering focus',url:'https://www.kaggle.com/c/house-prices-advanced-regression-techniques'},
+    ],
+    note:'<strong>🎯 You already know Kaggle (203 visits).</strong> Stop browsing. Start submitting. First notebook: use CampusX Day 34 techniques. Target top 30%.',
+  },
+  brave_campusx: {
+    platform:'▶️ YouTube · Hindi · Free', platformClass:'pb-yt',
+    title:'CampusX 100 Days ML — Day 35: Outlier Detection',
+    subtitle:'85 videos watched · Day 34 dataset downloaded · Resume now',
+    evidence:'🦁 Brave: messages.csv + orders.csv downloaded from CampusX GitHub on Mar 6',
+    why:'⚡ Your Brave history shows you downloaded the CampusX Day 34 data files from GitHub (messages.csv, orders.csv). That means you actually ran the code. Jupyter notebook confirmed running (39 visits). Day 35 = Outlier Detection — the Z-score, IQR methods. This is literally the next thing in the playlist.',
+    links:[
+      {icon:'▶️',name:'CampusX 100 Days of ML Playlist',sub:'youtube.com/@campusx-official · Hindi · Free',url:'https://www.youtube.com/@campusx-official'},
+      {icon:'📁',name:'CampusX GitHub — Download Day 35 data',sub:'github.com/campusx-official/100-days-of-machine-learning',url:'https://github.com/campusx-official/100-days-of-machine-learning'},
+    ],
+    note:'<strong>📍 You are at Day 34. Day 35 is next.</strong> Don\'t restart from Day 1. Open Jupyter (localhost:8888) and continue.',
+  },
+  brave_stanford: {
+    platform:'▶️ YouTube · English · Free', platformClass:'pb-yt',
+    title:'Stanford CS229 — Andrew Ng: Lectures 2–5',
+    subtitle:'Lecture 1 watched Mar 6, 2026 · Continue the mathematical backbone',
+    evidence:'🦁 YouTube history: Stanford CS229 L1 watched March 6, 2026',
+    why:'⚡ Brave search history shows 40 ML searches — you\'re asking questions that CS229 answers. "Tensors in python documentation" was searched. CS229 Lecture 2 covers the math behind Linear Regression that CampusX glosses over. Lecture 5 is Logistic Regression — the math gives you the \'why\' behind every sklearn call.',
+    links:[
+      {icon:'▶️',name:'Stanford CS229 — Full Lecture Playlist',sub:'youtube.com · Stanford Official · Free',url:'https://www.youtube.com/watch?v=jGwO_UgTS7I&list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU'},
+    ],
+    note:'<strong>📌 Start at Lecture 2</strong> — you watched Lecture 1 on March 6. Skip it.',
+  },
+  brave_streamlit: {
+    platform:'🌐 Streamlit · Free', platformClass:'pb-hr',
+    title:'Streamlit ML App — From Flask to Streamlit',
+    subtitle:'Flask confirmed running (27 debugger visits) · Easy bridge',
+    evidence:'🦁 Brave: Flask debugger at localhost:5678 visited 27 times',
+    why:'⚡ You have Flask running (27 debugger visits). You have ML knowledge (CampusX Day 34). Streamlit is the 3-hour bridge between Jupyter notebooks and deployed web apps. You can deploy your Titanic model as a Streamlit app on Streamlit Cloud (free, no server needed).',
+    links:[
+      {icon:'▶️',name:'Chai aur Code: Complete Streamlit Tutorial',sub:'youtube.com/@chaiaurcode · Hindi · Free',url:'https://www.youtube.com/@chaiaurcode'},
+      {icon:'🌐',name:'Streamlit Documentation',sub:'docs.streamlit.io · Official docs',url:'https://docs.streamlit.io/'},
+      {icon:'☁️',name:'Streamlit Community Cloud — Deploy Free',sub:'streamlit.io/cloud · GitHub integration · Free',url:'https://streamlit.io/cloud'},
+    ],
+    note:'<strong>🎯 Goal:</strong> Deploy Titanic ML model as Streamlit app. 3 files: model.pkl, app.py, requirements.txt. Link is portfolio gold.',
+  },
+  brave_anime_ml: {
+    platform:'🎌 Kaggle + Anime API · Free', platformClass:'pb-coursera',
+    title:'Anime Recommendation Engine — Your Unique Portfolio Project',
+    subtitle:'Anime_One app (1538 visits) + ML = unique combo',
+    evidence:'🦁 Brave: 1538 visits to Anime_One + \'anime api\' + \'jikan api\' searches',
+    why:'⚡ You\'ve built Anime_One (1538 local visits = months of work). You\'ve searched \'anime api\', \'myanimelist api\', \'jikan api\'. You know ML (CampusX). Combining them: build an anime recommendation engine using collaborative filtering or content-based filtering on MyAnimeList data. This is a project NO recruiter has seen before.',
+    links:[
+      {icon:'🎌',name:'Jikan API — Free MyAnimeList API',sub:'jikan.moe · No auth needed · RESTful',url:'https://jikan.moe/'},
+      {icon:'🏆',name:'Kaggle: Anime Recommendations Dataset',sub:'kaggle.com/search?q=anime+recommendation',url:'https://www.kaggle.com/datasets/CooperUnion/anime-recommendations-database'},
+      {icon:'📖',name:'Collaborative Filtering with Python',sub:'Building recommendation systems with sklearn',url:'https://surprise.readthedocs.io/en/stable/'},
+    ],
+    note:'<strong>🌟 This is your X-factor.</strong> DSA + ML + Anime project = unique. Every ML candidate has Titanic. Nobody has Anime Recommender built on their own custom anime app.',
+  },
+  brave_striver: {
+    platform:'▶️ YouTube · Hindi · Free', platformClass:'pb-yt',
+    title:'Striver A2Z Sheet — Continue Binary Search → Strings',
+    subtitle:'55 videos watched · \'binary search\' searched multiple times in Brave',
+    evidence:'🦁 Brave: \'binary search\', \'striver dsa sheet\', \'a2z striver dsa\' all searched',
+    why:'⚡ 55 Striver videos + Brave searches confirm you\'re in Binary Search territory. Your Brave history also shows \'longest subarray with sum of k\', \'first and last occurrence binary search\' — you\'re solving specific binary search problems. Continue A2Z sheet: finish Binary Search chapter, then Strings.',
+    links:[
+      {icon:'📋',name:'Striver A2Z DSA Course Sheet',sub:'takeuforward.org · Track your progress · Free',url:'https://takeuforward.org/strivers-a2z-dsa-course/'},
+      {icon:'▶️',name:'take U forward YouTube Channel',sub:'youtube.com/@takeUforward · Hindi · Free',url:'https://www.youtube.com/@takeUforward'},
+    ],
+    note:'<strong>📍 Binary Search chapter: ~70% done.</strong> Brave searches confirm it. Finish it, then Strings. Then HashMap — you searched "prerequisite to study hashing".',
+  },
+  brave_babbar: {
+    platform:'▶️ YouTube + LeetCode · Free', platformClass:'pb-hr',
+    title:'Babbar Lecture 13 Problem Set + LeetCode',
+    subtitle:'Lecture 13 watched Mar 7 · LeetCode: 47 Brave visits confirmed',
+    evidence:'🦁 Brave: LeetCode Missing Number (47 visits!) + Babbar Lecture 13 (Mar 7)',
+    why:'⚡ Two data points confirm exactly where you are: (1) Brave shows 47 LeetCode visits to Missing Number specifically — you\'re practicing. (2) YouTube shows you watched Babbar Lecture 13 (Binary Search Interview Questions) on March 7. The next step: solve the exact problems Babbar mentioned in Lecture 13.',
+    links:[
+      {icon:'💻',name:'LeetCode — Binary Search Problems',sub:'leetcode.com/tag/binary-search · Filter: Medium',url:'https://leetcode.com/tag/binary-search/'},
+      {icon:'▶️',name:'CodeHelp - Babbar: Lecture 13 Problem Set',sub:'youtube.com/@CodeHelpDSA · Hindi · Free',url:'https://www.youtube.com/@CodeHelpDSA'},
+    ],
+    note:'<strong>📍 LeetCode Missing Number (47 visits):</strong> This is where you are. Solve Babbar\'s L13 problem set. 5–8 problems. Takes 90 minutes.',
+  },
+  brave_leet: {
+    platform:'💻 LeetCode · Free', platformClass:'pb-hr',
+    title:'LeetCode 3 Mediums/Day — Your Formula',
+    subtitle:'47 confirmed LeetCode visits in Brave · You\'re already there',
+    evidence:'🦁 Brave: leetcode.com/problems/missing-number — 47 visits',
+    why:'⚡ 47 LeetCode visits in Brave. You know the platform. Missing Number visited 47 times = you\'re practicing, maybe stuck. The formula: 1 Easy warmup (5 min) + 2 Mediums per day in Arrays + Binary Search = 45 min/day. 90 problems in a month. That\'s interview-ready territory.',
+    links:[
+      {icon:'💻',name:'LeetCode Problems — Array tag',sub:'leetcode.com/tag/array/ · Filter: Medium · Your strength',url:'https://leetcode.com/tag/array/'},
+      {icon:'📋',name:'Blind 75 — Top interview questions',sub:'techinterviewhandbook.org/grind75 · Curated list',url:'https://www.techinterviewhandbook.org/grind75'},
+    ],
+    note:'<strong>⚡ Formula:</strong> 3 problems/day. Arrays + Binary Search only. You already know the topics — just do reps.',
+  },
+  brave_discrete: {
+    platform:'▶️ YouTube · Hindi · Free', platformClass:'pb-yt',
+    title:'Dr. Gajendra — Discrete Math: Set Theory Next',
+    subtitle:'13 videos watched · \'prerequisite to study hashing in dsa\' searched',
+    evidence:'🦁 Brave: \'prerequisite to study hashing in dsa\' — exactly what Discrete Math answers',
+    why:'⚡ Your Brave search "prerequisite to study hashing in dsa" is EXACTLY what Discrete Math teaches. Set Theory → Relations = the foundation of hash maps. You\'ve done 13 Dr. Gajendra videos including Propositional Logic 1–4. Set Theory is literally your next lecture.',
+    links:[
+      {icon:'▶️',name:'Dr. Gajendra Purohit — Discrete Mathematics',sub:'youtube.com/@Dr.GajendraPurohit · Hindi · Free',url:'https://www.youtube.com/@Dr.GajendraPurohit'},
+    ],
+    note:'<strong>🎯 Next:</strong> Set Theory lecture. This directly answers your "hashing prerequisites" question.',
+  },
+  brave_mock: {
+    platform:'🎙️ Pramp · Free', platformClass:'pb-hr',
+    title:'Pramp Mock Interviews — 5 Sessions',
+    subtitle:'Knowledge is built. Now pressure-test.',
+    evidence:'🦁 Brave: 161 DSA videos + 47 LeetCode visits = knowledge ready to test',
+    why:'⚡ Brave + YouTube combined: 161 DSA videos watched + 47 LeetCode visits + 12 DSA PDF downloads. You have the knowledge. The gap is real-time performance under pressure. Pramp gives you peer mock interviews for free. 5 sessions over 2.5 weeks = interview anxiety drops dramatically.',
+    links:[
+      {icon:'🎙️',name:'Pramp — Free Peer Mock Interviews',sub:'pramp.com · Free · Pairs with peers · Recorded',url:'https://www.pramp.com/'},
+      {icon:'🎙️',name:'InterviewBit — Mock Interviews',sub:'interviewbit.com · Expert-led · Paid',url:'https://www.interviewbit.com/mock-interview/'},
+    ],
+    note:'<strong>🎯 Target: 5 mocks.</strong> Schedule 2/week. After 5 mocks, interview anxiety drops 60–80%.',
+  },
+  // Web Dev modals
+  web_anime: {
+    platform:'🎌 Jikan API · Free', platformClass:'pb-hr',
+    title:'Upgrade Anime_One with Real Jikan API',
+    subtitle:'1538 local visits + \'anime api\' searched = upgrade time',
+    evidence:'🦁 Brave: 1538 Anime_One visits + \'jikan api\' + \'myanimelist api\' searches',
+    why:'⚡ You\'ve built Anime_One (1538 visits = months of dev). You searched for anime APIs. Jikan (jikan.moe) is free, no auth needed, returns real MyAnimeList data. 3 API calls = your static anime list becomes a real searchable database of 50,000+ anime.',
+    links:[
+      {icon:'🎌',name:'Jikan API Documentation',sub:'docs.api.jikan.moe · Free · RESTful · JSON',url:'https://docs.api.jikan.moe/'},
+      {icon:'🎌',name:'Jikan API Base URL',sub:'api.jikan.moe/v4/anime?q=naruto',url:'https://api.jikan.moe/v4/anime?q=naruto'},
+    ],
+    note:'<strong>🚀 Quick win:</strong> Replace your hardcoded anime list with 1 fetch() call to Jikan. Takes 30 minutes. Transforms the whole app.',
+  },
+  web_flask: {
+    platform:'🐍 Flask · Free', platformClass:'pb-yt',
+    title:'Fix the Flask "firstName" Scope Bug',
+    subtitle:'localhost:5678 visited 27 times · UnboundLocalError confirmed',
+    evidence:'🦁 Brave: localhost:5678 = \"UnboundLocalError: cannot access local variable \'firstName\'\"',
+    why:'⚡ Your Brave history literally shows the Flask error: "UnboundLocalError: cannot access local variable \'firstName\' where it is not associated with a value". This is a Python scope issue — a variable referenced before assignment. Flask docs + Python scope tutorial = this never happens again.',
+    links:[
+      {icon:'🐍',name:'Flask Documentation',sub:'flask.palletsprojects.com · Official · Free',url:'https://flask.palletsprojects.com/'},
+      {icon:'📖',name:'Python Variable Scope — Real Python',sub:'Understanding LEGB rule',url:'https://realpython.com/python-scope-legb-rule/'},
+    ],
+    note:'<strong>🔧 Fix:</strong> Add firstName = None before the if block. Python scope (LEGB rule). 5-minute fix, 30-minute understanding.',
+  },
+  web_deploy: {
+    platform:'☁️ Render / Netlify · Free', platformClass:'pb-hr',
+    title:'Deploy Anime_One Live — You\'re Ready',
+    subtitle:'\'deploy python netlify\' searched · Static HTML → Netlify now',
+    evidence:'🦁 Brave: \'can i deploy the python code on netlify\' searched twice',
+    why:'⚡ You searched "can i deploy the python code on netlify" twice. You\'re ready to deploy. For your static Anime_One HTML: Netlify in 10 minutes. For Flask backend: Render.com free tier. After deployment, your app has a public URL you can share with employers.',
+    links:[
+      {icon:'☁️',name:'Netlify — Deploy Static Sites',sub:'netlify.com · Free tier · Drag & drop HTML · 10 min deploy',url:'https://www.netlify.com/'},
+      {icon:'☁️',name:'Render.com — Flask/Python Apps',sub:'render.com · Free tier · Auto-deploy from GitHub',url:'https://render.com/'},
+    ],
+    note:'<strong>🚀 2-step deploy:</strong> (1) Netlify for Anime_One HTML — drag & drop, 10 min. (2) Render for Flask backend — connect GitHub, 20 min.',
+  },
+  web_django: {
+    platform:'🐍 Django · Free', platformClass:'pb-yt',
+    title:'Django Tutorial — After Flask Mastery',
+    subtitle:'\'which is easy: flask or django\' searched · Answer: Flask first',
+    evidence:'🦁 Brave: \'which is easy doing flask or doing the django\' searched twice',
+    why:'⚡ You searched "which is easy doing flask or doing the django" twice. Answer: Flask is easier and you\'re already running it. Django is for larger apps. After you deploy your Flask Anime_One + Kaggle app, Django becomes a natural upgrade. Django = built-in admin, ORM, auth. It\'s worth learning after Flask.',
+    links:[
+      {icon:'🐍',name:'Django Official Tutorial',sub:'docs.djangoproject.com/en/stable/intro/tutorial01/ · Free',url:'https://docs.djangoproject.com/en/stable/intro/tutorial01/'},
+      {icon:'▶️',name:'Django Full Course — Traversy Media',sub:'youtube.com · English · Free · 6 hours',url:'https://www.youtube.com/watch?v=PtQiiknWUcI'},
+    ],
+    note:'<strong>⏳ Sequence:</strong> Deploy Flask Anime_One first (2 weeks). Then Django (1 weekend to basics). You\'re 2 weeks away from Django-ready.',
+  },
+  // Python modals
+  py_pandas: {
+    platform:'📖 Pandas Docs · Free', platformClass:'pb-book',
+    title:'Pandas Deep Dive — Fix 5 Specific Errors',
+    subtitle:'5 specific Pandas questions searched in Brave',
+    evidence:'🦁 Brave: \'encoding pandas\', \'pandas.read_json\', \'df.corr()\', \'string operations pandas\' searched',
+    why:'⚡ Your Brave searches show 5 specific Pandas pain points: (1) encoding errors loading data, (2) .read_json usage, (3) df.corr() conditions, (4) string operations, (5) .loc usage. These are all chapter 6–8 of the Pandas docs. 2 hours of systematic docs reading fixes all 5.',
+    links:[
+      {icon:'📖',name:'Pandas User Guide',sub:'pandas.pydata.org/docs/user_guide/ · Official · Free',url:'https://pandas.pydata.org/docs/user_guide/'},
+      {icon:'▶️',name:'CampusX Pandas Tutorial (Hindi)',sub:'youtube.com/@campusx-official · Your preferred channel',url:'https://www.youtube.com/@campusx-official'},
+    ],
+    note:'<strong>📋 Fix list:</strong> encoding → use encoding="utf-8" or "latin-1". df.corr() → numeric columns only. .loc vs .iloc → row/column labels vs integers.',
+  },
+  py_operators: {
+    platform:'▶️ YouTube · Hindi · Free', platformClass:'pb-yt',
+    title:'Python Operators — Never Google These Again',
+    subtitle:'\'if is not python\' searched twice, \'logical or\' searched twice',
+    evidence:'🦁 Brave: operator searches repeated 2× each — indicates ongoing confusion',
+    why:'⚡ Brave shows you searched "if is not python", "if mai is not python", "logical or operater in python", "bitwise operator in python" — all twice. Searching the same thing twice = it didn\'t stick. 2 hours of focused CodeWithHarry operator video + practice = never Google these again.',
+    links:[
+      {icon:'▶️',name:'CWH Python Tutorial — Operators (Hindi)',sub:'youtube.com/CodeWithHarry · Hindi · Single video',url:'https://www.youtube.com/watch?v=T3aNMDPxhBs'},
+      {icon:'📖',name:'Python Official Docs — Operators',sub:'docs.python.org/3/library/operator.html',url:'https://docs.python.org/3/library/operator.html'},
+    ],
+    note:'<strong>💡 Why you keep forgetting:</strong> You saw it in a 2-hour tutorial. You need to TYPE it yourself. Make a cheat sheet. Run 10 examples. Never Google again.',
+  },
+  py_flask: {
+    platform:'🐍 Flask Docs · Free', platformClass:'pb-hr',
+    title:'Flask — Fix the Scope Bug + Learn Routing',
+    subtitle:'localhost:5678 Flask debugger: 27 Brave visits',
+    evidence:'🦁 Brave: Flask error \'UnboundLocalError: cannot access local variable firstName\'',
+    why:'⚡ You have Flask running with a real bug. The "UnboundLocalError: firstName" is a Python scope issue. Flask docs + 1 focused tutorial on Flask routing + scoping = this bug class never happens again. You\'ll also learn Flask blueprints, sessions, and database integration.',
+    links:[
+      {icon:'🐍',name:'Flask Quickstart Guide',sub:'flask.palletsprojects.com/quickstart/ · Official · Free',url:'https://flask.palletsprojects.com/quickstart/'},
+      {icon:'▶️',name:'Flask Full Tutorial — FreeCodeCamp',sub:'youtube.com · English · Free · 6 hours',url:'https://www.youtube.com/watch?v=Z1RJmh_OqeA'},
+    ],
+    note:'<strong>🔧 Fix today:</strong> The firstName bug. Then complete one more Flask route with proper scope. Takes 45 minutes.',
+  },
+  py_numpy: {
+    platform:'📖 NumPy Docs · Free', platformClass:'pb-book',
+    title:'NumPy + Tensors — Bridge to Deep Learning',
+    subtitle:'\'tensors in python\' searched + \'pandas profiling\' searched',
+    evidence:'🦁 Brave: \'tensors in python documentation\' searched + \'pandas profiling\' searched',
+    why:'⚡ You searched "tensors in python documentation" and "tensors in python" — you\'re approaching the threshold where ML requires NumPy deeply. CampusX Day 35+ uses NumPy for outlier detection (Z-score). Mastering NumPy arrays now = all future ML code makes more sense.',
+    links:[
+      {icon:'📖',name:'NumPy Official Documentation',sub:'numpy.org/doc/stable/user/quickstart.html · Free',url:'https://numpy.org/doc/stable/user/quickstart.html'},
+      {icon:'📦',name:'ydata-profiling (pandas-profiling successor)',sub:'pip install ydata-profiling · You searched this!',url:'https://github.com/ydataai/ydata-profiling'},
+    ],
+    note:'<strong>Quick wins:</strong> numpy.array, broadcasting, vectorization. Then: pip install ydata-profiling → run ProfileReport(df) on Titanic. 3 lines = full EDA report.',
+  },
+  // Data Science modals
+  ds_kaggle: {
+    platform:'🏆 Kaggle · Free', platformClass:'pb-coursera',
+    title:'Complete Titanic — Your Most Visited Learning Platform',
+    subtitle:'203 Kaggle visits = you know the platform · Now submit',
+    evidence:'🦁 Brave: Kaggle is your #7 most visited site with 203 confirmed visits',
+    why:'⚡ 203 Kaggle visits. You know every corner of Kaggle. You\'ve browsed datasets, searched for notebooks, read others\' code. The only thing missing: your own submission. Titanic uses everything from CampusX Day 1–34 in one notebook.',
+    links:[
+      {icon:'🏆',name:'Kaggle Titanic — Machine Learning from Disaster',sub:'kaggle.com/c/titanic · Free · Classic project',url:'https://www.kaggle.com/c/titanic'},
+      {icon:'📓',name:'CampusX Kaggle Tutorial',sub:'youtube.com/@campusx-official · Hindi · Free',url:'https://www.youtube.com/@campusx-official'},
+    ],
+    note:'<strong>🎯 Target:</strong> Top 25% leaderboard. Use SimpleImputer, ColumnTransformer, GradientBoostingClassifier. That\'s it.',
+  },
+  ds_campusx: {
+    platform:'▶️ YouTube · Hindi · Free', platformClass:'pb-yt',
+    title:'CampusX Day 35 — Outlier Detection',
+    subtitle:'Downloaded Day 34 CSV files · Jupyter ready · Continue',
+    evidence:'🦁 Brave: messages.csv + orders.csv downloaded from CampusX GitHub March 6',
+    why:'⚡ You have everything set up. Jupyter is running (39 sessions). You downloaded the Day 34 data. Day 35 Outlier Detection is a 45-minute video. The Z-score and IQR methods you learn will immediately apply to your Titanic notebook.',
+    links:[
+      {icon:'▶️',name:'CampusX 100 Days of ML — Continue from Day 35',sub:'youtube.com/@campusx-official · Hindi · Free',url:'https://www.youtube.com/@campusx-official'},
+    ],
+    note:'<strong>📍 Open Jupyter (localhost:8888) right now.</strong> Watch Day 35. Code along. 45 minutes.',
+  },
+  ds_profiling: {
+    platform:'📦 Python Package · Free', platformClass:'pb-hr',
+    title:'ydata-profiling — You Searched It, Now Use It',
+    subtitle:'\'pandas profiling\' in Brave search history',
+    evidence:'🦁 Brave: \'pandas profiling\' specifically searched',
+    why:'⚡ You searched "pandas profiling" which is now called ydata-profiling. 3 lines of code generate a complete EDA report — correlations, distributions, missing values, outliers — everything CampusX taught manually. This is a professional Data Scientist tool. It\'s in the top 50 DS packages.',
+    links:[
+      {icon:'📦',name:'ydata-profiling GitHub',sub:'pip install ydata-profiling · Free · Professional tool',url:'https://github.com/ydataai/ydata-profiling'},
+    ],
+    note:'<strong>3 lines:</strong> import ydata_profiling → profile = ProfileReport(df) → profile.to_file("report.html"). Run on Titanic dataset. Instant insights.',
+  },
+  ds_streamlit: {
+    platform:'🌐 Streamlit · Free', platformClass:'pb-hr',
+    title:'Streamlit Data Dashboard — Complete Chai aur Code Course',
+    subtitle:'10 Chai aur Code videos watched · Streamlit is next',
+    evidence:'🦁 YouTube: 10 Chai aur Code videos + Streamlit searches confirmed',
+    why:'⚡ You\'ve watched 10 Chai aur Code videos. Their Streamlit course is in that channel. Complete it. Then build a Streamlit dashboard that shows your Titanic predictions interactively. Streamlit Cloud (free) gives you a public URL. This converts a Kaggle notebook into a deployable product.',
+    links:[
+      {icon:'▶️',name:'Chai aur Code — Streamlit Course',sub:'youtube.com/@chaiaurcode · Hindi · Free',url:'https://www.youtube.com/@chaiaurcode'},
+      {icon:'☁️',name:'Streamlit Community Cloud',sub:'streamlit.io/cloud · Free hosting · GitHub integration',url:'https://streamlit.io/cloud'},
+    ],
+    note:'<strong>🎯 Deliverable:</strong> 1 Streamlit app with Titanic prediction form. User inputs age/class/sex → model predicts survival. Public URL. Portfolio.',
+  },
+};
+
+let _currentModalId = '';
+let _currentModalTitle = '';
+
+function openDynModal(id) {
+  const data = BRAVE_MODALS[id];
+  if (!data) { console.warn('No modal for', id); return; }
+  _currentModalId = id;
+  _currentModalTitle = data.title;
+  
+  document.getElementById('modal-header').innerHTML = `
+    <div class="modal-platform-badge ${data.platformClass}">${data.platform}</div>
+    <div class="modal-title">${data.title}</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:4px;">${data.subtitle}</div>`;
+  
+  const evidenceEl = document.getElementById('modal-evidence');
+  if (data.evidence) {
+    evidenceEl.textContent = data.evidence;
+    evidenceEl.style.display = 'block';
+  } else {
+    evidenceEl.style.display = 'none';
+  }
+  
+  document.getElementById('modal-why').textContent = data.why;
+  document.getElementById('modal-links').innerHTML = data.links.map(l => `
+    <a class="modal-link-btn" href="${l.url}" target="_blank" rel="noopener">
+      <div class="modal-link-icon">${l.icon}</div>
+      <div class="modal-link-info">
+        <div class="modal-link-name">${l.name}</div>
+        <div class="modal-link-url">${l.sub}</div>
+      </div>
+      <div class="modal-link-arrow">↗</div>
+    </a>`).join('');
+  document.getElementById('modal-note').innerHTML = data.note;
+  document.getElementById('modal-ai-text').textContent = 'Click a button for AI insights about this specific step...';
+  
+  document.getElementById('modal-ai-btn1').onclick = () => askModalAI(`Why is "${data.title}" the right step for Gaurav given his Brave history (203 Kaggle visits, 82 DSA searches, Flask debugger active, Anime_One 1538 visits)?`);
+  document.getElementById('modal-ai-btn2').onclick = () => askModalAI(`How long will "${data.title}" take Gaurav if he studies 2 hours per day? He has CampusX Day 34 done, 55 Striver videos, Jupyter running.`);
+  
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+// ─── AI FUNCTIONS ───
+async function callAI(prompt, targetEl, systemContext) {
+  const el = document.getElementById(targetEl);
+  if (!el) return;
+  el.innerHTML = '<div class="ai-generating"><span>Analyzing your profile</span><span class="ai-cursor"></span></div>';
+  
+  const systemPrompt = systemContext || `You are HyperPath's AI learning advisor. You have access to Gaurav Jain's complete digital learning profile:
+
+BRAVE BROWSER DATA (6,120 URLs, 15,321 visits, 959 searches):
+- Top site: Anime_One web app (1538 visits on localhost:3000)
+- Kaggle: 203 visits (7th most visited site)
+- YouTube: 154 visits
+- Flask debugger localhost:5678: 27 visits (building Flask apps)
+- Jupyter Notebook localhost:8888: 39 visits (running ML code)
+- LeetCode: 47 visits (Missing Number problem)
+- Claude.ai: 28 visits
+- Search categories: DSA 82 queries, Tools/Setup 72, Web Dev 69, Python 55, ML 40
+- Specific searches: 'binary search', 'striver dsa sheet', 'pandas encoding error', 'tensors in python', 'deploy python netlify', 'flask vs django', 'anime api', 'jikan api'
+- Downloads: 145 files (12 PDFs - DSA books, CampusX Day 34 CSV files)
+
+YOUTUBE DATA (361 videos):
+- DSA/Algorithms: 29% (106 videos)
+- Machine Learning: 23% (83 videos)
+- CampusX: 85 videos (Hindi ML)
+- take U forward: 55 videos (DSA)
+- CodeHelp Babbar: 20 videos (Lecture 13 just watched Mar 7)
+- CampusX Day 34 completed (Date/Time variables, data files downloaded)
+- Stanford CS229 Lecture 1 watched March 6
+
+KEY CROSS-SOURCE INSIGHTS:
+- He BUILDS projects (Anime_One app = months of work)
+- He uses Jupyter AND Kaggle (hands-on ML, not just theory)
+- He has a Flask bug to fix (UnboundLocalError: firstName scope issue)
+- He searches things twice = they're not sticking (needs different approach)
+- He uses Claude extensively for project building
+
+Respond in 2-4 concise paragraphs. Be specific and reference actual data from his profile. Don't be generic. Reference specific visit counts, search terms, or video titles when relevant.`;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.map(b => b.text || '').join('') || 'Unable to generate response.';
+    el.innerHTML = text.replace(/\n\n/g, '</p><p style="margin-top:10px;">').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  } catch (err) {
+    el.textContent = 'AI analysis unavailable. Please check your connection.';
+    console.error('AI error:', err);
+  }
+}
+
+function askAI(question) {
+  callAI(question, 'ai-response');
+}
+
+function askRoadmapAI(question) {
+  const context = `Current roadmap: ${_selectedGoal}. ${question}`;
+  callAI(context, 'ai-roadmap-response');
+}
+
+function askPhaseAI(phaseTitle, evidence) {
+  const q = `Tell me specifically about the phase "${phaseTitle}" for Gaurav. Evidence: ${evidence}. Why is this the right next step? What should he do in the first 30 minutes?`;
+  callAI(q, 'ai-roadmap-response');
+  document.getElementById('s-roadmap').scrollTo({ top: document.getElementById('ai-roadmap-response')?.offsetTop || 9999, behavior: 'smooth' });
+}
+
+function askModalAI(question) {
+  callAI(question, 'modal-ai-text');
+}
+
+function loadNudge() {
+  const nudges = [
+    "🦁 Brave data shows you've visited Kaggle 203 times but never submitted a notebook. Today: open Titanic competition and write your first cell.",
+    "⚡ You watched Babbar's Binary Search Lecture 13 on March 7. The problem set is next. 45 minutes on LeetCode today = massive progress.",
+    "🤖 CampusX Day 35 (Outlier Detection) is literally the next video in your playlist. Jupyter is at localhost:8888. 50 minutes away.",
+    "🏗️ Your Anime_One app has 1538 visits but it's still local. You searched 'deploy python netlify' twice. Today: drag the folder to netlify.com. 10 minutes.",
+  ];
+  const el = document.getElementById('nudge-text');
+  if (el) el.textContent = nudges[Math.floor(Math.random() * nudges.length)];
+}
+
+function markDone(task) {
+  task.classList.toggle('tt-done');
+  const chk = task.querySelector('.tt-check');
+  if (task.classList.contains('tt-done')) { chk.textContent = '✓'; }
+  else { chk.textContent = ''; }
+}
+
+// ─── INIT ───
+window.addEventListener('load', () => {
+  loadNudge();
+  // Pre-select ML
+  _selectedGoal = 'Machine Learning';
+});
+</script>
+<!-- SWITCH PROFILE BAR -->
+<div class="switch-bar">
+  <span class="switch-bar-label">Viewing: Gaurav Jain</span>
+  <button class="switch-btn" onclick="window.location.href='vaibhav.html'">Switch to Vaibhav &rarr;</button>
+  <button class="home-btn" onclick="window.location.href='index.html'">&#x2302; Home</button>
+</div>
+
+</body>
+</html>
